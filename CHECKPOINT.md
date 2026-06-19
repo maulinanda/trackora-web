@@ -1,123 +1,139 @@
-📦 CHECKPOINT #2 — TrackORA Web
+📦 CHECKPOINT #3 — TrackORA Web
 Tanggal: 20 Juni 2026
-Status Project: Webapp interaktif dengan sistem login admin, siap untuk fitur lanjutan
+Status Project: Frontend lengkap dengan Dashboard, Search, Filter, Stats, Admin Mode, dan Quality Reconditioning dinamis. Siap masuk fase backend.
 
 🎯 Tujuan Project
-Webapp TrackORA untuk melacak pengiriman unit mobil baru ke cabang-cabang. Pengguna (orang cabang/siapa pun) bisa melacak status unit berdasarkan No. Rangka. Admin bisa mengubah status unit melalui Panel Admin dengan PIN.
+Webapp TrackORA untuk melacak pengiriman unit mobil baru ke cabang-cabang. Digunakan oleh orang cabang atau siapa pun yang ingin melacak status unit berdasarkan No. Rangka. Admin (dengan PIN) dapat mengubah status unit.
 
 🧰 Tools yang Digunakan
 Tools	Fungsi	Status
 GitHub	Repository kode & version control	✅ Aktif
 GitHub Pages	Hosting website live & publik	✅ Aktif
 Chrome DevTools	Preview responsive (desktop & mobile)	✅ Aktif
-GitHub Editor / vscode.dev	Editor kode online	✅ Aktif
+GitHub Editor	Editor kode online	✅ Aktif
 URL Penting:
 Repository: https://github.com/maulinanda/trackora-web
 
 Website Live: https://maulinanda.github.io/trackora-web/
 
-📁 Struktur File
+📁 Struktur File Saat Ini
 text
 trackora-web/
 ├── README.md
-└── index.html        ← Seluruh kode (HTML + CSS + JavaScript)
-Catatan: Masih satu file. Belum ada pemisahan CSS/JS eksternal.
+└── index.html        ← Seluruh kode (HTML + CSS + JavaScript dalam 1 file)
+Catatan: Semua masih dalam 1 file. Belum dipisah ke CSS/JS eksternal.
 
-🧠 Konsep yang Sudah Dipelajari
+🧠 Semua Konsep yang Sudah Dipelajari
 HTML
 Konsep	Penerapan
 Struktur dasar	<!DOCTYPE>, <html>, <head>, <body>
-Meta tag	charset, viewport untuk responsive
-Heading	<h1> - <h3>
-Paragraf	<p>
-Div/Span	<div>, <span> untuk grouping
-Form input	<input> text & password
-Button	<button> dengan atribut onclick
-Class	Label untuk CSS selector
+Meta tag	charset, viewport
+Heading & Paragraf	<h1> - <h3>, <p>
+Div & Span	<div>, <span> untuk grouping
+Form Input	<input> text, password, search
+Button	<button> dengan onclick
+Class & ID	Untuk CSS selector dan JavaScript
 Komentar HTML	<!-- ... -->
 CSS
 Konsep	Penerapan
-Selector Elemen	body, h1, h2, p
-Selector Class	.kartu, .indikator-selesai
-Warna	Hex #2e7d32, rgb rgba(0,0,0,0.5)
+Selector Elemen, Class, ID	body, .kartu, #errorMsg
+Warna	Hex, rgb, rgba, nama warna
 Font	font-family, font-size, font-weight, letter-spacing
-Box Model	margin, padding, border-radius
-Flexbox	display: flex, align-items, justify-content
-Position	position: relative/absolute/fixed
-Shadow	box-shadow untuk efek mengambang
-Animation	@keyframes pulse, @keyframes popIn, @keyframes shake
-Pseudo-element	::after untuk garis penghubung
-Pseudo-class	:hover, :focus, :not(:last-child)
-Media Query	@media (max-width: 480px) untuk responsive mobile
+Box Model	margin, padding, border-radius, border
+Flexbox	display: flex, align-items, justify-content, gap
+Grid	display: grid, grid-template-columns, repeat, auto-fill
+Position	relative, absolute, fixed
+Shadow	box-shadow untuk efek mengambang dan glow
+Animation	@keyframes pulse, popIn, shake, fadeIn
+Pseudo-element	::after untuk garis penghubung progress
+Pseudo-class	:hover, :focus, :not(:last-child), :disabled
+Media Query	@media (max-width: 600px) untuk responsive mobile
 Transition	transition: all 0.3s
-Z-index	z-index untuk overlay
-Overlay/Modal	Latar gelap + popup di tengah
+Z-index	Untuk overlay/modal
+Transform	translateY, scale untuk efek hover
 JavaScript
 Konsep	Penerapan
-Variabel (let, const)	adminMode, unitAktif, daftarUnit, ADMIN_PIN
-Array	daftarUnit (kumpulan 3 unit), statusList (4 tahap)
-Object	Setiap unit: { rangka, tujuan, status, tanggal }
-Fungsi	cekStatus(), tampilkanProgress(), majuStatus(), dll
-Parameter & Return	tampilkanProgress(unit), dapatkanDetailStatus(unit, index)
-Event Listener	Klik tombol, Enter di input, Escape, klik overlay
-DOM Manipulation	getElementById(), innerHTML, classList.add/remove
-Kondisional	if/else, switch/case, ternary
-Loop	for loop untuk menggambar 4 step progress
-Array.find()	Mencari unit berdasarkan No. Rangka
-String methods	.trim(), .toLowerCase()
-Date object	new Date() untuk tanggal otomatis
-localStorage	setItem(), getItem(), removeItem() untuk sesi admin
+Variabel (let, const)	adminMode, unitAktif, filterStatus, daftarUnit
+Array	daftarUnit (data unit), statusListNormal, statusListRecon
+Object	Setiap unit: { rangka, tujuan, status, perluReconditioning, tanggal }
+Array of Objects	Struktur data utama
+Fungsi	cekStatus(), renderDashboard(), hitungStats(), setFilter(), dll
+Parameter & Return	Semua fungsi menerima dan/atau mengembalikan nilai
+Event Listener	Klik, Enter, Escape, input real-time
+DOM Manipulation	getElementById(), innerHTML, classList.add/remove/toggle
+Kondisional	if/else, switch/case, ternary ? :
+Loop	for loop untuk progress bar, for...of untuk stats
+Array Methods	.find(), .filter(), .length
+String Methods	.trim(), .toLowerCase(), .includes()
+Date Object	new Date(), getDate(), getMonth(), getFullYear()
+localStorage	setItem(), getItem(), removeItem() — sesi admin 30 menit
 setTimeout	Notifikasi hilang otomatis 3 detik
-CSS via JS	Membuat <style> dinamis untuk animasi shake
+Dynamic CSS via JS	Membuat <style> untuk animasi shake
+Grid Dynamic Rendering	Render kartu dashboard dari array data
 🔐 Fitur Keamanan
 Fitur	Detail
-PIN Admin	Default: 1234 (bisa diganti di variabel ADMIN_PIN)
-Sesi 30 Menit	Disimpan di localStorage dengan key trackora_admin_sesi
+PIN Admin	Default: 1234 (ganti di variabel ADMIN_PIN)
+Sesi 30 Menit	Disimpan di localStorage key trackora_admin_sesi
 Auto-login	Cek sesi saat halaman dimuat
 Popup Login	Overlay gelap, input PIN tersembunyi (type password)
-Efek PIN Salah	Popup goyang + error merah
-Logout	Tombol keluar + hapus sesi
-📋 Status Fitur
+Efek PIN Salah	Popup goyang (animasi shake) + error merah
+Escape/Batal	ESC atau klik luar popup untuk batal
+📊 Fitur Dashboard
+Fitur	Cara Kerja
+Stats Bar	5 kartu: Total, DR Created, Preparation, In Transit, Delivered
+Klik Filter	Klik stat card → filter unit dengan status itu. Klik lagi → reset
+Real-time Search	Ketik No. Rangka → langsung filter kartu
+Info Filter	Menampilkan "X dari Y unit" saat filter aktif
+Reset Button	Muncul saat filter/search aktif
+Empty State	Tampilan khusus saat tidak ada unit yang cocok
+Klik Kartu	Klik kartu unit → pindah ke tab Lacak & tampilkan detail
+📋 Semua Fitur
 Fitur	Status	Keterangan
-Tampilan detail unit	✅ Selesai	No. Rangka + Tujuan
-Progress bar 4 tahap	✅ Selesai	Indikator warna & animasi pulsing
-Animasi status aktif	✅ Selesai	Efek pulsing pada status saat ini
-Garis penghubung step	✅ Selesai	Hijau (selesai), abu (belum)
-Responsive mobile	✅ Selesai	Media query untuk layar < 480px
-Input cari No. Rangka	✅ Selesai	Bisa Enter atau klik tombol
-Error handling	✅ Selesai	Pesan jika kosong / tidak ditemukan
-Data dummy 3 unit	✅ Selesai	3 No. Rangka dengan status berbeda
-Panel Admin	✅ Selesai	Ubah status unit
-Login Admin PIN	✅ Selesai	Popup + localStorage sesi
-Notifikasi	✅ Selesai	Muncul 3 detik lalu hilang
-Status opsional	⏳ Siap	"Quality Reconditioning" sudah diketik, tinggal un-comment
-Dashboard multi-unit	❌ Belum	-
-Tambah unit baru	❌ Belum	-
-Backend/Database	❌ Belum	Masih data dummy di JavaScript
+Tampilan detail unit	✅	No. Rangka + Tujuan
+Progress bar dinamis	✅	4 atau 5 tahap sesuai kondisi
+Quality Reconditioning	✅	Status opsional, toggle ON/OFF
+Animasi status aktif	✅	Efek pulsing
+Garis penghubung step	✅	Hijau/oranye/abu sesuai status
+Responsive mobile	✅	Media query < 600px
+Input cari No. Rangka	✅	Enter atau klik tombol
+Error handling	✅	Input kosong / tidak ditemukan
+Dashboard semua unit	✅	Grid kartu responsif
+Stats bar + counter	✅	5 kartu statistik
+Search dashboard	✅	Real-time filter
+Filter by status	✅	Klik stat card
+Panel Admin	✅	Ubah status unit
+Toggle Reconditioning	✅	Admin bisa ON/OFF per unit
+Login Admin PIN	✅	Popup + localStorage sesi
+Notifikasi	✅	Muncul 3 detik, auto-hilang
+Tambah unit baru	❌	Data dari database, bukan manual
+Backend/Database	❌	Masih data dummy di JavaScript
 🚗 Data Dummy
-No. Rangka	Tujuan	Status
-MHFAB1CJ2N1234567	Cabang Jakarta Pusat	In Transit (3)
-MHFAB1CJ2N7654321	Cabang Bandung	Unit Preparation (2)
-MHFAB1CJ2N9999999	Cabang Surabaya	Delivered (4)
-🔜 Rencana Fitur Selanjutnya
-Dashboard Multi-Unit — Lihat semua unit sekaligus
+No. Rangka	Tujuan	Status	Reconditioning
+MHFAB1CJ2N1234567	Cabang Jakarta Pusat	In Transit	✨ Ya
+MHFAB1CJ2N7654321	Cabang Bandung	Unit Preparation	❌ Tidak
+MHFAB1CJ2N9999999	Cabang Surabaya	Delivered	✨ Ya
+🔜 Rencana Selanjutnya
+Fase Backend (Database Nyata)
+Pemisahan File — CSS ke style.css, JS ke script.js
 
-Status "Quality Reconditioning" Dinamis — Status opsional yang bisa muncul
+Node.js + Express — Server backend
 
-Form Tambah Unit Baru — Admin bisa menambah unit
+Database — JSON file / SQLite / PostgreSQL
 
-Pemisahan File — CSS & JS dipisah ke file terpisah
+API REST — Endpoint untuk baca & update status
 
-Backend dengan Node.js — Database sungguhan, API
+Fetch API — JavaScript panggil data dari server
+
+Deploy Backend — Railway / Render / Vercel (gratis)
 
 💡 Cara Mengganti PIN Admin
 Di bagian <script>, cari baris:
 
 javascript
-const ADMIN_PIN = "1234";        // Ganti PIN di sini kalau perlu
-Ubah "1234" jadi PIN pilihanmu. Commit dan refresh halaman.
+const ADMIN_PIN = "1234";
+Ubah angkanya, commit, refresh.
 
 💡 Cara Melanjutkan di Chat Baru
 Copy-paste checkpoint ini dan kirim ke chat baru bersama pesan:
 
-"Saya sedang membangun project TrackORA Web untuk logistik mobil. Ini checkpoint #2. Saya ingin melanjutkan dari [sebutkan fitur yang diinginkan]."
+"Saya sedang membangun project TrackORA Web untuk logistik mobil. Ini checkpoint #3. Saya ingin melanjutkan ke [fase backend / pemisahan file / fitur lain]."
