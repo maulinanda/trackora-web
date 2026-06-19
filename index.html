@@ -18,7 +18,7 @@
         }
 
         .main-content {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -219,6 +219,19 @@
             font-family: 'Courier New', monospace;
         }
 
+        /* === RVDC BANNER === */
+        .rvdc-banner {
+            background-color: #e3f2fd;
+            border-left: 4px solid #1565c0;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #0d47a1;
+            display: none;
+        }
+        .rvdc-banner.show { display: block; }
+
         .error-msg {
             background-color: #fff3f3;
             border: 1px solid #ffcdd2;
@@ -284,19 +297,20 @@
         .btn-maju:hover { background-color: #f57c00; }
         .btn-reset { background-color: #f5f5f5; color: #757575; }
         .btn-reset:hover { background-color: #e0e0e0; }
-        .btn-recon {
+        .btn-qr {
             background-color: #e8f5e9;
             color: #2e7d32;
             border: 1px solid #a5d6a7;
         }
-        .btn-recon:hover { background-color: #c8e6c9; }
-        .btn-recon.active-recon {
+        .btn-qr:hover { background-color: #c8e6c9; }
+        .btn-qr.selesai-qr {
             background-color: #fff3e0;
             color: #e65100;
             border-color: #ffcc80;
         }
-        .btn-maju:disabled, .btn-reset:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-maju:disabled, .btn-reset:disabled, .btn-qr:disabled { opacity: 0.5; cursor: not-allowed; }
 
+        /* === INFO UNIT === */
         .info-unit { display: none; }
         .info-unit.show { display: block; }
         .info-unit p {
@@ -306,13 +320,18 @@
             display: flex;
             flex-wrap: wrap;
         }
-        .label { color: #9e9e9e; font-weight: normal; min-width: 100px; }
+        .label { color: #9e9e9e; font-weight: normal; min-width: 110px; }
         .nilai { font-weight: 600; color: #212121; }
         .nilai-rangka {
             font-weight: 600;
             color: #1565c0;
             font-family: 'Courier New', monospace;
             letter-spacing: 0.5px;
+        }
+        .estimasi-besar {
+            font-weight: 700;
+            color: #1565c0;
+            font-size: 16px;
         }
 
         .progress-title { font-weight: 700; color: #333; margin-bottom: 20px; font-size: 16px; }
@@ -340,7 +359,6 @@
         .indikator-selesai { background-color: #e8f5e9; color: #2e7d32; }
         .indikator-aktif { background-color: #e3f2fd; color: #1565c0; animation: pulse 1.5s infinite; }
         .indikator-menunggu { background-color: #f5f5f5; color: #bdbdbd; }
-        .indikator-recon { background-color: #fff3e0; color: #e65100; animation: pulse 1.5s infinite; }
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(21, 101, 192, 0.3); }
@@ -354,7 +372,6 @@
         .teks-selesai .nama-status { color: #2e7d32; }
         .teks-aktif .nama-status { color: #1565c0; }
         .teks-menunggu .nama-status { color: #bdbdbd; }
-        .teks-recon .nama-status { color: #e65100; }
 
         .step:not(:last-child)::after {
             content: '';
@@ -366,7 +383,6 @@
             background-color: #e0e0e0;
         }
         .step.selesai:not(:last-child)::after { background-color: #2e7d32; }
-        .step.recon-selesai:not(:last-child)::after { background-color: #e65100; }
         .step.aktif:not(:last-child)::after { background-color: #e0e0e0; }
 
         .footer-note {
@@ -380,207 +396,109 @@
         }
 
         /* ======================================== */
-        /* === DASHBOARD STATS BAR === */
+        /* === DASHBOARD FILTER CABANG === */
         /* ======================================== */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 14px 10px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .stat-card.active-filter {
-            border-color: #1565c0;
-            box-shadow: 0 0 0 3px rgba(21,101,192,0.15);
-        }
-        .stat-card .stat-angka {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a237e;
-            line-height: 1;
-        }
-        .stat-card .stat-label {
-            font-size: 11px;
-            color: #9e9e9e;
-            margin-top: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .stat-card.stat-total { background-color: #f5f5f5; }
-        .stat-card.stat-dr { border-left: 4px solid #ff9800; }
-        .stat-card.stat-prep { border-left: 4px solid #2196f3; }
-        .stat-card.stat-transit { border-left: 4px solid #4caf50; }
-        .stat-card.stat-delivered { border-left: 4px solid #9c27b0; }
-
-        /* === DASHBOARD SEARCH & FILTER === */
-        .dashboard-toolbar {
+        .dashboard-filter {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            align-items: center;
             flex-wrap: wrap;
         }
-        .dashboard-search {
-            flex: 1;
-            min-width: 200px;
-            padding: 10px 14px;
+        .dashboard-filter select {
+            padding: 10px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 14px;
-            font-family: 'Courier New', monospace;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        .dashboard-search:focus { border-color: #1565c0; }
-        .btn-clear-filter {
-            padding: 10px 16px;
-            background-color: #f5f5f5;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 13px;
+            background-color: white;
             cursor: pointer;
-            color: #757575;
-            transition: all 0.3s;
-            white-space: nowrap;
+            outline: none;
         }
-        .btn-clear-filter:hover { background-color: #eeeeee; color: #424242; }
-        .btn-clear-filter.hidden { display: none; }
-
+        .dashboard-filter select:focus { border-color: #1565c0; }
         .filter-info {
             font-size: 13px;
             color: #757575;
-            margin-bottom: 15px;
-            display: none;
-        }
-        .filter-info.show { display: block; }
-
-        /* === DASHBOARD GRID === */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
         }
 
-        .dashboard-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
+        /* === DASHBOARD TABLE LIST === */
+        .table-container {
+            overflow-x: auto;
         }
-        .dashboard-card:hover {
-            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-            border-color: #1565c0;
-            transform: translateY(-2px);
-        }
-        .dashboard-card .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        .dashboard-card .card-rangka {
-            font-family: 'Courier New', monospace;
-            font-weight: 700;
-            color: #1565c0;
+        table.dashboard-table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 14px;
-            letter-spacing: 0.3px;
         }
-        .dashboard-card .card-tujuan {
-            font-size: 13px;
-            color: #757575;
-            margin-top: 2px;
+        table.dashboard-table th {
+            background-color: #f5f5f5;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #424242;
+            border-bottom: 2px solid #e0e0e0;
+            white-space: nowrap;
         }
-        .dashboard-card .status-badge {
+        table.dashboard-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+        table.dashboard-table tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        table.dashboard-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+        .td-rangka {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #1565c0;
+        }
+        .badge-cell {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 700;
-            white-space: nowrap;
         }
         .badge-dr { background-color: #fff3e0; color: #e65100; }
         .badge-prep { background-color: #e3f2fd; color: #1565c0; }
-        .badge-recon { background-color: #fff3e0; color: #e65100; border: 1px dashed #ff9800; }
         .badge-transit { background-color: #e8f5e9; color: #2e7d32; }
         .badge-delivered { background-color: #f3e5f5; color: #7b1fa2; }
 
         .progress-mini {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             align-items: center;
-            margin-top: 12px;
-            flex-wrap: wrap;
         }
         .dot-mini {
-            width: 10px;
-            height: 10px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             background-color: #e0e0e0;
-            transition: background-color 0.3s;
         }
         .dot-mini.selesai { background-color: #2e7d32; }
         .dot-mini.aktif { background-color: #1565c0; }
-        .dot-mini.recon-selesai { background-color: #e65100; }
-        .dot-mini.recon-aktif { background-color: #ff9800; }
         .line-mini {
-            flex: 1;
-            min-width: 10px;
-            height: 2px;
+            width: 12px; height: 2px;
             background-color: #e0e0e0;
-            transition: background-color 0.3s;
         }
         .line-mini.selesai { background-color: #2e7d32; }
-        .line-mini.recon-selesai { background-color: #e65100; }
 
-        .card-tanggal {
-            font-size: 11px;
-            color: #bdbdbd;
-            margin-top: 10px;
-            text-align: right;
-        }
-        .card-recon-badge {
-            display: inline-block;
-            background-color: #fff3e0;
-            color: #e65100;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-top: 8px;
-            font-weight: 600;
-        }
-
-        .dashboard-empty {
+        .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: #bdbdbd;
-            grid-column: 1 / -1;
+            padding: 40px;
+            color: #9e9e9e;
         }
-        .dashboard-empty .empty-icon { font-size: 60px; margin-bottom: 15px; }
 
         /* === RESPONSIVE === */
         @media (max-width: 600px) {
             .main-content { padding: 10px; }
-            .kartu { padding: 20px; border-radius: 8px; }
+            .kartu { padding: 20px; }
             h1 { font-size: 20px; }
-            .header { gap: 10px; }
             .search-box { flex-direction: column; }
             .search-box button { width: 100%; }
-            .label { min-width: 80px; font-size: 13px; }
+            .label { min-width: 90px; font-size: 13px; }
             .nilai, .nilai-rangka { font-size: 13px; }
             .indikator {
                 width: 30px; height: 30px;
@@ -595,20 +513,14 @@
             .btn-admin { padding: 8px 14px; font-size: 13px; }
             .popup-login { padding: 20px; }
             .tab-btn { padding: 10px 15px; font-size: 14px; }
-            .dashboard-grid { grid-template-columns: 1fr; gap: 15px; }
-            .stats-bar {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
-            }
-            .stat-card { padding: 10px 6px; }
-            .stat-card .stat-angka { font-size: 22px; }
-            .stat-card .stat-label { font-size: 10px; }
-            .dashboard-toolbar { flex-direction: column; }
+            table.dashboard-table { font-size: 12px; }
+            table.dashboard-table th, table.dashboard-table td { padding: 8px 10px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- OVERLAY LOGIN -->
     <div class="overlay" id="overlayLogin">
         <div class="popup-login">
             <div class="login-icon">🔐</div>
@@ -621,6 +533,7 @@
         </div>
     </div>
 
+    <!-- KONTEN UTAMA -->
     <div class="main-content">
         <div class="header">
             <div class="header-kiri">
@@ -637,7 +550,7 @@
 
         <div class="tab-nav">
             <button class="tab-btn active" id="btnTabLacak" onclick="gantiTab('lacak')">🔍 Lacak Unit</button>
-            <button class="tab-btn" id="btnTabDashboard" onclick="gantiTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" id="btnTabDashboard" onclick="gantiTab('dashboard')">📊 Daftar Unit</button>
         </div>
 
         <div class="notif-sukses" id="notifSukses"></div>
@@ -649,7 +562,7 @@
             <div class="unit-terpilih" id="unitTerpilih">🔍 Silakan cari unit terlebih dahulu</div>
             <button class="btn-admin btn-maju" id="btnMaju" onclick="majuStatus()" disabled>⏭ Maju ke Tahap Berikutnya</button>
             <button class="btn-admin btn-reset" id="btnReset" onclick="resetStatus()" disabled>🔄 Reset ke DR Created</button>
-            <button class="btn-admin btn-recon" id="btnRecon" onclick="toggleReconditioning()" disabled>✨ Quality Reconditioning: OFF</button>
+            <button class="btn-admin btn-qr" id="btnQR" onclick="toggleQR()" disabled>✨ QR: ...</button>
             <button class="btn-admin btn-reset" onclick="logoutAdmin()" style="margin-top:10px;">🚪 Keluar dari Admin Mode</button>
         </div>
 
@@ -663,6 +576,12 @@
                 <p class="search-hint">
                     Contoh: <code>MHFAB1CJ2N1234567</code> · <code>MHFAB1CJ2N7654321</code> · <code>MHFAB1CJ2N9999999</code>
                 </p>
+
+                <!-- RVDC BANNER -->
+                <div class="rvdc-banner" id="rvdcBanner">
+                    🚛 Unit sedang dalam perjalanan ke <strong>RVDC Ngoro</strong>. Progress pengiriman ke cabang akan muncul setelah unit tiba di RVDC.
+                </div>
+
                 <div class="info-unit" id="infoUnit">
                     <div id="detailUnit"></div>
                     <hr>
@@ -675,20 +594,31 @@
             </div>
         </div>
 
-        <!-- TAB DASHBOARD -->
+        <!-- TAB DASHBOARD (LIST) -->
         <div class="tab-content" id="tabDashboard">
-            <!-- STATS BAR -->
-            <div class="stats-bar" id="statsBar"></div>
-            
-            <!-- TOOLBAR -->
-            <div class="dashboard-toolbar">
-                <input type="text" class="dashboard-search" id="dashboardSearch" placeholder="🔍 Cari No. Rangka..." oninput="filterDashboard()">
-                <button class="btn-clear-filter hidden" id="btnClearFilter" onclick="clearFilter()">✕ Reset Filter</button>
+            <div class="dashboard-filter">
+                <label for="filterCabang" style="font-weight:600;color:#424242;">🏢 Cabang:</label>
+                <select id="filterCabang" onchange="filterByCabang()">
+                    <option value="">Semua Cabang</option>
+                </select>
+                <span class="filter-info" id="filterInfo"></span>
             </div>
-            <div class="filter-info" id="filterInfo"></div>
-            
-            <!-- GRID -->
-            <div class="dashboard-grid" id="dashboardGrid"></div>
+            <div class="table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>No. Rangka</th>
+                            <th>Cabang Tujuan</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                            <th>Estimasi / Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboardBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState" style="display:none;">📭 Tidak ada unit untuk cabang ini.</div>
+            </div>
         </div>
     </div>
 
@@ -700,61 +630,55 @@
         const SESI_DURASI = 30 * 60000;
 
         // =============================================
-        // DATA DUMMY
+        // DATA DUMMY (dengan jam, RVDC, QR sebagai flag)
         // =============================================
         const daftarUnit = [
             {
                 rangka: "MHFAB1CJ2N1234567",
                 tujuan: "Cabang Jakarta Pusat",
-                status: 3,
-                perluReconditioning: true,
+                status: 3, // In Transit
+                perluReconditioning: false,
+                sedangKeRVDC: false,
                 tanggal: {
-                    drCreated: "15 Mar 2026",
-                    unitPreparation: "17 Mar 2026",
-                    qualityReconditioning: "18 Mar 2026",
-                    inTransit: "19 Mar 2026",
-                    estimasiTiba: "20 Mar 2026"
+                    drCreated: "15 Mar 2026, 09:15",
+                    unitPreparation: "17 Mar 2026, 14:00",
+                    inTransit: "19 Mar 2026, 08:30",
+                    estimasiTiba: "20 Mar 2026, 16:00"
                 }
             },
             {
                 rangka: "MHFAB1CJ2N7654321",
                 tujuan: "Cabang Bandung",
-                status: 2,
-                perluReconditioning: false,
+                status: 2, // Unit Preparation
+                perluReconditioning: true,  // sedang QR
+                sedangKeRVDC: true,
                 tanggal: {
-                    drCreated: "16 Mar 2026",
-                    unitPreparation: "18 Mar 2026",
-                    estimasiTiba: "22 Mar 2026"
+                    drCreated: "16 Mar 2026, 10:45",
+                    unitPreparation: "18 Mar 2026, 11:20",
+                    qrMulai: "19 Mar 2026, 09:00",
+                    estimasiTiba: "22 Mar 2026, 12:00"
                 }
             },
             {
                 rangka: "MHFAB1CJ2N9999999",
                 tujuan: "Cabang Surabaya",
-                status: 4,
-                perluReconditioning: true,
+                status: 4, // Delivered
+                perluReconditioning: false,
+                sedangKeRVDC: false,
                 tanggal: {
-                    drCreated: "10 Mar 2026",
-                    unitPreparation: "12 Mar 2026",
-                    qualityReconditioning: "13 Mar 2026",
-                    inTransit: "14 Mar 2026",
-                    delivered: "15 Mar 2026"
+                    drCreated: "10 Mar 2026, 08:00",
+                    unitPreparation: "12 Mar 2026, 13:00",
+                    inTransit: "13 Mar 2026, 07:00",
+                    delivered: "15 Mar 2026, 10:45"
                 }
             }
         ];
 
-        const statusListNormal = [
-            { nama: "DR Created",       ikon: "📝", badgeClass: "badge-dr", statKey: "dr" },
-            { nama: "Unit Preparation", ikon: "🔧", badgeClass: "badge-prep", statKey: "prep" },
-            { nama: "In Transit",       ikon: "🚛", badgeClass: "badge-transit", statKey: "transit" },
-            { nama: "Delivered",        ikon: "✅", badgeClass: "badge-delivered", statKey: "delivered" }
-        ];
-
-        const statusListRecon = [
-            { nama: "DR Created",             ikon: "📝", badgeClass: "badge-dr", statKey: "dr" },
-            { nama: "Unit Preparation",       ikon: "🔧", badgeClass: "badge-prep", statKey: "prep" },
-            { nama: "Quality Reconditioning", ikon: "✨", badgeClass: "badge-recon", statKey: "prep" },
-            { nama: "In Transit",             ikon: "🚛", badgeClass: "badge-transit", statKey: "transit" },
-            { nama: "Delivered",              ikon: "✅", badgeClass: "badge-delivered", statKey: "delivered" }
+        const statusList = [
+            { nama: "DR Created",       ikon: "📝", badgeClass: "badge-dr" },
+            { nama: "Unit Preparation", ikon: "🔧", badgeClass: "badge-prep" },
+            { nama: "In Transit",       ikon: "🚛", badgeClass: "badge-transit" },
+            { nama: "Delivered",        ikon: "✅", badgeClass: "badge-delivered" }
         ];
 
         // =============================================
@@ -763,27 +687,14 @@
         let adminMode = false;
         let unitAktif = null;
         let tabAktif = "lacak";
-        let filterStatus = null; // null = semua, atau angka status (1-4 untuk normal, 1-5 untuk recon)
-
-        // =============================================
-        // HELPER
-        // =============================================
-        function getStatusList(unit) {
-            return unit.perluReconditioning ? statusListRecon : statusListNormal;
-        }
-        function getMaxStatus(unit) {
-            return unit.perluReconditioning ? 5 : 4;
-        }
-        function getStatusSekarang(unit) {
-            const list = getStatusList(unit);
-            return list[unit.status - 1];
-        }
+        let cabangFilter = "";
 
         // =============================================
         // INISIALISASI
         // =============================================
         function init() {
             cekSesiAdmin();
+            populateFilterCabang();
             renderDashboard();
         }
 
@@ -798,6 +709,19 @@
                     localStorage.removeItem("trackora_admin_sesi");
                 }
             }
+        }
+
+        function populateFilterCabang() {
+            const cabangSet = new Set(daftarUnit.map(u => u.tujuan));
+            const select = document.getElementById("filterCabang");
+            // Hapus opsi selain default
+            select.innerHTML = '<option value="">Semua Cabang</option>';
+            cabangSet.forEach(cabang => {
+                const opt = document.createElement("option");
+                opt.value = cabang;
+                opt.textContent = cabang;
+                select.appendChild(opt);
+            });
         }
 
         // =============================================
@@ -821,193 +745,74 @@
         }
 
         // =============================================
-        // HITUNG STATS
+        // FILTER CABANG
         // =============================================
-        function hitungStats() {
-            const stats = {
-                total: daftarUnit.length,
-                dr: 0,
-                prep: 0,
-                transit: 0,
-                delivered: 0
-            };
-
-            for (let unit of daftarUnit) {
-                if (unit.status === 1) stats.dr++;
-                else if (unit.status === 2) stats.prep++;
-                else if (unit.status === 3 && unit.perluReconditioning) stats.prep++; // Reconditioning masuk prep
-                else if (unit.status === 3 && !unit.perluReconditioning) stats.transit++;
-                else if (unit.status === 4 && unit.perluReconditioning) stats.transit++;
-                else if (unit.status === 4 && !unit.perluReconditioning) stats.delivered++;
-                else if (unit.status === 5) stats.delivered++;
-            }
-
-            return stats;
-        }
-
-        // =============================================
-        // RENDER STATS BAR
-        // =============================================
-        function renderStatsBar() {
-            const stats = hitungStats();
-            const container = document.getElementById("statsBar");
-
-            const items = [
-                { label: "Total", angka: stats.total, class: "stat-total", filter: null },
-                { label: "DR Created", angka: stats.dr, class: "stat-dr", filter: "dr" },
-                { label: "Preparation", angka: stats.prep, class: "stat-prep", filter: "prep" },
-                { label: "In Transit", angka: stats.transit, class: "stat-transit", filter: "transit" },
-                { label: "Delivered", angka: stats.delivered, class: "stat-delivered", filter: "delivered" }
-            ];
-
-            let html = "";
-            for (let item of items) {
-                const isActive = filterStatus === item.filter;
-                html += `
-                    <div class="stat-card ${item.class} ${isActive ? 'active-filter' : ''}" 
-                         onclick="setFilter('${item.filter}')">
-                        <div class="stat-angka">${item.angka}</div>
-                        <div class="stat-label">${item.label}</div>
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-        }
-
-        // =============================================
-        // FILTER DASHBOARD
-        // =============================================
-        function setFilter(statusKey) {
-            // Toggle: klik yang sama = reset
-            if (filterStatus === statusKey) {
-                filterStatus = null;
-            } else {
-                filterStatus = statusKey;
-            }
-            renderDashboard();
-        }
-
-        function clearFilter() {
-            filterStatus = null;
-            document.getElementById("dashboardSearch").value = "";
-            renderDashboard();
-        }
-
-        function filterDashboard() {
-            // Real-time search
+        function filterByCabang() {
+            cabangFilter = document.getElementById("filterCabang").value;
             renderDashboard();
         }
 
         function dapatkanUnitTerfilter() {
-            const searchTerm = document.getElementById("dashboardSearch").value.trim().toLowerCase();
-            
-            let hasil = daftarUnit;
-
-            // Filter by search
-            if (searchTerm !== "") {
-                hasil = hasil.filter(u => u.rangka.toLowerCase().includes(searchTerm));
-            }
-
-            // Filter by status
-            if (filterStatus !== null) {
-                hasil = hasil.filter(u => {
-                    const key = getStatusSekarang(u).statKey;
-                    return key === filterStatus;
-                });
-            }
-
-            return hasil;
+            if (cabangFilter === "") return daftarUnit;
+            return daftarUnit.filter(u => u.tujuan === cabangFilter);
         }
 
         // =============================================
-        // RENDER DASHBOARD
+        // RENDER DASHBOARD (TABEL LIST)
         // =============================================
         function renderDashboard() {
-            renderStatsBar();
-            
-            const grid = document.getElementById("dashboardGrid");
             const filtered = dapatkanUnitTerfilter();
-            const btnClear = document.getElementById("btnClearFilter");
+            const tbody = document.getElementById("dashboardBody");
+            const empty = document.getElementById("emptyState");
             const filterInfo = document.getElementById("filterInfo");
-            const searchTerm = document.getElementById("dashboardSearch").value.trim();
 
-            // Tampilkan/sembunyikan tombol clear filter
-            if (filterStatus !== null || searchTerm !== "") {
-                btnClear.classList.remove("hidden");
-                let infoText = `Menampilkan ${filtered.length} dari ${daftarUnit.length} unit`;
-                if (searchTerm) infoText += ` · pencarian: "${searchTerm}"`;
-                if (filterStatus) infoText += ` · filter: ${filterStatus}`;
-                filterInfo.textContent = infoText;
-                filterInfo.classList.add("show");
+            if (cabangFilter !== "") {
+                filterInfo.textContent = `(${filtered.length} unit)`;
             } else {
-                btnClear.classList.add("hidden");
-                filterInfo.classList.remove("show");
+                filterInfo.textContent = `(Total: ${filtered.length} unit)`;
             }
 
             if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="dashboard-empty">
-                        <div class="empty-icon">🔍</div>
-                        <p>Tidak ada unit yang sesuai</p>
-                        <p style="font-size:12px;margin-top:5px;">Coba ubah kata kunci atau reset filter</p>
-                    </div>
-                `;
+                tbody.innerHTML = "";
+                empty.style.display = "block";
                 return;
             }
+            empty.style.display = "none";
 
             let html = "";
             for (let unit of filtered) {
-                const statusNow = getStatusSekarang(unit);
-                const maxStatus = getMaxStatus(unit);
-                const totalTahap = maxStatus;
-
-                // Progress mini dots
-                let dotsHtml = "";
-                for (let s = 0; s < totalTahap; s++) {
-                    if (s > 0) {
-                        let lineClass = "";
-                        if (s <= unit.status - 1) {
-                            lineClass = (unit.perluReconditioning && s === 2) ? "recon-selesai" : "selesai";
-                        }
-                        dotsHtml += `<div class="line-mini ${lineClass}"></div>`;
-                    }
+                const st = statusList[unit.status - 1];
+                // Progress mini 4 dot
+                let dots = "";
+                for (let i = 0; i < 4; i++) {
+                    if (i > 0) dots += `<div class="line-mini ${i <= unit.status - 1 ? 'selesai' : ''}"></div>`;
                     let dotClass = "";
-                    if (s + 1 < unit.status) {
-                        dotClass = (unit.perluReconditioning && s === 2) ? "recon-selesai" : "selesai";
-                    } else if (s + 1 === unit.status) {
-                        dotClass = (unit.perluReconditioning && s === 2) ? "recon-aktif" : "aktif";
-                    }
-                    dotsHtml += `<div class="dot-mini ${dotClass}"></div>`;
+                    if (i + 1 < unit.status) dotClass = "selesai";
+                    else if (i + 1 === unit.status) dotClass = "aktif";
+                    dots += `<div class="dot-mini ${dotClass}"></div>`;
                 }
-
                 let infoTanggal = "";
-                if (unit.status === 1) infoTanggal = `DR: ${unit.tanggal.drCreated}`;
-                else if (unit.status === 2) infoTanggal = `Persiapan: ${unit.tanggal.unitPreparation}`;
-                else if (unit.status === 3 && unit.perluReconditioning) infoTanggal = `Recon: ${unit.tanggal.qualityReconditioning}`;
-                else if (unit.status === 3 && !unit.perluReconditioning) infoTanggal = `Tiba: ${unit.tanggal.estimasiTiba}`;
-                else if (unit.status === 4 && unit.perluReconditioning) infoTanggal = `Tiba: ${unit.tanggal.estimasiTiba}`;
-                else if (unit.status === 4 && !unit.perluReconditioning) infoTanggal = `Selesai: ${unit.tanggal.delivered}`;
-                else if (unit.status === 5) infoTanggal = `Selesai: ${unit.tanggal.delivered}`;
+                if (unit.status === 1) infoTanggal = unit.tanggal.drCreated;
+                else if (unit.status === 2) {
+                    if (unit.perluReconditioning && unit.tanggal.qrMulai) infoTanggal = "QR: " + unit.tanggal.qrMulai;
+                    else infoTanggal = unit.tanggal.unitPreparation;
+                } else if (unit.status === 3) infoTanggal = "Tiba: " + (unit.tanggal.estimasiTiba || "-");
+                else if (unit.status === 4) infoTanggal = "Selesai: " + unit.tanggal.delivered;
 
-                const reconBadge = unit.perluReconditioning ? '<div class="card-recon-badge">✨ Quality Reconditioning</div>' : '';
+                let statusTambahan = "";
+                if (unit.status === 2 && unit.perluReconditioning) statusTambahan = " (QR)";
 
                 html += `
-                    <div class="dashboard-card" onclick="lihatDariDashboard('${unit.rangka}')">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-rangka">🚗 ${unit.rangka}</div>
-                                <div class="card-tujuan">📍 ${unit.tujuan}</div>
-                            </div>
-                            <span class="status-badge ${statusNow.badgeClass}">${statusNow.ikon} ${statusNow.nama}</span>
-                        </div>
-                        <div class="progress-mini">${dotsHtml}</div>
-                        ${reconBadge}
-                        <div class="card-tanggal">${infoTanggal}</div>
-                    </div>
+                    <tr onclick="lihatDariDashboard('${unit.rangka}')">
+                        <td class="td-rangka">🚗 ${unit.rangka}</td>
+                        <td>📍 ${unit.tujuan}</td>
+                        <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}${statusTambahan}</span></td>
+                        <td><div class="progress-mini">${dots}</div></td>
+                        <td style="font-size:12px;color:#757575;">${infoTanggal}</td>
+                    </tr>
                 `;
             }
-
-            grid.innerHTML = html;
+            tbody.innerHTML = html;
         }
 
         function lihatDariDashboard(rangka) {
@@ -1018,26 +823,33 @@
         }
 
         // =============================================
-        // TOGGLE QUALITY RECONDITIONING
+        // TOGGLE QR (sub-proses Unit Preparation)
         // =============================================
-        function toggleReconditioning() {
-            if (!adminMode || !unitAktif) return;
-            unitAktif.perluReconditioning = !unitAktif.perluReconditioning;
-            const maxStatus = getMaxStatus(unitAktif);
-            if (unitAktif.status > maxStatus) unitAktif.status = maxStatus;
-            if (unitAktif.perluReconditioning && !unitAktif.tanggal.qualityReconditioning) {
-                const sekarang = new Date();
-                const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
-                unitAktif.tanggal.qualityReconditioning = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
+        function toggleQR() {
+            if (!adminMode || !unitAktif || unitAktif.status !== 2) return;
+            const sekarang = new Date();
+            const jamStr = sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
+            const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+            const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear() + ", " + jamStr;
+
+            if (unitAktif.perluReconditioning) {
+                // Selesaikan QR
+                unitAktif.perluReconditioning = false;
+                unitAktif.tanggal.qrSelesai = tglStr;
+                tampilkanNotif("✅ Quality Reconditioning selesai. Unit kembali ke persiapan normal.");
+            } else {
+                // Mulai QR
+                unitAktif.perluReconditioning = true;
+                unitAktif.tanggal.qrMulai = tglStr;
+                tampilkanNotif("✨ Quality Reconditioning dimulai.");
             }
             updatePanelAdmin();
             tampilkanProgress(unitAktif);
             renderDashboard();
-            tampilkanNotif(unitAktif.perluReconditioning ? "✨ Quality Reconditioning ON (5 tahap)" : "📋 Quality Reconditioning OFF (4 tahap)");
         }
 
         // =============================================
-        // TOGGLE ADMIN MODE
+        // ADMIN MODE
         // =============================================
         function toggleAdmin() { if (adminMode) logoutAdmin(); else tampilkanPopupLogin(); }
         function tampilkanPopupLogin() {
@@ -1048,8 +860,7 @@
         }
         function batalLogin() { document.getElementById("overlayLogin").classList.remove("show"); }
         function verifikasiPIN() {
-            const input = document.getElementById("inputPIN").value.trim();
-            if (input === ADMIN_PIN) {
+            if (document.getElementById("inputPIN").value.trim() === ADMIN_PIN) {
                 document.getElementById("overlayLogin").classList.remove("show");
                 adminMode = true;
                 localStorage.setItem("trackora_admin_sesi", Date.now());
@@ -1087,31 +898,37 @@
         function updatePanelAdmin() {
             const btnMaju = document.getElementById("btnMaju");
             const btnReset = document.getElementById("btnReset");
-            const btnRecon = document.getElementById("btnRecon");
+            const btnQR = document.getElementById("btnQR");
             const unitTerpilih = document.getElementById("unitTerpilih");
-            const maxStatus = unitAktif ? getMaxStatus(unitAktif) : 4;
+
             if (!unitAktif) {
                 unitTerpilih.innerHTML = "🔍 Silakan cari unit terlebih dahulu";
-                btnMaju.disabled = true; btnReset.disabled = true; btnRecon.disabled = true;
-                btnRecon.textContent = "✨ Quality Reconditioning: OFF";
-                btnRecon.classList.remove("active-recon");
+                btnMaju.disabled = true; btnReset.disabled = true; btnQR.disabled = true;
+                btnQR.textContent = "✨ QR: ...";
+                btnQR.classList.remove("selesai-qr");
                 return;
             }
-            const statusNow = getStatusSekarang(unitAktif);
-            unitTerpilih.innerHTML = `
-                📋 <span>${unitAktif.rangka}</span> — ${unitAktif.tujuan}<br>
-                Status: <strong>${statusNow.ikon} ${statusNow.nama}</strong> (${unitAktif.status}/${maxStatus})
-                ${unitAktif.perluReconditioning ? ' <span style="color:#e65100;">[✨]</span>' : ''}
-            `;
-            btnMaju.disabled = (unitAktif.status >= maxStatus);
+
+            const st = statusList[unitAktif.status - 1];
+            unitTerpilih.innerHTML = `📋 <span>${unitAktif.rangka}</span> — ${unitAktif.tujuan}<br>Status: <strong>${st.ikon} ${st.nama}</strong> (Tahap ${unitAktif.status}/4)`;
+
+            btnMaju.disabled = (unitAktif.status >= 4);
             btnReset.disabled = (unitAktif.status <= 1);
-            btnRecon.disabled = false;
-            if (unitAktif.perluReconditioning) {
-                btnRecon.textContent = "✨ Quality Reconditioning: ON";
-                btnRecon.classList.add("active-recon");
+
+            // Tombol QR hanya muncul jika status == 2 (Unit Preparation)
+            if (unitAktif.status === 2) {
+                btnQR.disabled = false;
+                if (unitAktif.perluReconditioning) {
+                    btnQR.textContent = "✅ Selesaikan QR";
+                    btnQR.classList.add("selesai-qr");
+                } else {
+                    btnQR.textContent = "✨ Mulai QR";
+                    btnQR.classList.remove("selesai-qr");
+                }
             } else {
-                btnRecon.textContent = "✨ Quality Reconditioning: OFF";
-                btnRecon.classList.remove("active-recon");
+                btnQR.disabled = true;
+                btnQR.textContent = "✨ QR (hanya saat Preparation)";
+                btnQR.classList.remove("selesai-qr");
             }
         }
 
@@ -1119,44 +936,46 @@
         // MAJU / RESET STATUS
         // =============================================
         function majuStatus() {
-            if (!adminMode) { tampilkanNotif("⚠️ Login Admin dulu."); return; }
-            const maxStatus = getMaxStatus(unitAktif);
-            if (!unitAktif || unitAktif.status >= maxStatus) return;
+            if (!adminMode || !unitAktif || unitAktif.status >= 4) return;
             const sekarang = new Date();
+            const jamStr = sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
             const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
-            const tanggalStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
+            const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear() + ", " + jamStr;
+
             unitAktif.status++;
-            if (unitAktif.perluReconditioning) {
-                if (unitAktif.status === 3) unitAktif.tanggal.qualityReconditioning = tanggalStr;
-                else if (unitAktif.status === 4) { unitAktif.tanggal.inTransit = tanggalStr; unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari"; }
-                else if (unitAktif.status === 5) unitAktif.tanggal.delivered = tanggalStr;
-            } else {
-                if (unitAktif.status === 2) unitAktif.tanggal.unitPreparation = tanggalStr;
-                else if (unitAktif.status === 3) { unitAktif.tanggal.inTransit = tanggalStr; unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari"; }
-                else if (unitAktif.status === 4) unitAktif.tanggal.delivered = tanggalStr;
-            }
+            if (unitAktif.status === 2) unitAktif.tanggal.unitPreparation = tglStr;
+            else if (unitAktif.status === 3) {
+                unitAktif.tanggal.inTransit = tglStr;
+                unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari";
+            } else if (unitAktif.status === 4) unitAktif.tanggal.delivered = tglStr;
+
+            // Matikan QR jika maju dari Preparation
+            if (unitAktif.status === 3) unitAktif.perluReconditioning = false;
+
             tampilkanProgress(unitAktif);
             updatePanelAdmin();
             renderDashboard();
-            tampilkanNotif("✅ Status dimajukan ke: " + getStatusSekarang(unitAktif).nama);
+            tampilkanNotif("✅ Status dimajukan ke: " + statusList[unitAktif.status - 1].nama);
         }
+
         function resetStatus() {
-            if (!adminMode) { tampilkanNotif("⚠️ Login Admin dulu."); return; }
-            if (!unitAktif || unitAktif.status <= 1) return;
+            if (!adminMode || !unitAktif || unitAktif.status <= 1) return;
             unitAktif.status = 1;
             const sekarang = new Date();
+            const jamStr = sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
             const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
-            unitAktif.tanggal.drCreated = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
+            unitAktif.tanggal.drCreated = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear() + ", " + jamStr;
             delete unitAktif.tanggal.unitPreparation;
             delete unitAktif.tanggal.inTransit;
             delete unitAktif.tanggal.estimasiTiba;
             delete unitAktif.tanggal.delivered;
-            delete unitAktif.tanggal.qualityReconditioning;
+            unitAktif.perluReconditioning = false;
             tampilkanProgress(unitAktif);
             updatePanelAdmin();
             renderDashboard();
             tampilkanNotif("🔄 Status di-reset ke DR Created");
         }
+
         function tampilkanNotif(pesan) {
             const notif = document.getElementById("notifSukses");
             notif.textContent = pesan;
@@ -1165,12 +984,14 @@
         }
 
         // =============================================
-        // CEK STATUS
+        // CEK STATUS (dengan RVDC banner)
         // =============================================
         function cekStatus() {
             const input = document.getElementById("inputRangka").value.trim();
             document.getElementById("errorMsg").classList.remove("show");
             document.getElementById("infoUnit").classList.remove("show");
+            document.getElementById("rvdcBanner").classList.remove("show");
+
             if (input === "") {
                 document.getElementById("errorMsg").textContent = "⚠️ Silakan masukkan No. Rangka.";
                 document.getElementById("errorMsg").classList.add("show");
@@ -1182,46 +1003,64 @@
                 document.getElementById("errorMsg").classList.add("show");
                 unitAktif = null; updatePanelAdmin(); return;
             }
+
             unitAktif = unitDitemukan;
-            tampilkanDetailUnit(unitDitemukan);
-            tampilkanProgress(unitDitemukan);
+
+            // RVDC Banner
+            if (unitAktif.sedangKeRVDC) {
+                document.getElementById("rvdcBanner").classList.add("show");
+                // Progress bar tetap ditampilkan, tapi mungkin statusnya masih DR Created? Terserah data.
+            }
+
+            tampilkanDetailUnit(unitAktif);
+            tampilkanProgress(unitAktif);
             document.getElementById("infoUnit").classList.add("show");
             updatePanelAdmin();
         }
+
         function tampilkanDetailUnit(unit) {
-            document.getElementById("detailUnit").innerHTML = `
+            let estimasi = unit.tanggal.estimasiTiba || "Belum tersedia";
+            let html = `
                 <p><span class="label">No. Rangka</span> <span class="nilai-rangka">${unit.rangka}</span></p>
                 <p><span class="label">Tujuan</span> <span class="nilai">${unit.tujuan}</span></p>
-                ${unit.perluReconditioning ? '<p style="color:#e65100;font-size:13px;">✨ Unit ini memerlukan Quality Reconditioning</p>' : ''}
+                <p><span class="label">Estimasi Tiba</span> <span class="estimasi-besar">📅 ${estimasi}</span></p>
             `;
+            if (unit.perluReconditioning && unit.status === 2) {
+                html += `<p style="color:#e65100;font-size:13px;">✨ Sedang Quality Reconditioning</p>`;
+            }
+            document.getElementById("detailUnit").innerHTML = html;
         }
+
         function tampilkanProgress(unit) {
-            const statusList = getStatusList(unit);
             let html = "";
             for (let i = 0; i < statusList.length; i++) {
                 let kelasStep = "", kelasIndikator = "", isiIndikator = "", kelasTeks = "", detailTeks = "";
-                const isReconStep = unit.perluReconditioning && i === 2;
                 if (i + 1 < unit.status) {
-                    kelasStep = isReconStep ? "recon-selesai" : "selesai";
-                    kelasIndikator = isReconStep ? "indikator-recon" : "indikator-selesai";
+                    kelasStep = "selesai";
+                    kelasIndikator = "indikator-selesai";
                     isiIndikator = "✓";
-                    kelasTeks = isReconStep ? "teks-recon" : "teks-selesai";
+                    kelasTeks = "teks-selesai";
                 } else if (i + 1 === unit.status) {
-                    kelasStep = isReconStep ? "recon-selesai" : "aktif";
-                    kelasIndikator = isReconStep ? "indikator-recon" : "indikator-aktif";
+                    kelasStep = "aktif";
+                    kelasIndikator = "indikator-aktif";
                     isiIndikator = "●";
-                    kelasTeks = isReconStep ? "teks-recon" : "teks-aktif";
+                    kelasTeks = "teks-aktif";
                 } else {
                     kelasIndikator = "indikator-menunggu";
                     isiIndikator = "○";
                     kelasTeks = "teks-menunggu";
                 }
                 detailTeks = dapatkanDetailStatus(unit, i);
+                // Sub-label QR di Unit Preparation
+                let namaStatus = statusList[i].ikon + " " + statusList[i].nama;
+                if (i === 1 && unit.status === 2 && unit.perluReconditioning) {
+                    namaStatus += " (Quality Reconditioning)";
+                }
                 html += `
                     <div class="step ${kelasStep}">
                         <div class="indikator ${kelasIndikator}">${isiIndikator}</div>
                         <div class="teks-status ${kelasTeks}">
-                            <p class="nama-status">${statusList[i].ikon} ${statusList[i].nama}</p>
+                            <p class="nama-status">${namaStatus}</p>
                             <p class="detail-status">${detailTeks}</p>
                         </div>
                     </div>
@@ -1229,26 +1068,25 @@
             }
             document.getElementById("progressContainer").innerHTML = html;
         }
+
         function dapatkanDetailStatus(unit, index) {
             const t = unit.tanggal;
-            const isRecon = unit.perluReconditioning;
-            if (isRecon) {
-                switch(index) {
-                    case 0: return `Delivery Request dibuat — ${t.drCreated}`;
-                    case 1: return unit.status > 2 ? `Persiapan selesai — ${t.unitPreparation}` : unit.status === 2 ? `Sedang dipersiapkan — ${t.unitPreparation}` : `Menunggu persiapan`;
-                    case 2: return unit.status > 3 ? `Quality Reconditioning selesai — ${t.qualityReconditioning}` : unit.status === 3 ? `Quality Reconditioning berlangsung — ${t.qualityReconditioning}` : `Menunggu Quality Reconditioning`;
-                    case 3: return unit.status > 4 ? `Unit telah tiba — ${t.delivered}` : unit.status === 4 ? `Dalam perjalanan — Estimasi tiba ${t.estimasiTiba}` : `Menunggu pengiriman`;
-                    case 4: return unit.status === 5 ? `Unit tiba di cabang — ${t.delivered}` : `Menunggu konfirmasi`;
-                    default: return "";
-                }
-            } else {
-                switch(index) {
-                    case 0: return `Delivery Request dibuat — ${t.drCreated}`;
-                    case 1: return unit.status > 2 ? `Persiapan selesai — ${t.unitPreparation}` : unit.status === 2 ? `Sedang dipersiapkan — ${t.unitPreparation}` : `Menunggu persiapan`;
-                    case 2: return unit.status > 3 ? `Unit telah tiba — ${t.delivered}` : unit.status === 3 ? `Dalam perjalanan — Estimasi tiba ${t.estimasiTiba}` : `Menunggu pengiriman`;
-                    case 3: return unit.status === 4 ? `Unit tiba di cabang — ${t.delivered}` : `Menunggu konfirmasi`;
-                    default: return "";
-                }
+            switch(index) {
+                case 0: return `Delivery Request dibuat — ${t.drCreated || "-"}`;
+                case 1:
+                    if (unit.status > 2) return `Persiapan selesai — ${t.unitPreparation || "-"}`;
+                    else if (unit.status === 2) {
+                        if (unit.perluReconditioning && t.qrMulai) return `QR berlangsung sejak ${t.qrMulai}`;
+                        else return `Sedang dipersiapkan — ${t.unitPreparation || "-"}`;
+                    } else return `Menunggu persiapan`;
+                case 2:
+                    if (unit.status > 3) return `Unit telah tiba — ${t.delivered}`;
+                    else if (unit.status === 3) return `Dalam perjalanan — ${t.inTransit || "-"}. Estimasi tiba ${t.estimasiTiba || "-"}`;
+                    else return `Menunggu pengiriman`;
+                case 3:
+                    if (unit.status === 4) return `Unit tiba di cabang — ${t.delivered}`;
+                    else return `Menunggu konfirmasi`;
+                default: return "";
             }
         }
 
@@ -1261,7 +1099,7 @@
         document.addEventListener("keydown", e => { if (e.key === "Escape") batalLogin(); });
 
         init();
-        console.log("🚗 TrackORA Web siap! | Unit: " + daftarUnit.length + " | Stats + Filter Dashboard aktif");
+        console.log("🚗 TrackORA Web siap! | Unit: " + daftarUnit.length + " | List dashboard & filter cabang");
     </script>
 </body>
 </html>
