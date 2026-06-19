@@ -29,6 +29,7 @@
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             margin-top: 20px;
+            position: relative;
         }
 
         .header {
@@ -57,7 +58,30 @@
             margin: 20px 0;
         }
 
-        /* === INPUT SEARCH === */
+        /* === TOMBOL ADMIN TOGGLE === */
+        .admin-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #757575;
+            transition: all 0.3s;
+        }
+        .admin-toggle:hover {
+            background-color: #eeeeee;
+        }
+        .admin-toggle.active {
+            background-color: #ff9800;
+            color: white;
+            border-color: #ff9800;
+        }
+
+        /* === SEARCH BOX === */
         .search-box {
             display: flex;
             gap: 10px;
@@ -114,6 +138,97 @@
         }
         .error-msg.show {
             display: block;
+        }
+
+        /* === NOTIFIKASI SUKSES === */
+        .notif-sukses {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 14px;
+            animation: fadeIn 0.3s;
+        }
+        .notif-sukses.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === PANEL ADMIN === */
+        .panel-admin {
+            background-color: #fff8e1;
+            border: 2px dashed #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .panel-admin.show {
+            display: block;
+        }
+        .panel-admin h3 {
+            color: #e65100;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        .panel-admin .admin-subtitle {
+            font-size: 12px;
+            color: #bf360c;
+            margin-bottom: 15px;
+        }
+        .panel-admin .unit-terpilih {
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            color: #424242;
+        }
+        .panel-admin .unit-terpilih span {
+            font-weight: 600;
+            color: #1565c0;
+        }
+        .btn-admin {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        .btn-maju {
+            background-color: #ff9800;
+            color: white;
+        }
+        .btn-maju:hover {
+            background-color: #f57c00;
+        }
+        .btn-reset {
+            background-color: #f5f5f5;
+            color: #757575;
+        }
+        .btn-reset:hover {
+            background-color: #e0e0e0;
+        }
+        .btn-maju:disabled, .btn-reset:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* === LOCK ICON === */
+        .admin-lock {
+            display: inline-block;
+            margin-right: 4px;
         }
 
         /* === INFO UNIT === */
@@ -215,7 +330,6 @@
         .teks-aktif .nama-status { color: #1565c0; }
         .teks-menunggu .nama-status { color: #bdbdbd; }
 
-        /* === GARIS PENGHUBUNG === */
         .step:not(:last-child)::after {
             content: '';
             position: absolute;
@@ -242,7 +356,7 @@
             color: #9e9e9e;
         }
 
-        /* === RESPONSIVE UNTUK HP === */
+        /* === RESPONSIVE === */
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -285,6 +399,19 @@
             .detail-status {
                 font-size: 11px;
             }
+            .admin-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+            .panel-admin {
+                padding: 15px;
+            }
+            .btn-admin {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -292,6 +419,11 @@
 
     <div class="kartu">
         
+        <!-- TOMBOL ADMIN TOGGLE -->
+        <button class="admin-toggle" id="btnAdminToggle" onclick="toggleAdmin()">
+            <span class="admin-lock">🔒</span> Admin Mode
+        </button>
+
         <!-- HEADER -->
         <div class="header">
             <span class="logo-icon">🚗</span>
@@ -310,12 +442,30 @@
             Contoh: <code>MHFAB1CJ2N1234567</code> · <code>MHFAB1CJ2N7654321</code> · <code>MHFAB1CJ2N9999999</code>
         </p>
 
+        <!-- NOTIFIKASI SUKSES -->
+        <div class="notif-sukses" id="notifSukses"></div>
+
         <!-- ERROR MESSAGE -->
         <div class="error-msg" id="errorMsg">
             ⚠️ No. Rangka tidak ditemukan. Silakan periksa kembali.
         </div>
 
-        <!-- INFORMASI UNIT (awalnya tersembunyi) -->
+        <!-- PANEL ADMIN (tersembunyi default) -->
+        <div class="panel-admin" id="panelAdmin">
+            <h3>🛠️ Panel Admin</h3>
+            <p class="admin-subtitle">Ubah status unit yang sedang ditampilkan</p>
+            <div class="unit-terpilih" id="unitTerpilih">
+                🔍 Silakan cari unit terlebih dahulu
+            </div>
+            <button class="btn-admin btn-maju" id="btnMaju" onclick="majuStatus()" disabled>
+                ⏭ Maju ke Tahap Berikutnya
+            </button>
+            <button class="btn-admin btn-reset" id="btnReset" onclick="resetStatus()" disabled>
+                🔄 Reset ke DR Created
+            </button>
+        </div>
+
+        <!-- INFORMASI UNIT -->
         <div class="info-unit" id="infoUnit">
             
             <div id="detailUnit"></div>
@@ -324,7 +474,6 @@
 
             <p class="progress-title">📋 Progress Pengiriman</p>
             <div class="progress-container" id="progressContainer">
-                <!-- Akan diisi oleh JavaScript -->
             </div>
 
             <div class="footer-note">
@@ -338,15 +487,8 @@
     <!-- ==================== JAVASCRIPT ==================== -->
     <script>
         // =============================================
-        // DATA DUMMY — Simulasi database unit
+        // DATA DUMMY
         // =============================================
-        // Setiap unit adalah OBJECT dengan properti:
-        //   rangka  : No. Rangka (unik)
-        //   tujuan  : Cabang tujuan
-        //   status  : 1=DR Created, 2=Unit Preparation, 3=In Transit, 4=Delivered
-        //   tanggal : Tanggal-tanggal tiap tahap
-        // =============================================
-
         const daftarUnit = [
             {
                 rangka: "MHFAB1CJ2N1234567",
@@ -362,7 +504,7 @@
             {
                 rangka: "MHFAB1CJ2N7654321",
                 tujuan: "Cabang Bandung",
-                status: 2, // Unit Preparation (sedang aktif)
+                status: 2, // Unit Preparation
                 tanggal: {
                     drCreated: "16 Mar 2026",
                     unitPreparation: "18 Mar 2026",
@@ -372,7 +514,7 @@
             {
                 rangka: "MHFAB1CJ2N9999999",
                 tujuan: "Cabang Surabaya",
-                status: 4, // Delivered (selesai semua)
+                status: 4, // Delivered
                 tanggal: {
                     drCreated: "10 Mar 2026",
                     unitPreparation: "12 Mar 2026",
@@ -382,9 +524,6 @@
             }
         ];
 
-        // =============================================
-        // DAFTAR STATUS — Nama dan deskripsi tiap tahap
-        // =============================================
         const statusList = [
             { nama: "DR Created",      ikon: "📝" },
             { nama: "Unit Preparation",ikon: "🔧" },
@@ -393,43 +532,166 @@
         ];
 
         // =============================================
-        // FUNGSI UTAMA: Mencari unit dan menampilkannya
+        // STATE: Admin mode & unit yang sedang aktif
+        // =============================================
+        let adminMode = false;
+        let unitAktif = null; // unit yang sedang ditampilkan
+
+        // =============================================
+        // TOGGLE ADMIN MODE
+        // =============================================
+        function toggleAdmin() {
+            adminMode = !adminMode;
+            const btn = document.getElementById("btnAdminToggle");
+            const panel = document.getElementById("panelAdmin");
+            
+            if (adminMode) {
+                btn.classList.add("active");
+                btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
+                panel.classList.add("show");
+                
+                // Update panel jika ada unit aktif
+                if (unitAktif) {
+                    updatePanelAdmin();
+                }
+            } else {
+                btn.classList.remove("active");
+                btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
+                panel.classList.remove("show");
+            }
+        }
+
+        // =============================================
+        // UPDATE PANEL ADMIN
+        // =============================================
+        function updatePanelAdmin() {
+            const btnMaju = document.getElementById("btnMaju");
+            const btnReset = document.getElementById("btnReset");
+            const unitTerpilih = document.getElementById("unitTerpilih");
+            
+            if (!unitAktif) {
+                unitTerpilih.innerHTML = "🔍 Silakan cari unit terlebih dahulu";
+                btnMaju.disabled = true;
+                btnReset.disabled = true;
+                return;
+            }
+            
+            unitTerpilih.innerHTML = `
+                📋 <span>${unitAktif.rangka}</span> — ${unitAktif.tujuan}<br>
+                Status saat ini: <strong>${statusList[unitAktif.status - 1].ikon} ${statusList[unitAktif.status - 1].nama}</strong> (Tahap ${unitAktif.status}/4)
+            `;
+            
+            // Tombol "Maju" disabled kalau sudah delivered
+            btnMaju.disabled = (unitAktif.status >= 4);
+            btnReset.disabled = (unitAktif.status <= 1);
+        }
+
+        // =============================================
+        // FUNGSI: Majukan status 1 langkah
+        // =============================================
+        function majuStatus() {
+            if (!unitAktif || unitAktif.status >= 4) return;
+            
+            const sekarang = new Date();
+            const tanggalStr = sekarang.getDate() + " " + 
+                               ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"][sekarang.getMonth()] + 
+                               " " + sekarang.getFullYear();
+            
+            unitAktif.status++;
+            
+            // Update tanggal sesuai status baru
+            if (unitAktif.status === 2) {
+                unitAktif.tanggal.unitPreparation = tanggalStr;
+            } else if (unitAktif.status === 3) {
+                unitAktif.tanggal.inTransit = tanggalStr;
+                unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari";
+            } else if (unitAktif.status === 4) {
+                unitAktif.tanggal.delivered = tanggalStr;
+            }
+            
+            // Render ulang
+            tampilkanProgress(unitAktif);
+            updatePanelAdmin();
+            tampilkanNotif("✅ Status berhasil dimajukan ke: " + statusList[unitAktif.status - 1].nama);
+        }
+
+        // =============================================
+        // FUNGSI: Reset ke DR Created
+        // =============================================
+        function resetStatus() {
+            if (!unitAktif || unitAktif.status <= 1) return;
+            
+            unitAktif.status = 1;
+            
+            // Reset tanggal
+            const sekarang = new Date();
+            const tanggalStr = sekarang.getDate() + " " + 
+                               ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"][sekarang.getMonth()] + 
+                               " " + sekarang.getFullYear();
+            unitAktif.tanggal.drCreated = tanggalStr;
+            delete unitAktif.tanggal.unitPreparation;
+            delete unitAktif.tanggal.inTransit;
+            delete unitAktif.tanggal.estimasiTiba;
+            delete unitAktif.tanggal.delivered;
+            
+            // Render ulang
+            tampilkanProgress(unitAktif);
+            updatePanelAdmin();
+            tampilkanNotif("🔄 Status di-reset ke DR Created");
+        }
+
+        // =============================================
+        // NOTIFIKASI
+        // =============================================
+        function tampilkanNotif(pesan) {
+            const notif = document.getElementById("notifSukses");
+            notif.textContent = pesan;
+            notif.classList.add("show");
+            
+            // Hilangkan otomatis setelah 3 detik
+            setTimeout(function() {
+                notif.classList.remove("show");
+            }, 3000);
+        }
+
+        // =============================================
+        // FUNGSI UTAMA: Cek Status
         // =============================================
         function cekStatus() {
-            // 1. Ambil input dari user
             const input = document.getElementById("inputRangka").value.trim();
             
-            // 2. Sembunyikan dulu error & info lama
             document.getElementById("errorMsg").classList.remove("show");
             document.getElementById("infoUnit").classList.remove("show");
             
-            // 3. Validasi: input tidak boleh kosong
             if (input === "") {
                 document.getElementById("errorMsg").textContent = "⚠️ Silakan masukkan No. Rangka terlebih dahulu.";
                 document.getElementById("errorMsg").classList.add("show");
-                return; // berhenti di sini
+                unitAktif = null;
+                updatePanelAdmin();
+                return;
             }
             
-            // 4. Cari unit di daftarUnit berdasarkan No. Rangka
             const unitDitemukan = daftarUnit.find(function(unit) {
                 return unit.rangka.toLowerCase() === input.toLowerCase();
             });
             
-            // 5. Kalau tidak ditemukan, tampilkan error
             if (!unitDitemukan) {
                 document.getElementById("errorMsg").textContent = "⚠️ No. Rangka tidak ditemukan. Silakan periksa kembali.";
                 document.getElementById("errorMsg").classList.add("show");
+                unitAktif = null;
+                updatePanelAdmin();
                 return;
             }
             
-            // 6. Kalau ditemukan, tampilkan detail unit
+            unitAktif = unitDitemukan;
             tampilkanDetailUnit(unitDitemukan);
             tampilkanProgress(unitDitemukan);
             document.getElementById("infoUnit").classList.add("show");
+            updatePanelAdmin();
         }
 
         // =============================================
-        // FUNGSI: Menampilkan detail unit (No. Rangka, Tujuan)
+        // TAMPILKAN DETAIL UNIT
         // =============================================
         function tampilkanDetailUnit(unit) {
             document.getElementById("detailUnit").innerHTML = `
@@ -439,12 +701,11 @@
         }
 
         // =============================================
-        // FUNGSI: Menampilkan progress bar sesuai status unit
+        // TAMPILKAN PROGRESS BAR
         // =============================================
         function tampilkanProgress(unit) {
             let html = "";
             
-            // Loop melalui 4 tahap status
             for (let i = 0; i < statusList.length; i++) {
                 let kelasStep = "";
                 let kelasIndikator = "";
@@ -452,23 +713,19 @@
                 let kelasTeks = "";
                 let detailTeks = "";
                 
-                // Tentukan kondisi tiap step dibanding status unit
                 if (i + 1 < unit.status) {
-                    // SUDAH LEWAT → selesai
                     kelasStep = "selesai";
                     kelasIndikator = "indikator-selesai";
                     isiIndikator = "✓";
                     kelasTeks = "teks-selesai";
                     detailTeks = dapatkanDetailStatus(unit, i);
                 } else if (i + 1 === unit.status) {
-                    // SEDANG DI SINI → aktif
                     kelasStep = "aktif";
                     kelasIndikator = "indikator-aktif";
                     isiIndikator = "●";
                     kelasTeks = "teks-aktif";
                     detailTeks = dapatkanDetailStatus(unit, i);
                 } else {
-                    // BELUM SAMPAI → menunggu
                     kelasStep = "";
                     kelasIndikator = "indikator-menunggu";
                     isiIndikator = "○";
@@ -476,7 +733,6 @@
                     detailTeks = dapatkanDetailStatus(unit, i);
                 }
                 
-                // Rakit HTML untuk satu step
                 html += `
                     <div class="step ${kelasStep}">
                         <div class="indikator ${kelasIndikator}">${isiIndikator}</div>
@@ -492,15 +748,15 @@
         }
 
         // =============================================
-        // FUNGSI PEMBANTU: Mengambil teks detail tiap tahap
+        // DETAIL TIAP TAHAP
         // =============================================
         function dapatkanDetailStatus(unit, index) {
             const t = unit.tanggal;
             
             switch(index) {
-                case 0: // DR Created
+                case 0:
                     return `Delivery Request dibuat — ${t.drCreated}`;
-                case 1: // Unit Preparation
+                case 1:
                     if (unit.status > 2) {
                         return `Persiapan unit selesai — ${t.unitPreparation}`;
                     } else if (unit.status === 2) {
@@ -508,7 +764,7 @@
                     } else {
                         return `Menunggu persiapan unit`;
                     }
-                case 2: // In Transit
+                case 2:
                     if (unit.status > 3) {
                         return `Unit telah tiba — ${t.delivered}`;
                     } else if (unit.status === 3) {
@@ -516,7 +772,7 @@
                     } else {
                         return `Menunggu pengiriman — Estimasi ${t.estimasiTiba || "belum tersedia"}`;
                     }
-                case 3: // Delivered
+                case 3:
                     if (unit.status === 4) {
                         return `Unit tiba di cabang — ${t.delivered}`;
                     } else {
@@ -528,7 +784,7 @@
         }
 
         // =============================================
-        // BONUS: User bisa tekan Enter di input box
+        // EVENT: Tekan Enter di input
         // =============================================
         document.getElementById("inputRangka").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
@@ -538,6 +794,7 @@
 
         console.log("🚗 TrackORA Web siap! JavaScript loaded.");
         console.log("📋 Total unit terdaftar: " + daftarUnit.length);
+        console.log("🛠️ Admin Mode: klik tombol Admin Mode di kanan atas kartu");
     </script>
 
 </body>
