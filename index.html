@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackORA Web - Lacak Pengiriman Unit</title>
     <style>
-        /* === RESET & DASAR === */
         * {
             margin: 0;
             padding: 0;
@@ -22,7 +21,6 @@
             align-items: flex-start;
         }
 
-        /* === KARTU UTAMA === */
         .kartu {
             width: 100%;
             max-width: 600px;
@@ -33,7 +31,6 @@
             margin-top: 20px;
         }
 
-        /* === HEADER === */
         .header {
             display: flex;
             align-items: center;
@@ -54,14 +51,78 @@
             margin-bottom: 25px;
         }
 
-        /* === GARIS PEMISAH === */
         hr {
             border: none;
             border-top: 1px solid #e0e0e0;
             margin: 20px 0;
         }
 
+        /* === INPUT SEARCH === */
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Courier New', monospace;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-box input:focus {
+            border-color: #1565c0;
+        }
+        .search-box button {
+            padding: 12px 20px;
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-box button:hover {
+            background-color: #0d47a1;
+        }
+        .search-hint {
+            font-size: 12px;
+            color: #9e9e9e;
+            margin-bottom: 20px;
+        }
+        .search-hint code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* === ERROR MESSAGE === */
+        .error-msg {
+            background-color: #fff3f3;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .error-msg.show {
+            display: block;
+        }
+
         /* === INFO UNIT === */
+        .info-unit {
+            display: none;
+        }
+        .info-unit.show {
+            display: block;
+        }
         .info-unit p {
             margin: 8px 0;
             color: #424242;
@@ -72,7 +133,7 @@
         .label {
             color: #9e9e9e;
             font-weight: normal;
-            min-width: 120px;
+            min-width: 100px;
         }
         .nilai {
             font-weight: 600;
@@ -105,7 +166,6 @@
             margin-bottom: 0;
         }
 
-        /* === INDIKATOR (LINGKARAN) === */
         .indikator {
             width: 36px;
             height: 36px;
@@ -138,7 +198,6 @@
             100% { box-shadow: 0 0 0 0 rgba(21, 101, 192, 0); }
         }
 
-        /* === TEKS STATUS === */
         .teks-status {
             flex: 1;
         }
@@ -173,7 +232,6 @@
             background-color: #e0e0e0;
         }
 
-        /* === FOOTER === */
         .footer-note {
             margin-top: 25px;
             padding: 12px;
@@ -197,8 +255,14 @@
             h1 {
                 font-size: 20px;
             }
+            .search-box {
+                flex-direction: column;
+            }
+            .search-box button {
+                width: 100%;
+            }
             .label {
-                min-width: 90px;
+                min-width: 80px;
                 font-size: 13px;
             }
             .nilai, .nilai-rangka {
@@ -237,81 +301,244 @@
         
         <hr>
 
-        <!-- INFORMASI UNIT -->
-        <div class="info-unit">
-            <p><span class="label">No. Rangka</span> <span class="nilai-rangka">MHFAB1CJ2N1234567</span></p>
-            <p><span class="label">Tujuan</span> <span class="nilai">Cabang Jakarta Pusat</span></p>
+        <!-- SEARCH BOX -->
+        <div class="search-box">
+            <input type="text" id="inputRangka" placeholder="Masukkan No. Rangka" maxlength="17">
+            <button onclick="cekStatus()">🔍 Cek Status</button>
+        </div>
+        <p class="search-hint">
+            Contoh: <code>MHFAB1CJ2N1234567</code> · <code>MHFAB1CJ2N7654321</code> · <code>MHFAB1CJ2N9999999</code>
+        </p>
+
+        <!-- ERROR MESSAGE -->
+        <div class="error-msg" id="errorMsg">
+            ⚠️ No. Rangka tidak ditemukan. Silakan periksa kembali.
         </div>
 
-        <hr>
-
-        <!-- PROGRESS PENGIRIMAN -->
-        <p class="progress-title">📋 Progress Pengiriman</p>
-        
-        <div class="progress-container">
-
-            <!-- Step 1: Selesai -->
-            <div class="step selesai">
-                <div class="indikator indikator-selesai">✓</div>
-                <div class="teks-status teks-selesai">
-                    <p class="nama-status">DR Created</p>
-                    <p class="detail-status">Delivery Request dibuat — 15 Mar 2026</p>
-                </div>
-            </div>
-
-            <!-- Step 2: Selesai -->
-            <div class="step selesai">
-                <div class="indikator indikator-selesai">✓</div>
-                <div class="teks-status teks-selesai">
-                    <p class="nama-status">Unit Preparation</p>
-                    <p class="detail-status">Persiapan unit selesai — 17 Mar 2026</p>
-                </div>
-            </div>
-
-            <!-- 
-            ============================================
-            STATUS OPSIONAL: Quality Reconditioning
-            Hanya muncul jika unit memerlukan proses ini.
-            Untuk mengaktifkan, hapus tanda komentar di bawah
-            dan sesuaikan tanggal step lainnya.
-            ============================================
+        <!-- INFORMASI UNIT (awalnya tersembunyi) -->
+        <div class="info-unit" id="infoUnit">
             
-            <div class="step selesai">
-                <div class="indikator indikator-selesai">✓</div>
-                <div class="teks-status teks-selesai">
-                    <p class="nama-status">Quality Reconditioning</p>
-                    <p class="detail-status">Penyempurnaan kualitas unit — 18 Mar 2026</p>
-                </div>
-            </div>
-            -->
+            <div id="detailUnit"></div>
 
-            <!-- Step 3: Sedang Aktif -->
-            <div class="step aktif">
-                <div class="indikator indikator-aktif">●</div>
-                <div class="teks-status teks-aktif">
-                    <p class="nama-status">In Transit</p>
-                    <p class="detail-status">Unit dalam perjalanan — Estimasi tiba 20 Mar 2026</p>
-                </div>
+            <hr>
+
+            <p class="progress-title">📋 Progress Pengiriman</p>
+            <div class="progress-container" id="progressContainer">
+                <!-- Akan diisi oleh JavaScript -->
             </div>
 
-            <!-- Step 4: Menunggu -->
-            <div class="step">
-                <div class="indikator indikator-menunggu">○</div>
-                <div class="teks-status teks-menunggu">
-                    <p class="nama-status">Delivered</p>
-                    <p class="detail-status">Unit tiba di cabang — Menunggu konfirmasi</p>
-                </div>
+            <div class="footer-note">
+                📌 Lacak status unit berdasarkan <strong>No. Rangka</strong><br>
+                Informasi diperbarui secara berkala
             </div>
-
-        </div>
-
-        <!-- CATATAN KAKI -->
-        <div class="footer-note">
-            📌 Lacak status unit berdasarkan <strong>No. Rangka</strong><br>
-            Informasi diperbarui secara berkala
         </div>
 
     </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // =============================================
+        // DATA DUMMY — Simulasi database unit
+        // =============================================
+        // Setiap unit adalah OBJECT dengan properti:
+        //   rangka  : No. Rangka (unik)
+        //   tujuan  : Cabang tujuan
+        //   status  : 1=DR Created, 2=Unit Preparation, 3=In Transit, 4=Delivered
+        //   tanggal : Tanggal-tanggal tiap tahap
+        // =============================================
+
+        const daftarUnit = [
+            {
+                rangka: "MHFAB1CJ2N1234567",
+                tujuan: "Cabang Jakarta Pusat",
+                status: 3, // In Transit
+                tanggal: {
+                    drCreated: "15 Mar 2026",
+                    unitPreparation: "17 Mar 2026",
+                    inTransit: "19 Mar 2026",
+                    estimasiTiba: "20 Mar 2026"
+                }
+            },
+            {
+                rangka: "MHFAB1CJ2N7654321",
+                tujuan: "Cabang Bandung",
+                status: 2, // Unit Preparation (sedang aktif)
+                tanggal: {
+                    drCreated: "16 Mar 2026",
+                    unitPreparation: "18 Mar 2026",
+                    estimasiTiba: "22 Mar 2026"
+                }
+            },
+            {
+                rangka: "MHFAB1CJ2N9999999",
+                tujuan: "Cabang Surabaya",
+                status: 4, // Delivered (selesai semua)
+                tanggal: {
+                    drCreated: "10 Mar 2026",
+                    unitPreparation: "12 Mar 2026",
+                    inTransit: "13 Mar 2026",
+                    delivered: "15 Mar 2026"
+                }
+            }
+        ];
+
+        // =============================================
+        // DAFTAR STATUS — Nama dan deskripsi tiap tahap
+        // =============================================
+        const statusList = [
+            { nama: "DR Created",      ikon: "📝" },
+            { nama: "Unit Preparation",ikon: "🔧" },
+            { nama: "In Transit",      ikon: "🚛" },
+            { nama: "Delivered",       ikon: "✅" }
+        ];
+
+        // =============================================
+        // FUNGSI UTAMA: Mencari unit dan menampilkannya
+        // =============================================
+        function cekStatus() {
+            // 1. Ambil input dari user
+            const input = document.getElementById("inputRangka").value.trim();
+            
+            // 2. Sembunyikan dulu error & info lama
+            document.getElementById("errorMsg").classList.remove("show");
+            document.getElementById("infoUnit").classList.remove("show");
+            
+            // 3. Validasi: input tidak boleh kosong
+            if (input === "") {
+                document.getElementById("errorMsg").textContent = "⚠️ Silakan masukkan No. Rangka terlebih dahulu.";
+                document.getElementById("errorMsg").classList.add("show");
+                return; // berhenti di sini
+            }
+            
+            // 4. Cari unit di daftarUnit berdasarkan No. Rangka
+            const unitDitemukan = daftarUnit.find(function(unit) {
+                return unit.rangka.toLowerCase() === input.toLowerCase();
+            });
+            
+            // 5. Kalau tidak ditemukan, tampilkan error
+            if (!unitDitemukan) {
+                document.getElementById("errorMsg").textContent = "⚠️ No. Rangka tidak ditemukan. Silakan periksa kembali.";
+                document.getElementById("errorMsg").classList.add("show");
+                return;
+            }
+            
+            // 6. Kalau ditemukan, tampilkan detail unit
+            tampilkanDetailUnit(unitDitemukan);
+            tampilkanProgress(unitDitemukan);
+            document.getElementById("infoUnit").classList.add("show");
+        }
+
+        // =============================================
+        // FUNGSI: Menampilkan detail unit (No. Rangka, Tujuan)
+        // =============================================
+        function tampilkanDetailUnit(unit) {
+            document.getElementById("detailUnit").innerHTML = `
+                <p><span class="label">No. Rangka</span> <span class="nilai-rangka">${unit.rangka}</span></p>
+                <p><span class="label">Tujuan</span> <span class="nilai">${unit.tujuan}</span></p>
+            `;
+        }
+
+        // =============================================
+        // FUNGSI: Menampilkan progress bar sesuai status unit
+        // =============================================
+        function tampilkanProgress(unit) {
+            let html = "";
+            
+            // Loop melalui 4 tahap status
+            for (let i = 0; i < statusList.length; i++) {
+                let kelasStep = "";
+                let kelasIndikator = "";
+                let isiIndikator = "";
+                let kelasTeks = "";
+                let detailTeks = "";
+                
+                // Tentukan kondisi tiap step dibanding status unit
+                if (i + 1 < unit.status) {
+                    // SUDAH LEWAT → selesai
+                    kelasStep = "selesai";
+                    kelasIndikator = "indikator-selesai";
+                    isiIndikator = "✓";
+                    kelasTeks = "teks-selesai";
+                    detailTeks = dapatkanDetailStatus(unit, i);
+                } else if (i + 1 === unit.status) {
+                    // SEDANG DI SINI → aktif
+                    kelasStep = "aktif";
+                    kelasIndikator = "indikator-aktif";
+                    isiIndikator = "●";
+                    kelasTeks = "teks-aktif";
+                    detailTeks = dapatkanDetailStatus(unit, i);
+                } else {
+                    // BELUM SAMPAI → menunggu
+                    kelasStep = "";
+                    kelasIndikator = "indikator-menunggu";
+                    isiIndikator = "○";
+                    kelasTeks = "teks-menunggu";
+                    detailTeks = dapatkanDetailStatus(unit, i);
+                }
+                
+                // Rakit HTML untuk satu step
+                html += `
+                    <div class="step ${kelasStep}">
+                        <div class="indikator ${kelasIndikator}">${isiIndikator}</div>
+                        <div class="teks-status ${kelasTeks}">
+                            <p class="nama-status">${statusList[i].ikon} ${statusList[i].nama}</p>
+                            <p class="detail-status">${detailTeks}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById("progressContainer").innerHTML = html;
+        }
+
+        // =============================================
+        // FUNGSI PEMBANTU: Mengambil teks detail tiap tahap
+        // =============================================
+        function dapatkanDetailStatus(unit, index) {
+            const t = unit.tanggal;
+            
+            switch(index) {
+                case 0: // DR Created
+                    return `Delivery Request dibuat — ${t.drCreated}`;
+                case 1: // Unit Preparation
+                    if (unit.status > 2) {
+                        return `Persiapan unit selesai — ${t.unitPreparation}`;
+                    } else if (unit.status === 2) {
+                        return `Unit sedang dipersiapkan — Mulai ${t.unitPreparation}`;
+                    } else {
+                        return `Menunggu persiapan unit`;
+                    }
+                case 2: // In Transit
+                    if (unit.status > 3) {
+                        return `Unit telah tiba — ${t.delivered}`;
+                    } else if (unit.status === 3) {
+                        return `Unit dalam perjalanan — Estimasi tiba ${t.estimasiTiba}`;
+                    } else {
+                        return `Menunggu pengiriman — Estimasi ${t.estimasiTiba || "belum tersedia"}`;
+                    }
+                case 3: // Delivered
+                    if (unit.status === 4) {
+                        return `Unit tiba di cabang — ${t.delivered}`;
+                    } else {
+                        return `Menunggu konfirmasi penerimaan`;
+                    }
+                default:
+                    return "";
+            }
+        }
+
+        // =============================================
+        // BONUS: User bisa tekan Enter di input box
+        // =============================================
+        document.getElementById("inputRangka").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                cekStatus();
+            }
+        });
+
+        console.log("🚗 TrackORA Web siap! JavaScript loaded.");
+        console.log("📋 Total unit terdaftar: " + daftarUnit.length);
+    </script>
 
 </body>
 </html>
