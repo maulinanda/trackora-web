@@ -2,6 +2,36 @@
 <html>
 <head>
     <title>TrackORA Web - Lacak Pengiriman</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        h2 {
+            color: #7f8c8d;
+            font-size: 16px;
+            font-weight: normal;
+        }
+        hr {
+            border: 1px solid #dcdde1;
+        }
+        .status-selesai {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .status-aktif {
+            color: #2980b9;
+            font-weight: bold;
+        }
+        .status-menunggu {
+            color: #bdc3c7;
+        }
+    </style>
 </head>
 <body>
     <h1>📦 TrackORA Web</h1>
@@ -18,11 +48,11 @@
 
     <h3>Progress Pengiriman</h3>
     
-    <p>✅ <strong>Delivery Request</strong> — Dibuat (15 Mar 2026)</p>
-    <p>✅ <strong>Quality Check</strong> — Selesai (16 Mar 2026)</p>
-    <p>✅ <strong>Preparation</strong> — Selesai (17 Mar 2026)</p>
-    <p>🔄 <strong>Shipping</strong> — Sedang Dalam Perjalanan</p>
-    <p>⏳ <strong>Delivered</strong> — Menunggu Konfirmasi</p>
+    <p>✅ <span class="status-selesai">Delivery Request — Dibuat (15 Mar 2026)</span></p>
+    <p>✅ <span class="status-selesai">Quality Check — Selesai (16 Mar 2026)</span></p>
+    <p>✅ <span class="status-selesai">Preparation — Selesai (17 Mar 2026)</span></p>
+    <p>🔄 <span class="status-aktif">Shipping — Sedang Dalam Perjalanan</span></p>
+    <p>⏳ <span class="status-menunggu">Delivered — Menunggu Konfirmasi</span></p>
 
 </body>
 </html>
