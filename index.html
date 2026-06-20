@@ -628,8 +628,9 @@
                     drCreated: "15 Mar 2026",
                     unitPreparation: "17 Mar 2026",
                     inTransit: "19 Mar 2026",
-                    estimasiTiba: "20 Mar 2026"
-                }   
+                    estimasiKirim: "20 Mar 2026",
+                    estimasiTiba: "22 Mar 2026"
+                }
             },
             {
                 rangka: "MHFAB1CJ2N7654321",
@@ -641,7 +642,8 @@
                     drCreated: "16 Mar 2026",
                     unitPreparation: "18 Mar 2026",
                     qrMulai: "19 Mar 2026",
-                    estimasiTiba: "22 Mar 2026"
+                    estimasiKirim: "22 Mar 2026",
+                    estimasiTiba: "24 Mar 2026"
                 }
             },
             {
@@ -654,6 +656,8 @@
                     drCreated: "10 Mar 2026",
                     unitPreparation: "12 Mar 2026",
                     inTransit: "13 Mar 2026",
+                    estimasiKirim: "13 Mar 2026",
+                    estimasiTiba: "15 Mar 2026",
                     delivered: "15 Mar 2026"
                 }
             }
@@ -679,7 +683,6 @@
         function init() {
             cekSesiAdmin();
             populateFilterCabang();
-            // Dashboard kosong sampai filter dipilih
             document.getElementById("dashboardBody").innerHTML = "";
             document.getElementById("emptyState").style.display = "block";
         }
@@ -721,7 +724,6 @@
             } else {
                 document.getElementById("btnTabDashboard").classList.add("active");
                 document.getElementById("tabDashboard").classList.add("active");
-                // Render sesuai filter yang sudah dipilih (mungkin masih kosong)
                 filterByCabang();
             }
         }
@@ -732,7 +734,7 @@
         }
 
         function dapatkanUnitTerfilter() {
-            if (cabangFilter === "" || cabangFilter === null) return []; // belum pilih
+            if (cabangFilter === "" || cabangFilter === null) return [];
             if (cabangFilter === "__semua__") return daftarUnit;
             return daftarUnit.filter(u => u.tujuan === cabangFilter);
         }
@@ -743,7 +745,6 @@
             const empty = document.getElementById("emptyState");
             const filterInfo = document.getElementById("filterInfo");
 
-            // Jika belum memilih filter
             if (cabangFilter === "") {
                 tbody.innerHTML = "";
                 empty.style.display = "block";
@@ -921,7 +922,7 @@
             if (unitAktif.status === 2) unitAktif.tanggal.unitPreparation = tglStr;
             else if (unitAktif.status === 3) {
                 unitAktif.tanggal.inTransit = tglStr;
-                unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari";;
+                unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari";
             } else if (unitAktif.status === 4) unitAktif.tanggal.delivered = tglStr;
 
             if (unitAktif.status === 3) unitAktif.perluReconditioning = false;
@@ -940,6 +941,7 @@
             unitAktif.tanggal.drCreated = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
             delete unitAktif.tanggal.unitPreparation;
             delete unitAktif.tanggal.inTransit;
+            delete unitAktif.tanggal.estimasiKirim;
             delete unitAktif.tanggal.estimasiTiba;
             delete unitAktif.tanggal.delivered;
             unitAktif.perluReconditioning = false;
