@@ -615,7 +615,7 @@
         const SESI_DURASI = 30 * 60000;
 
         // =============================================
-        // DATA DUMMY (semua tanggal tanpa jam)
+        // DATA DUMMY
         // =============================================
         const daftarUnit = [
             {
@@ -642,6 +642,7 @@
                     drCreated: "16 Mar 2026",
                     unitPreparation: "18 Mar 2026",
                     qrMulai: "19 Mar 2026",
+                    qrSelesai: "21 Mar 2026",
                     estimasiKirim: "22 Mar 2026",
                     estimasiTiba: "24 Mar 2026"
                 }
@@ -781,7 +782,7 @@
                 let infoTanggal = "";
                 if (unit.status === 1) infoTanggal = unit.tanggal.drCreated;
                 else if (unit.status === 2) {
-                    if (unit.perluReconditioning && unit.tanggal.qrMulai) infoTanggal = "QR: " + unit.tanggal.qrMulai;
+                    if (unit.perluReconditioning && unit.tanggal.qrMulai) infoTanggal = "QR selesai: " + (unit.tanggal.qrSelesai || "-");
                     else infoTanggal = unit.tanggal.unitPreparation;
                 } else if (unit.status === 3) infoTanggal = "Estimasi tiba: " + (unit.tanggal.estimasiTiba || "-");
                 else if (unit.status === 4) infoTanggal = "Selesai: " + unit.tanggal.delivered;
@@ -825,7 +826,11 @@
             } else {
                 unitAktif.perluReconditioning = true;
                 unitAktif.tanggal.qrMulai = tglStr;
-                tampilkanNotif("✨ Quality Reconditioning dimulai.");
+                // Set estimasi selesai 2 hari setelah mulai
+                const tglSelesai = new Date(sekarang);
+                tglSelesai.setDate(tglSelesai.getDate() + 2);
+                unitAktif.tanggal.qrSelesai = tglSelesai.getDate() + " " + bulan[tglSelesai.getMonth()] + " " + tglSelesai.getFullYear();
+                tampilkanNotif("✨ Quality Reconditioning dimulai. Estimasi selesai: " + unitAktif.tanggal.qrSelesai);
             }
             updatePanelAdmin();
             tampilkanProgress(unitAktif);
@@ -944,6 +949,8 @@
             delete unitAktif.tanggal.estimasiKirim;
             delete unitAktif.tanggal.estimasiTiba;
             delete unitAktif.tanggal.delivered;
+            delete unitAktif.tanggal.qrMulai;
+            delete unitAktif.tanggal.qrSelesai;
             unitAktif.perluReconditioning = false;
             tampilkanProgress(unitAktif);
             updatePanelAdmin();
@@ -996,7 +1003,7 @@
                 <p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${estimasi}</span></p>
             `;
             if (unit.perluReconditioning && unit.status === 2) {
-                html += `<p style="color:#e65100;font-size:13px;">✨ Sedang Quality Reconditioning</p>`;
+                html += `<p style="color:#e65100;font-size:13px;">✨ Sedang Quality Reconditioning — Estimasi selesai: ${unit.tanggal.qrSelesai || "dalam proses"}</p>`;
             }
             document.getElementById("detailUnit").innerHTML = html;
         }
@@ -1045,7 +1052,7 @@
                 case 1:
                     if (unit.status > 2) return `Persiapan selesai — ${t.unitPreparation || "-"}`;
                     else if (unit.status === 2) {
-                        if (unit.perluReconditioning && t.qrMulai) return `QR berlangsung sejak ${t.qrMulai}`;
+                        if (unit.perluReconditioning && t.qrMulai) return `Estimasi selesai rekondisi kualitas ${t.qrSelesai || "dalam proses"}`;
                         else return `Sedang dipersiapkan — ${t.unitPreparation || "-"}`;
                     } else return `Menunggu persiapan`;
                 case 2:
