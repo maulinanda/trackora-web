@@ -628,8 +628,8 @@
                     drCreated: "15 Mar 2026",
                     unitPreparation: "17 Mar 2026",
                     inTransit: "19 Mar 2026",
-                    estimasiKirim: "20 Mar 2026"
-                }
+                    estimasiTiba: "20 Mar 2026"
+                }   
             },
             {
                 rangka: "MHFAB1CJ2N7654321",
@@ -641,7 +641,7 @@
                     drCreated: "16 Mar 2026",
                     unitPreparation: "18 Mar 2026",
                     qrMulai: "19 Mar 2026",
-                    estimasiKirim: "22 Mar 2026"
+                    estimasiTiba: "22 Mar 2026"
                 }
             },
             {
@@ -782,7 +782,7 @@
                 else if (unit.status === 2) {
                     if (unit.perluReconditioning && unit.tanggal.qrMulai) infoTanggal = "QR: " + unit.tanggal.qrMulai;
                     else infoTanggal = unit.tanggal.unitPreparation;
-                } else if (unit.status === 3) infoTanggal = "Estimasi kirim: " + (unit.tanggal.estimasiKirim || "-");
+                } else if (unit.status === 3) infoTanggal = "Estimasi tiba: " + (unit.tanggal.estimasiTiba || "-");
                 else if (unit.status === 4) infoTanggal = "Selesai: " + unit.tanggal.delivered;
 
                 let statusTambahan = "";
@@ -921,7 +921,7 @@
             if (unitAktif.status === 2) unitAktif.tanggal.unitPreparation = tglStr;
             else if (unitAktif.status === 3) {
                 unitAktif.tanggal.inTransit = tglStr;
-                unitAktif.tanggal.estimasiKirim = "dalam 2-3 hari";
+                unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari";;
             } else if (unitAktif.status === 4) unitAktif.tanggal.delivered = tglStr;
 
             if (unitAktif.status === 3) unitAktif.perluReconditioning = false;
@@ -940,7 +940,7 @@
             unitAktif.tanggal.drCreated = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
             delete unitAktif.tanggal.unitPreparation;
             delete unitAktif.tanggal.inTransit;
-            delete unitAktif.tanggal.estimasiKirim;
+            delete unitAktif.tanggal.estimasiTiba;
             delete unitAktif.tanggal.delivered;
             unitAktif.perluReconditioning = false;
             tampilkanProgress(unitAktif);
@@ -1048,7 +1048,7 @@
                     } else return `Menunggu persiapan`;
                 case 2:
                     if (unit.status > 3) return `Unit telah tiba — ${t.delivered}`;
-                    else if (unit.status === 3) return `Dalam perjalanan — ${t.inTransit || "-"}. Estimasi kirim ${t.estimasiKirim || "-"}`;
+                    else if (unit.status === 3) return `Dalam perjalanan — ${t.inTransit || "-"}. Estimasi tiba ${t.estimasiTiba || "-"}`;
                     else return `Menunggu pengiriman`;
                 case 3:
                     if (unit.status === 4) return `Unit tiba di cabang — ${t.delivered}`;
