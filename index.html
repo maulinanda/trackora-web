@@ -363,7 +363,7 @@
             display: block;
         }
 
-        /* Filter bar – LAPTOP: label di atas, field bawah, horizontal wrap, center */
+        /* Filter bar */
         .filter-bar {
             display: flex;
             gap: 10px;
@@ -376,12 +376,18 @@
             display: flex;
             flex-direction: column;
             gap: 3px;
+            position: relative;
         }
         .filter-group label {
             font-size: 12px;
             font-weight: 600;
             color: #757575;
             text-align: center;
+        }
+        .filter-group .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0;
         }
         .filter-group input,
         .filter-group select {
@@ -392,6 +398,7 @@
             outline: none;
             min-width: 150px;
             text-align: center;
+            flex: 1;
         }
         .filter-group input:focus,
         .filter-group select:focus { border-color: #1565c0; }
@@ -403,6 +410,26 @@
         .filter-group select[multiple] option:checked {
             background-color: #e3f2fd;
             color: #1565c0;
+        }
+        .btn-clear-field {
+            background: none;
+            border: none;
+            color: #bdbdbd;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px 6px;
+            line-height: 1;
+            display: none;
+            margin-left: 2px;
+        }
+        .filter-group:hover .btn-clear-field,
+        .filter-group input:not(:placeholder-shown) ~ .btn-clear-field,
+        .filter-group select:valid ~ .btn-clear-field,
+        .btn-clear-field.visible {
+            display: inline-block;
+        }
+        .btn-clear-field:hover {
+            color: #c62828;
         }
         .btn-reset-filter {
             padding: 8px 16px;
@@ -466,7 +493,6 @@
             display: block;
         }
 
-        /* MOBILE: label di atas, field full width, tidak dua kolom */
         @media (max-width: 600px) {
             .main-content { padding: 10px; }
             .kartu { padding: 20px; }
@@ -597,27 +623,39 @@
             <div class="filter-bar" id="filterBar">
                 <div class="filter-group">
                     <label>No. Rangka</label>
-                    <input type="text" class="filter-rangka" id="filterRangka" placeholder="Ketik No. Rangka" oninput="applyFilter()">
+                    <div class="input-wrapper">
+                        <input type="text" class="filter-rangka" id="filterRangka" placeholder="Ketik No. Rangka" oninput="applyFilter(); toggleClearButton(this)">
+                        <button class="btn-clear-field" onclick="clearFilterField('filterRangka', 'text')" title="Hapus filter">✕</button>
+                    </div>
                 </div>
                 <div class="filter-group">
                     <label>Cabang Pemilik</label>
-                    <input type="text" id="filterCabang" list="cabangList" placeholder="Ketik atau pilih" oninput="applyFilter()">
-                    <datalist id="cabangList"></datalist>
+                    <div class="input-wrapper">
+                        <input type="text" id="filterCabang" list="cabangList" placeholder="Ketik atau pilih" oninput="applyFilter(); toggleClearButton(this)">
+                        <datalist id="cabangList"></datalist>
+                        <button class="btn-clear-field" onclick="clearFilterField('filterCabang', 'text')" title="Hapus filter">✕</button>
+                    </div>
                 </div>
                 <div class="filter-group">
                     <label>Model</label>
-                    <select id="filterModel" multiple onchange="applyFilter()" size="1">
-                    </select>
+                    <div class="input-wrapper">
+                        <select id="filterModel" multiple onchange="applyFilter(); toggleClearButton(this)" size="1">
+                        </select>
+                        <button class="btn-clear-field" onclick="clearFilterField('filterModel', 'select')" title="Hapus filter">✕</button>
+                    </div>
                 </div>
                 <div class="filter-group">
                     <label>Status</label>
-                    <select id="filterStatus" multiple onchange="applyFilter()" size="1">
-                        <option value="1">📝 DR Created</option>
-                        <option value="2">🔧 On Preparation</option>
-                        <option value="3">✨ Quality Reconditioning</option>
-                        <option value="4">🚛 In Transit</option>
-                        <option value="5">✅ Delivered</option>
-                    </select>
+                    <div class="input-wrapper">
+                        <select id="filterStatus" multiple onchange="applyFilter(); toggleClearButton(this)" size="1">
+                            <option value="1">📝 DR Created</option>
+                            <option value="2">🔧 On Preparation</option>
+                            <option value="3">✨ Quality Reconditioning</option>
+                            <option value="4">🚛 In Transit</option>
+                            <option value="5">✅ Delivered</option>
+                        </select>
+                        <button class="btn-clear-field" onclick="clearFilterField('filterStatus', 'select')" title="Hapus filter">✕</button>
+                    </div>
                 </div>
                 <button class="btn-reset-filter" onclick="resetFilter()">✕ Reset</button>
             </div>
@@ -899,6 +937,40 @@
         }
 
         // =============================================
+        // CLEAR INDIVIDUAL FILTER FIELD
+        // =============================================
+        function clearFilterField(fieldId, type) {
+            const field = document.getElementById(fieldId);
+            if (!field) return;
+            if (type === 'text') {
+                field.value = '';
+            } else if (type === 'select') {
+                field.selectedIndex = -1;
+                // trigger change event
+                field.dispatchEvent(new Event('change'));
+            }
+            // Sembunyikan tombol clear
+            const btn = field.parentElement.querySelector('.btn-clear-field');
+            if (btn) btn.classList.remove('visible');
+            applyFilter();
+        }
+
+        function toggleClearButton(element) {
+            const wrapper = element.parentElement;
+            const btn = wrapper.querySelector('.btn-clear-field');
+            if (!btn) return;
+            if (element.tagName === 'SELECT') {
+                // Untuk select multiple, cek apakah ada yang dipilih
+                const hasValue = Array.from(element.selectedOptions).length > 0;
+                btn.style.display = hasValue ? 'inline-block' : 'none';
+            } else {
+                // Untuk input text
+                const hasValue = element.value.trim().length > 0;
+                btn.style.display = hasValue ? 'inline-block' : 'none';
+            }
+        }
+
+        // =============================================
         // FILTER & RENDER DAFTAR UNIT
         // =============================================
         function applyFilter() {
@@ -909,6 +981,11 @@
             const filterModelSelected = Array.from(filterModelSelect.selectedOptions).map(o => o.value);
             const filterStatusSelect = document.getElementById("filterStatus");
             const filterStatusSelected = Array.from(filterStatusSelect.selectedOptions).map(o => o.value);
+            
+            // Update clear button visibility
+            document.querySelectorAll('.filter-group input[type="text"], .filter-group select').forEach(el => {
+                toggleClearButton(el);
+            });
             
             const adaFilter = filterNoRangka || filterCabang || filterModelSelected.length > 0 || filterStatusSelected.length > 0;
             
@@ -938,6 +1015,8 @@
             document.getElementById("filterCabang").value = "";
             document.getElementById("filterModel").selectedIndex = -1;
             document.getElementById("filterStatus").selectedIndex = -1;
+            // Sembunyikan semua clear button
+            document.querySelectorAll('.btn-clear-field').forEach(b => b.style.display = 'none');
             document.getElementById("dashboardTableContainer").style.display = "none";
             document.getElementById("emptyState").style.display = "none";
             document.getElementById("dashboardBody").innerHTML = "";
