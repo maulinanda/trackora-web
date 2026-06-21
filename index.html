@@ -343,31 +343,55 @@
             color: #9e9e9e;
         }
 
-        /* === DASHBOARD (ADMIN ONLY) === */
+        /* === ADMIN SECTION === */
         .admin-section {
             display: none;
         }
         .admin-section.show {
             display: block;
         }
-        .dashboard-filter {
+
+        /* Filter bar */
+        .filter-bar {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
-            align-items: center;
+            margin-bottom: 15px;
             flex-wrap: wrap;
+            align-items: flex-end;
         }
-        .dashboard-filter select {
-            padding: 10px 15px;
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #757575;
+        }
+        .filter-group input,
+        .filter-group select {
+            padding: 8px 12px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            background-color: white;
-            cursor: pointer;
+            border-radius: 6px;
+            font-size: 13px;
             outline: none;
+            min-width: 150px;
         }
-        .dashboard-filter select:focus { border-color: #1565c0; }
-        .filter-info { font-size: 13px; color: #757575; }
+        .filter-group input:focus,
+        .filter-group select:focus { border-color: #1565c0; }
+        .filter-group .filter-rangka { font-family: 'Courier New', monospace; }
+        .btn-reset-filter {
+            padding: 8px 16px;
+            background-color: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #757575;
+            height: fit-content;
+            align-self: flex-end;
+        }
 
         .table-container { overflow-x: auto; }
         table.dashboard-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -433,6 +457,8 @@
             .tab-btn { padding: 10px 15px; font-size: 14px; }
             table.dashboard-table { font-size: 12px; }
             table.dashboard-table th, table.dashboard-table td { padding: 8px 10px; }
+            .filter-bar { flex-direction: column; }
+            .filter-group input, .filter-group select { min-width: 100%; }
         }
     </style>
 </head>
@@ -442,9 +468,9 @@
         <div class="popup-login">
             <div class="login-icon">🔐</div>
             <h3>Admin Access</h3>
-            <p class="login-subtitle">Masukkan PIN untuk mengakses Panel Admin</p>
-            <input type="password" id="inputPIN" placeholder="• • • •" maxlength="4" autocomplete="off">
-            <div class="login-error" id="loginError">❌ PIN salah. Silakan coba lagi.</div>
+            <p class="login-subtitle">Masukkan password untuk mengakses Panel Admin</p>
+            <input type="password" id="inputPIN" placeholder="Password" autocomplete="off">
+            <div class="login-error" id="loginError">❌ Password salah. Silakan coba lagi.</div>
             <button class="btn-login" onclick="verifikasiPIN()">🔓 Buka Admin Mode</button>
             <button class="btn-batal" onclick="batalLogin()">Batal</button>
         </div>
@@ -474,7 +500,6 @@
 
         <div class="tab-content active" id="tabLacak">
             <div class="kartu">
-                <!-- INPUT AREA (TUNGGAL / MULTI) -->
                 <div class="input-area">
                     <textarea id="multiInput" placeholder="Masukkan No. Rangka (satu per baris untuk banyak unit)&#10;Contoh:&#10;MHFAB1CJ2N1234567&#10;MHFAB1CJ2N7654321"></textarea>
                     <p class="hint">Masukkan 1 No. Rangka untuk detail, atau lebih dari 1 untuk daftar (pisah Enter)</p>
@@ -484,7 +509,6 @@
                     </div>
                 </div>
 
-                <!-- MULTI RESULT TABLE -->
                 <div class="multi-result-section" id="multiResultSection">
                     <hr>
                     <p class="progress-title">📋 Hasil Pencarian</p>
@@ -505,7 +529,6 @@
                     </div>
                 </div>
 
-                <!-- SINGLE DETAIL (juga dipakai setelah klik dari multi) -->
                 <div id="singleDetailWrapper" style="display:none;">
                     <button class="btn-back" onclick="kembaliKeDaftar()">← Kembali ke Daftar</button>
                     <div class="no-dr-banner" id="noDrBanner">
@@ -528,12 +551,33 @@
 
         <!-- ADMIN SECTION (DAFTAR UNIT) -->
         <div class="admin-section" id="adminSection">
-            <div class="dashboard-filter">
-                <label for="filterCabang" style="font-weight:600;color:#424242;">🏢 Cabang:</label>
-                <select id="filterCabang" onchange="filterByCabang()">
-                    <option value="">-- Pilih Cabang --</option>
-                </select>
-                <span class="filter-info" id="filterInfo"></span>
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>No. Rangka</label>
+                    <input type="text" class="filter-rangka" id="filterRangka" placeholder="Ketik No. Rangka" oninput="applyFilter()">
+                </div>
+                <div class="filter-group">
+                    <label>Cabang Pemilik</label>
+                    <input type="text" id="filterCabang" list="cabangList" placeholder="Ketik atau pilih" oninput="applyFilter()">
+                    <datalist id="cabangList"></datalist>
+                </div>
+                <div class="filter-group">
+                    <label>Model</label>
+                    <input type="text" id="filterModel" list="modelList" placeholder="Ketik atau pilih" oninput="applyFilter()">
+                    <datalist id="modelList"></datalist>
+                </div>
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="filterStatus" onchange="applyFilter()">
+                        <option value="">Semua Status</option>
+                        <option value="1">DR Created</option>
+                        <option value="2">On Preparation</option>
+                        <option value="3">Quality Reconditioning</option>
+                        <option value="4">In Transit</option>
+                        <option value="5">Delivered</option>
+                    </select>
+                </div>
+                <button class="btn-reset-filter" onclick="resetFilter()">✕ Reset</button>
             </div>
             <div class="table-container">
                 <table class="dashboard-table">
@@ -549,7 +593,7 @@
                     </thead>
                     <tbody id="dashboardBody"></tbody>
                 </table>
-                <div class="empty-state" id="emptyState">🏢 Silakan pilih cabang untuk melihat daftar unit.</div>
+                <div class="empty-state" id="emptyState">🔍 Gunakan filter di atas untuk mencari unit.</div>
             </div>
         </div>
     </div>
@@ -558,7 +602,7 @@
         // =============================================
         // KONFIGURASI
         // =============================================
-        const ADMIN_PIN = "1234";
+        const ADMIN_PASSWORD = "Toyota2026";
         const SESI_DURASI = 30 * 60000;
         const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKAaGXzzufPDknUNGa1u3sEEt_Py0lUS8PJKslvYt7b5Y5IgzklmLg10BkIz3uStTbR83hjinxZc7V/pub?gid=0&single=true&output=csv";
 
@@ -574,8 +618,13 @@
         let daftarUnit = [];
         let adminMode = false;
         let unitAktif = null;
-        let cabangFilter = "";
-        let daftarMultiTerakhir = []; // menyimpan hasil pencarian multi terakhir
+        let daftarMultiTerakhir = [];
+
+        // Filter state
+        let filterNoRangka = "";
+        let filterCabang = "";
+        let filterModel = "";
+        let filterStatus = "";
 
         // =============================================
         // INISIALISASI
@@ -584,6 +633,8 @@
             cekSesiAdmin();
             document.getElementById("emptyState").style.display = "block";
             await fetchDataDariSheets();
+            populateDatalists();
+            applyFilter();
         }
 
         function cekSesiAdmin() {
@@ -604,11 +655,13 @@
                 const csvText = await response.text();
                 daftarUnit = parseCSV(csvText);
                 console.log("✅ Data dari Google Sheets: " + daftarUnit.length + " unit");
-                populateFilterCabang();
+                populateDatalists();
+                applyFilter();
             } catch (error) {
                 console.error("❌ Gagal fetch data:", error);
                 daftarUnit = getDataDummy();
-                populateFilterCabang();
+                populateDatalists();
+                applyFilter();
             }
         }
 
@@ -662,6 +715,17 @@
         }
 
         // =============================================
+        // DATALISTS
+        // =============================================
+        function populateDatalists() {
+            const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
+            const modelSet = new Set(daftarUnit.map(u => u.model).filter(Boolean));
+            
+            document.getElementById("cabangList").innerHTML = Array.from(cabangSet).map(v => `<option value="${v}">`).join("");
+            document.getElementById("modelList").innerHTML = Array.from(modelSet).map(v => `<option value="${v}">`).join("");
+        }
+
+        // =============================================
         // PROGRESS STEPS
         // =============================================
         function getProgressDisplay(unit) {
@@ -677,18 +741,6 @@
             return steps;
         }
 
-        function populateFilterCabang() {
-            const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
-            const select = document.getElementById("filterCabang");
-            select.innerHTML = '<option value="">-- Pilih Cabang --</option><option value="__semua__">Semua Cabang</option>';
-            cabangSet.forEach(cabang => {
-                const opt = document.createElement("option");
-                opt.value = cabang;
-                opt.textContent = cabang;
-                select.appendChild(opt);
-            });
-        }
-
         // =============================================
         // GANTI TAB
         // =============================================
@@ -701,7 +753,7 @@
             } else if (tab === "dashboard") {
                 document.getElementById("btnTabDashboard").classList.add("active");
                 document.getElementById("tabDashboard").classList.add("active");
-                filterByCabang();
+                applyFilter();
             }
         }
 
@@ -717,12 +769,12 @@
         }
         function batalLogin() { document.getElementById("overlayLogin").classList.remove("show"); }
         function verifikasiPIN() {
-            if (document.getElementById("inputPIN").value.trim() === ADMIN_PIN) {
+            if (document.getElementById("inputPIN").value.trim() === ADMIN_PASSWORD) {
                 document.getElementById("overlayLogin").classList.remove("show");
                 adminMode = true;
                 localStorage.setItem("trackora_admin_sesi", Date.now());
                 updateUIAdmin();
-                tampilkanNotif("🔓 Admin Mode aktif. Daftar Unit dapat diakses.");
+                tampilkanNotif("🔓 Admin Mode aktif.");
             } else {
                 document.getElementById("loginError").classList.add("show");
                 document.getElementById("inputPIN").value = "";
@@ -748,7 +800,7 @@
                 btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
                 adminSection.classList.add("show");
                 btnTabDashboard.style.display = "block";
-                filterByCabang();
+                applyFilter();
             } else {
                 btn.classList.remove("active");
                 btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
@@ -761,40 +813,53 @@
         }
 
         // =============================================
-        // DAFTAR UNIT (ADMIN ONLY, MIN STATUS 1)
+        // FILTER & RENDER DAFTAR UNIT
         // =============================================
-        function filterByCabang() {
-            cabangFilter = document.getElementById("filterCabang").value;
+        function applyFilter() {
+            filterNoRangka = document.getElementById("filterRangka").value.trim().toLowerCase();
+            filterCabang = document.getElementById("filterCabang").value.trim().toLowerCase();
+            filterModel = document.getElementById("filterModel").value.trim().toLowerCase();
+            filterStatus = document.getElementById("filterStatus").value;
             renderDashboard();
         }
 
+        function resetFilter() {
+            document.getElementById("filterRangka").value = "";
+            document.getElementById("filterCabang").value = "";
+            document.getElementById("filterModel").value = "";
+            document.getElementById("filterStatus").value = "";
+            applyFilter();
+        }
+
         function dapatkanUnitTerfilter() {
-            let hasil = daftarUnit.filter(u => u.status >= 1);
-            if (!cabangFilter) return [];
-            if (cabangFilter === "__semua__") return hasil;
-            return hasil.filter(u => u.tujuan === cabangFilter);
+            let hasil = daftarUnit.filter(u => u.status >= 1); // minimal DR Created
+            
+            if (filterNoRangka) {
+                hasil = hasil.filter(u => u.rangka.toLowerCase().includes(filterNoRangka));
+            }
+            if (filterCabang) {
+                hasil = hasil.filter(u => u.tujuan.toLowerCase().includes(filterCabang));
+            }
+            if (filterModel) {
+                hasil = hasil.filter(u => (u.model || "").toLowerCase().includes(filterModel));
+            }
+            if (filterStatus) {
+                hasil = hasil.filter(u => u.status === parseInt(filterStatus));
+            }
+            return hasil;
         }
 
         function renderDashboard() {
+            if (!adminMode) return;
             const filtered = dapatkanUnitTerfilter();
             const tbody = document.getElementById("dashboardBody");
             const empty = document.getElementById("emptyState");
-            const filterInfo = document.getElementById("filterInfo");
-
-            if (!cabangFilter) {
-                tbody.innerHTML = "";
-                empty.style.display = "block";
-                empty.textContent = "🏢 Silakan pilih cabang untuk melihat daftar unit (minimal status DR Created).";
-                filterInfo.textContent = "";
-                return;
-            }
-
-            filterInfo.textContent = cabangFilter === "__semua__" ? `(Total: ${filtered.length} unit)` : `(${filtered.length} unit di ${cabangFilter})`;
 
             if (filtered.length === 0) {
                 tbody.innerHTML = "";
                 empty.style.display = "block";
-                empty.textContent = "📭 Tidak ada unit dengan status DR Created atau lebih tinggi.";
+                const adaFilter = filterNoRangka || filterCabang || filterModel || filterStatus;
+                empty.textContent = adaFilter ? "📭 Tidak ada unit yang cocok dengan filter." : "📭 Tidak ada unit dengan status DR Created atau lebih tinggi.";
                 return;
             }
             empty.style.display = "none";
@@ -849,12 +914,10 @@
             const nomorList = raw.split("\n").map(s => s.trim()).filter(s => s !== "");
             
             if (nomorList.length === 1) {
-                // Single: tampilkan detail
                 daftarMultiTerakhir = [];
                 sembunyikanMultiResult();
                 tampilkanSingleDetail(nomorList[0]);
             } else {
-                // Multi: tampilkan tabel
                 daftarMultiTerakhir = nomorList;
                 sembunyikanSingleDetail();
                 tampilkanMultiResult(nomorList);
@@ -888,7 +951,6 @@
             tampilkanProgress(unit);
             infoUnit.classList.add("show");
             
-            // Sembunyikan tombol kembali jika bukan dari multi
             const btnBack = wrapper.querySelector(".btn-back");
             if (daftarMultiTerakhir.length === 0) {
                 btnBack.style.display = "none";
@@ -903,7 +965,6 @@
             let html = "";
             let ditemukan = 0;
             
-            // Simpan daftar untuk navigasi kembali
             daftarMultiTerakhir = nomorList;
             
             for (let noka of nomorList) {
@@ -947,15 +1008,12 @@
         }
 
         function klikBarisMulti(rangka) {
-            // Sembunyikan tabel multi, tampilkan detail unit
             sembunyikanMultiResult();
             tampilkanSingleDetail(rangka);
-            // Tampilkan tombol kembali
             document.querySelector("#singleDetailWrapper .btn-back").style.display = "inline-block";
         }
 
         function kembaliKeDaftar() {
-            // Kembali ke tabel multi
             sembunyikanSingleDetail();
             tampilkanMultiResult(daftarMultiTerakhir);
         }
@@ -1072,7 +1130,6 @@
         document.getElementById("overlayLogin").addEventListener("click", function(e) { if (e.target === this) batalLogin(); });
         document.addEventListener("keydown", e => { if (e.key === "Escape") batalLogin(); });
 
-        // Ctrl+Enter di textarea untuk submit
         document.getElementById("multiInput").addEventListener("keydown", e => {
             if (e.key === "Enter" && e.ctrlKey) {
                 e.preventDefault();
