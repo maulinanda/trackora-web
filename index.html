@@ -791,40 +791,43 @@
             resetFilter();
             tampilkanNotif("🔒 Admin Mode dinonaktifkan.");
         }
-        function updateUIAdmin() {
+                function updateUIAdmin() {
             const btn = document.getElementById("btnAdminToggle");
             const adminSection = document.getElementById("adminSection");
             const btnTabDashboard = document.getElementById("btnTabDashboard");
             const tabLacak = document.getElementById("tabLacak");
             const btnTabLacak = document.getElementById("btnTabLacak");
+            const tabDashboard = document.getElementById("tabDashboard");
             
             if (adminMode) {
                 btn.classList.add("active");
                 btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
                 adminSection.classList.add("show");
-                btnTabDashboard.style.display = "block";
+                if (btnTabDashboard) btnTabDashboard.style.display = "block";
                 // SEMBUNYIKAN TAB LACAK
-                tabLacak.classList.remove("active");
-                btnTabLacak.classList.remove("active");
-                btnTabLacak.style.display = "none";
+                if (tabLacak) tabLacak.classList.remove("active");
+                if (btnTabLacak) {
+                    btnTabLacak.classList.remove("active");
+                    btnTabLacak.style.display = "none";
+                }
                 // Tampilkan dashboard sebagai default
-                document.getElementById("btnTabDashboard").classList.add("active");
-                document.getElementById("tabDashboard").classList.add("active");
+                if (btnTabDashboard) btnTabDashboard.classList.add("active");
+                if (tabDashboard) tabDashboard.classList.add("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
             } else {
                 btn.classList.remove("active");
                 btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
                 adminSection.classList.remove("show");
-                btnTabDashboard.style.display = "none";
-                document.getElementById("btnTabDashboard").classList.remove("active");
-                document.getElementById("tabDashboard").classList.remove("active");
+                if (btnTabDashboard) btnTabDashboard.style.display = "none";
+                if (btnTabDashboard) btnTabDashboard.classList.remove("active");
+                if (tabDashboard) tabDashboard.classList.remove("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
                 // TAMPILKAN KEMBALI TAB LACAK
-                btnTabLacak.style.display = "block";
-                tabLacak.classList.add("active");
-                btnTabLacak.classList.add("active");
+                if (btnTabLacak) btnTabLacak.style.display = "block";
+                if (tabLacak) tabLacak.classList.add("active");
+                if (btnTabLacak) btnTabLacak.classList.add("active");
             }
         }
 
