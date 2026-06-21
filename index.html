@@ -363,36 +363,37 @@
             display: block;
         }
 
-        /* Filter bar layout baru */
+        /* Filter bar layout: label di atas, field di bawah, center align */
         .filter-bar {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 15px;
-            align-items: stretch;
+            align-items: center;
         }
         .filter-group {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 4px;
+            width: 100%;
+            max-width: 300px;
         }
         .filter-group label {
             font-size: 12px;
             font-weight: 600;
             color: #757575;
-            width: 120px;
-            text-align: right;
-            flex-shrink: 0;
+            text-align: center;
         }
         .filter-group input,
         .filter-group select {
-            flex: 1;
-            padding: 8px 10px;
+            width: 100%;
+            padding: 8px 12px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 13px;
             outline: none;
-            min-width: 0;
+            text-align: center;
             transition: border-color 0.3s;
         }
         .filter-group input:focus,
@@ -481,26 +482,8 @@
             .tab-btn { padding: 10px 15px; font-size: 14px; }
             table.dashboard-table { font-size: 12px; }
             table.dashboard-table th, table.dashboard-table td { padding: 8px 10px; }
-            
-            /* Filter di HP: label di atas, field di bawah */
             .filter-group {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 3px;
-            }
-            .filter-group label {
-                width: auto;
-                text-align: left;
-                font-size: 11px;
-            }
-            .filter-group input,
-            .filter-group select {
-                width: 100%;
-                font-size: 13px;
-            }
-            .btn-reset-filter {
-                align-self: stretch;
-                text-align: center;
+                max-width: 100%;
             }
         }
     </style>
