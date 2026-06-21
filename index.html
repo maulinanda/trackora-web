@@ -649,9 +649,9 @@
 
         function getDataDummy() {
             return [
-                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026" },
-                { rangka: "MHFAB1CJ2N7654321", tujuan: "Cabang Bandung", model: "Innova", warna: "Hitam", status: 3, sedangKeRVDC: true, drCreated: "16 Mar 2026", qrSelesai: "21 Mar 2026", estimasiKirim: "22 Mar 2026", etaRVDC: "19 Mar 2026" },
-                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026" }
+                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026", trueDestination: "" },
+                { rangka: "MHFAB1CJ2N7654321", tujuan: "Cabang Bandung", model: "Innova", warna: "Hitam", status: 3, sedangKeRVDC: true, drCreated: "16 Mar 2026", qrSelesai: "21 Mar 2026", estimasiKirim: "22 Mar 2026", etaRVDC: "19 Mar 2026", trueDestination: "NVDC" },
+                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026", trueDestination: "Cabang Surabaya" }
             ];
         }
 
@@ -978,16 +978,10 @@
                 html += `
                     <div class="rvdc-info-box">
                         <p style="color:#0d47a1;font-weight:600;">🚛 Unit sedang dalam perjalanan ke RVDC Ngoro</p>
-                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
+                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba di RVDC: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
                     </div>
                 `;
             }
-            
-            if (unit.status >= 2) {
-                html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
-            }
-            document.getElementById("detailUnit").innerHTML = html;
-        }
             
             if (unit.status >= 2) {
                 html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
