@@ -351,6 +351,7 @@
             display: block;
         }
 
+        /* Filter bar */
         .filter-bar {
             display: flex;
             gap: 10px;
@@ -380,6 +381,9 @@
         .filter-group input:focus,
         .filter-group select:focus { border-color: #1565c0; }
         .filter-group .filter-rangka { font-family: 'Courier New', monospace; }
+        .filter-group select[multiple] {
+            min-height: 80px;
+        }
         .btn-reset-filter {
             padding: 8px 16px;
             background-color: #f5f5f5;
@@ -497,9 +501,10 @@
         <div class="notif-sukses" id="notifSukses"></div>
         <div class="error-msg" id="errorMsg">⚠️ No. Rangka tidak ditemukan.</div>
 
+        <!-- TAB LACAK (disembunyikan saat admin mode) -->
         <div class="tab-content active" id="tabLacak">
             <div class="kartu">
-                <div class="input-area">
+                <div class="input-area" id="inputAreaLacak">
                     <textarea id="multiInput" placeholder="Masukkan No. Rangka (satu per baris untuk banyak unit)&#10;Contoh:&#10;MHFAB1CJ2N1234567&#10;MHFAB1CJ2N7654321"></textarea>
                     <p class="hint">Masukkan 1 No. Rangka untuk detail, atau lebih dari 1 untuk daftar (pisah Enter)</p>
                     <div class="btn-row">
@@ -548,7 +553,7 @@
             </div>
         </div>
 
-        <!-- ADMIN SECTION (DAFTAR UNIT) — disembunyikan sampai Admin Mode AKTIF + filter -->
+        <!-- ADMIN SECTION (DAFTAR UNIT) -->
         <div class="admin-section" id="adminSection">
             <div class="filter-bar">
                 <div class="filter-group">
@@ -562,18 +567,17 @@
                 </div>
                 <div class="filter-group">
                     <label>Model</label>
-                    <input type="text" id="filterModel" list="modelList" placeholder="Ketik atau pilih" oninput="applyFilter()">
-                    <datalist id="modelList"></datalist>
+                    <select id="filterModel" multiple onchange="applyFilter()">
+                    </select>
                 </div>
                 <div class="filter-group">
                     <label>Status</label>
-                    <select id="filterStatus" onchange="applyFilter()">
-                        <option value="">Semua Status</option>
-                        <option value="1">DR Created</option>
-                        <option value="2">On Preparation</option>
-                        <option value="3">Quality Reconditioning</option>
-                        <option value="4">In Transit</option>
-                        <option value="5">Delivered</option>
+                    <select id="filterStatus" multiple onchange="applyFilter()">
+                        <option value="1">📝 DR Created</option>
+                        <option value="2">🔧 On Preparation</option>
+                        <option value="3">✨ Quality Reconditioning</option>
+                        <option value="4">🚛 In Transit</option>
+                        <option value="5">✅ Delivered</option>
                     </select>
                 </div>
                 <button class="btn-reset-filter" onclick="resetFilter()">✕ Reset</button>
@@ -619,22 +623,16 @@
         let unitAktif = null;
         let daftarMultiTerakhir = [];
 
-        // Filter state
-        let filterNoRangka = "";
-        let filterCabang = "";
-        let filterModel = "";
-        let filterStatus = "";
-
         // =============================================
         // INISIALISASI
         // =============================================
         async function init() {
             cekSesiAdmin();
-            // Jangan tampilkan apa pun sampai user/admin melakukan aksi
             document.getElementById("dashboardTableContainer").style.display = "none";
             document.getElementById("emptyState").style.display = "none";
             await fetchDataDariSheets();
             populateDatalists();
+            populateMultiSelects();
         }
 
         function cekSesiAdmin() {
@@ -643,9 +641,6 @@
                 if (Date.now() - parseInt(sesi) < SESI_DURASI) {
                     adminMode = true;
                     updateUIAdmin();
-                    // Admin mode aktif, tapi tetap sembunyikan data sampai filter diisi
-                    document.getElementById("dashboardTableContainer").style.display = "none";
-                    document.getElementById("emptyState").style.display = "none";
                 } else {
                     localStorage.removeItem("trackora_admin_sesi");
                 }
@@ -659,10 +654,12 @@
                 daftarUnit = parseCSV(csvText);
                 console.log("✅ Data dari Google Sheets: " + daftarUnit.length + " unit");
                 populateDatalists();
+                populateMultiSelects();
             } catch (error) {
                 console.error("❌ Gagal fetch data:", error);
                 daftarUnit = getDataDummy();
                 populateDatalists();
+                populateMultiSelects();
             }
         }
 
@@ -716,13 +713,17 @@
         }
 
         // =============================================
-        // DATALISTS
+        // DATALISTS & MULTI SELECTS
         // =============================================
         function populateDatalists() {
             const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
-            const modelSet = new Set(daftarUnit.map(u => u.model).filter(Boolean));
             document.getElementById("cabangList").innerHTML = Array.from(cabangSet).map(v => `<option value="${v}">`).join("");
-            document.getElementById("modelList").innerHTML = Array.from(modelSet).map(v => `<option value="${v}">`).join("");
+        }
+
+        function populateMultiSelects() {
+            const modelSet = new Set(daftarUnit.map(u => u.model).filter(Boolean));
+            const modelSelect = document.getElementById("filterModel");
+            modelSelect.innerHTML = Array.from(modelSet).map(v => `<option value="${v}">${v}</option>`).join("");
         }
 
         // =============================================
@@ -794,13 +795,21 @@
             const btn = document.getElementById("btnAdminToggle");
             const adminSection = document.getElementById("adminSection");
             const btnTabDashboard = document.getElementById("btnTabDashboard");
+            const tabLacak = document.getElementById("tabLacak");
+            const btnTabLacak = document.getElementById("btnTabLacak");
             
             if (adminMode) {
                 btn.classList.add("active");
                 btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
                 adminSection.classList.add("show");
                 btnTabDashboard.style.display = "block";
-                // TETAP SEMBUNYIKAN data sampai filter diisi
+                // SEMBUNYIKAN TAB LACAK
+                tabLacak.classList.remove("active");
+                btnTabLacak.classList.remove("active");
+                btnTabLacak.style.display = "none";
+                // Tampilkan dashboard sebagai default
+                document.getElementById("btnTabDashboard").classList.add("active");
+                document.getElementById("tabDashboard").classList.add("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
             } else {
@@ -812,7 +821,10 @@
                 document.getElementById("tabDashboard").classList.remove("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
-                gantiTab("lacak");
+                // TAMPILKAN KEMBALI TAB LACAK
+                btnTabLacak.style.display = "block";
+                tabLacak.classList.add("active");
+                btnTabLacak.classList.add("active");
             }
         }
 
@@ -821,51 +833,42 @@
         // =============================================
         function applyFilter() {
             if (!adminMode) return;
-            filterNoRangka = document.getElementById("filterRangka").value.trim().toLowerCase();
-            filterCabang = document.getElementById("filterCabang").value.trim().toLowerCase();
-            filterModel = document.getElementById("filterModel").value.trim().toLowerCase();
-            filterStatus = document.getElementById("filterStatus").value;
+            const filterNoRangka = document.getElementById("filterRangka").value.trim().toLowerCase();
+            const filterCabang = document.getElementById("filterCabang").value.trim().toLowerCase();
+            const filterModelSelect = document.getElementById("filterModel");
+            const filterModelSelected = Array.from(filterModelSelect.selectedOptions).map(o => o.value);
+            const filterStatusSelect = document.getElementById("filterStatus");
+            const filterStatusSelected = Array.from(filterStatusSelect.selectedOptions).map(o => o.value);
             
-            // Cek apakah minimal satu filter diisi
-            const adaFilter = filterNoRangka || filterCabang || filterModel || filterStatus;
+            const adaFilter = filterNoRangka || filterCabang || filterModelSelected.length > 0 || filterStatusSelected.length > 0;
             
             if (!adaFilter) {
-                // Sembunyikan semua jika tidak ada filter
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
                 document.getElementById("dashboardBody").innerHTML = "";
                 return;
             }
             
-            renderDashboard();
+            let hasil = daftarUnit.filter(u => u.status >= 1);
+            if (filterNoRangka) hasil = hasil.filter(u => u.rangka.toLowerCase().includes(filterNoRangka));
+            if (filterCabang) hasil = hasil.filter(u => u.tujuan.toLowerCase().includes(filterCabang));
+            if (filterModelSelected.length > 0) hasil = hasil.filter(u => filterModelSelected.includes(u.model || ""));
+            if (filterStatusSelected.length > 0) hasil = hasil.filter(u => filterStatusSelected.includes(String(u.status)));
+            
+            renderDashboardFromData(hasil);
         }
 
         function resetFilter() {
             document.getElementById("filterRangka").value = "";
             document.getElementById("filterCabang").value = "";
-            document.getElementById("filterModel").value = "";
-            document.getElementById("filterStatus").value = "";
-            filterNoRangka = "";
-            filterCabang = "";
-            filterModel = "";
-            filterStatus = "";
+            document.getElementById("filterModel").selectedIndex = -1;
+            document.getElementById("filterStatus").selectedIndex = -1;
             document.getElementById("dashboardTableContainer").style.display = "none";
             document.getElementById("emptyState").style.display = "none";
             document.getElementById("dashboardBody").innerHTML = "";
         }
 
-        function dapatkanUnitTerfilter() {
-            let hasil = daftarUnit.filter(u => u.status >= 1);
-            if (filterNoRangka) hasil = hasil.filter(u => u.rangka.toLowerCase().includes(filterNoRangka));
-            if (filterCabang) hasil = hasil.filter(u => u.tujuan.toLowerCase().includes(filterCabang));
-            if (filterModel) hasil = hasil.filter(u => (u.model || "").toLowerCase().includes(filterModel));
-            if (filterStatus) hasil = hasil.filter(u => u.status === parseInt(filterStatus));
-            return hasil;
-        }
-
-        function renderDashboard() {
-            if (!adminMode) return;
-            const filtered = dapatkanUnitTerfilter();
+        function renderDashboardFromData(filtered) {
             const tbody = document.getElementById("dashboardBody");
             const empty = document.getElementById("emptyState");
             const tableContainer = document.getElementById("dashboardTableContainer");
@@ -900,8 +903,8 @@
 
                 html += `
                     <tr onclick="lihatDariDashboard('${unit.rangka}')">
-                        <td class="td-rangka">🚗 ${unit.rangka}</td>
-                        <td>📍 ${unit.tujuan}</td>
+                        <td class="td-rangka">${unit.rangka}</td>
+                        <td>${unit.tujuan}</td>
                         <td>${unit.model || "-"}</td>
                         <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td>
                         <td><div class="progress-mini">${dots}</div></td>
@@ -999,8 +1002,8 @@
                     }
                     html += `
                         <tr onclick="klikBarisMulti('${unit.rangka}')">
-                            <td class="td-rangka">🚗 ${unit.rangka}</td>
-                            <td>📍 ${unit.tujuan}</td>
+                            <td class="td-rangka">${unit.rangka}</td>
+                            <td>${unit.tujuan}</td>
                             <td>${unit.trueDestination || "-"}</td>
                             <td>${unit.model || "-"}</td>
                             <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td>
