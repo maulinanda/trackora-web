@@ -967,7 +967,8 @@
         function tampilkanDetailUnit(unit) {
             let html = `
                 <p><span class="label">No. Rangka</span> <span class="nilai-rangka">${unit.rangka}</span></p>
-                <p><span class="label">Tujuan</span> <span class="nilai">${unit.trueDestination || unit.tujuan}</span></p>
+                <p><span class="label">Cabang Pemilik</span> <span class="nilai">${unit.tujuan || "-"}</span></p>
+                <p><span class="label">Tujuan Kirim</span> <span class="nilai">${unit.trueDestination || "-"}</span></p>
                 <p><span class="label">Model</span> <span class="nilai">${unit.model || "-"}</span></p>
                 <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
             `;
@@ -977,10 +978,16 @@
                 html += `
                     <div class="rvdc-info-box">
                         <p style="color:#0d47a1;font-weight:600;">🚛 Unit sedang dalam perjalanan ke RVDC Ngoro</p>
-                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba di RVDC Ngoro: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
+                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
                     </div>
                 `;
             }
+            
+            if (unit.status >= 2) {
+                html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
+            }
+            document.getElementById("detailUnit").innerHTML = html;
+        }
             
             if (unit.status >= 2) {
                 html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
