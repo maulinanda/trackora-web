@@ -165,6 +165,41 @@
         .login-error { color: #c62828; font-size: 13px; margin-top: 8px; display: none; }
         .login-error.show { display: block; }
 
+        /* === INPUT MULTI === */
+        .multi-input-area {
+            margin-bottom: 15px;
+        }
+        .multi-input-area textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            min-height: 80px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .multi-input-area textarea:focus { border-color: #1565c0; }
+        .multi-input-area .hint {
+            font-size: 12px;
+            color: #9e9e9e;
+            margin-top: 5px;
+        }
+        .btn-cek-multi {
+            padding: 10px 20px;
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-cek-multi:hover { background-color: #0d47a1; }
+
         .search-box { display: flex; gap: 10px; margin-bottom: 10px; }
         .search-box input {
             flex: 1;
@@ -196,7 +231,6 @@
             font-family: 'Courier New', monospace;
         }
 
-        /* === RVDC INFO DI DETAIL === */
         .rvdc-info-box {
             background-color: #e3f2fd;
             border-left: 4px solid #1565c0;
@@ -204,9 +238,7 @@
             border-radius: 6px;
             margin: 8px 0;
         }
-        .rvdc-info-box p {
-            margin: 0;
-        }
+        .rvdc-info-box p { margin: 0; }
 
         .no-dr-banner {
             background-color: #fafafa;
@@ -249,55 +281,6 @@
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .panel-admin {
-            background-color: #fff8e1;
-            border: 2px dashed #ff9800;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        .panel-admin.show { display: block; }
-        .panel-admin h3 { color: #e65100; margin-bottom: 5px; font-size: 16px; }
-        .panel-admin .admin-subtitle { font-size: 12px; color: #bf360c; margin-bottom: 15px; }
-        .panel-admin .unit-terpilih {
-            background-color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            font-family: 'Courier New', monospace;
-            color: #424242;
-        }
-        .panel-admin .unit-terpilih span { font-weight: 600; color: #1565c0; }
-        .btn-admin {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            transition: all 0.3s;
-        }
-        .btn-maju { background-color: #ff9800; color: white; }
-        .btn-maju:hover { background-color: #f57c00; }
-        .btn-reset { background-color: #f5f5f5; color: #757575; }
-        .btn-reset:hover { background-color: #e0e0e0; }
-        .btn-qr {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #a5d6a7;
-        }
-        .btn-qr:hover { background-color: #c8e6c9; }
-        .btn-qr.selesai-qr {
-            background-color: #fff3e0;
-            color: #e65100;
-            border-color: #ffcc80;
-        }
-        .btn-maju:disabled, .btn-reset:disabled, .btn-qr:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .info-unit { display: none; }
         .info-unit.show { display: block; }
@@ -366,7 +349,13 @@
             color: #9e9e9e;
         }
 
-        /* === DASHBOARD === */
+        /* === DASHBOARD (ADMIN ONLY) === */
+        .admin-section {
+            display: none;
+        }
+        .admin-section.show {
+            display: block;
+        }
         .dashboard-filter {
             display: flex;
             gap: 10px;
@@ -428,6 +417,14 @@
 
         .empty-state { text-align: center; padding: 40px; color: #9e9e9e; }
 
+        /* === MULTI RESULT TABLE === */
+        .multi-result-section {
+            display: none;
+        }
+        .multi-result-section.show {
+            display: block;
+        }
+
         @media (max-width: 600px) {
             .main-content { padding: 10px; }
             .kartu { padding: 20px; }
@@ -440,8 +437,6 @@
             .step:not(:last-child)::after { left: 14px; top: 34px; height: 24px; }
             .nama-status { font-size: 13px; }
             .detail-status { font-size: 11px; }
-            .panel-admin { padding: 15px; }
-            .btn-admin { padding: 8px 14px; font-size: 13px; }
             .popup-login { padding: 20px; }
             .tab-btn { padding: 10px 15px; font-size: 14px; }
             table.dashboard-table { font-size: 12px; }
@@ -479,24 +474,45 @@
 
         <div class="tab-nav">
             <button class="tab-btn active" id="btnTabLacak" onclick="gantiTab('lacak')">🔍 Lacak Unit</button>
-            <button class="tab-btn" id="btnTabDashboard" onclick="gantiTab('dashboard')">📊 Daftar Unit</button>
+            <button class="tab-btn" id="btnTabDashboard" onclick="gantiTab('dashboard')" style="display:none;">📊 Daftar Unit</button>
         </div>
 
         <div class="notif-sukses" id="notifSukses"></div>
         <div class="error-msg" id="errorMsg">⚠️ No. Rangka tidak ditemukan.</div>
 
-        <div class="panel-admin" id="panelAdmin">
-            <h3>🛠️ Panel Admin</h3>
-            <p class="admin-subtitle">Ubah status unit yang sedang ditampilkan</p>
-            <div class="unit-terpilih" id="unitTerpilih">🔍 Silakan cari unit terlebih dahulu</div>
-            <button class="btn-admin btn-maju" id="btnMaju" onclick="majuStatus()" disabled>⏭ Maju ke Tahap Berikutnya</button>
-            <button class="btn-admin btn-reset" id="btnReset" onclick="resetStatus()" disabled>🔄 Reset ke Belum DR</button>
-            <button class="btn-admin btn-qr" id="btnQR" onclick="toggleQR()" disabled>✨ QR: ...</button>
-            <button class="btn-admin btn-reset" onclick="logoutAdmin()" style="margin-top:10px;">🚪 Keluar dari Admin Mode</button>
-        </div>
-
         <div class="tab-content active" id="tabLacak">
             <div class="kartu">
+                <!-- MULTI INPUT -->
+                <div class="multi-input-area">
+                    <textarea id="multiInput" placeholder="Masukkan No. Rangka (satu per baris)&#10;Contoh:&#10;MHFAB1CJ2N1234567&#10;MHFAB1CJ2N7654321"></textarea>
+                    <p class="hint">Masukkan beberapa No. Rangka, dipisah dengan Enter (baris baru)</p>
+                    <button class="btn-cek-multi" onclick="cekMultiStatus()">🔍 Cek Banyak Unit</button>
+                </div>
+
+                <!-- MULTI RESULT TABLE -->
+                <div class="multi-result-section" id="multiResultSection">
+                    <hr>
+                    <p class="progress-title">📋 Hasil Pencarian</p>
+                    <div class="table-container">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>No. Rangka</th>
+                                    <th>Cabang Pemilik</th>
+                                    <th>Tujuan Kirim</th>
+                                    <th>Model</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody id="multiResultBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- SINGLE SEARCH (tetap ada) -->
                 <div class="search-box">
                     <input type="text" id="inputRangka" placeholder="Masukkan No. Rangka" maxlength="17">
                     <button onclick="cekStatus()">🔍 Cek Status</button>
@@ -521,7 +537,8 @@
             </div>
         </div>
 
-        <div class="tab-content" id="tabDashboard">
+        <!-- ADMIN SECTION (DAFTAR UNIT) -->
+        <div class="admin-section" id="adminSection">
             <div class="dashboard-filter">
                 <label for="filterCabang" style="font-weight:600;color:#424242;">🏢 Cabang:</label>
                 <select id="filterCabang" onchange="filterByCabang()">
@@ -534,7 +551,7 @@
                     <thead>
                         <tr>
                             <th>No. Rangka</th>
-                            <th>Cabang Tujuan</th>
+                            <th>Cabang Pemilik</th>
                             <th>Model</th>
                             <th>Status</th>
                             <th>Progress</th>
@@ -608,11 +625,10 @@
         function parseCSV(csvText) {
             const lines = csvText.trim().split("\n");
             if (lines.length < 2) return [];
-            const headers = lines[0].split(",").map(h => h.trim());
             const result = [];
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
-                if (values.length < headers.length) continue;
+                if (values.length < 15) continue;
                 result.push({
                     rangka: values[0]?.trim() || "",
                     tujuan: values[1]?.trim() || "",
@@ -656,7 +672,7 @@
         }
 
         // =============================================
-        // HELPER: Progress steps
+        // PROGRESS STEPS
         // =============================================
         function getProgressDisplay(unit) {
             const steps = [
@@ -665,11 +681,9 @@
                 { label: "In Transit",     icon: "🚛", statusNum: 4 },
                 { label: "Delivered",      icon: "✅", statusNum: 5 }
             ];
-            
             if (unit.status >= 3 && (unit.qrSelesai || unit.status === 3)) {
                 steps.splice(2, 0, { label: "Quality Reconditioning", icon: "✨", statusNum: 3, isQR: true });
             }
-            
             return steps;
         }
 
@@ -685,28 +699,91 @@
             });
         }
 
+        // =============================================
+        // GANTI TAB
+        // =============================================
         function gantiTab(tab) {
             document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
             document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
             if (tab === "lacak") {
                 document.getElementById("btnTabLacak").classList.add("active");
                 document.getElementById("tabLacak").classList.add("active");
-            } else {
+            } else if (tab === "dashboard") {
                 document.getElementById("btnTabDashboard").classList.add("active");
                 document.getElementById("tabDashboard").classList.add("active");
                 filterByCabang();
             }
         }
 
+        // =============================================
+        // ADMIN MODE
+        // =============================================
+        function toggleAdmin() { adminMode ? logoutAdmin() : tampilkanPopupLogin(); }
+        function tampilkanPopupLogin() {
+            document.getElementById("overlayLogin").classList.add("show");
+            document.getElementById("inputPIN").value = "";
+            document.getElementById("loginError").classList.remove("show");
+            setTimeout(() => document.getElementById("inputPIN").focus(), 300);
+        }
+        function batalLogin() { document.getElementById("overlayLogin").classList.remove("show"); }
+        function verifikasiPIN() {
+            if (document.getElementById("inputPIN").value.trim() === ADMIN_PIN) {
+                document.getElementById("overlayLogin").classList.remove("show");
+                adminMode = true;
+                localStorage.setItem("trackora_admin_sesi", Date.now());
+                updateUIAdmin();
+                tampilkanNotif("🔓 Admin Mode aktif. Daftar Unit dapat diakses.");
+            } else {
+                document.getElementById("loginError").classList.add("show");
+                document.getElementById("inputPIN").value = "";
+                document.getElementById("inputPIN").focus();
+                const popup = document.querySelector(".popup-login");
+                popup.style.animation = "none"; popup.offsetHeight;
+                popup.style.animation = "shake 0.4s ease-out";
+            }
+        }
+        function logoutAdmin() {
+            adminMode = false;
+            localStorage.removeItem("trackora_admin_sesi");
+            updateUIAdmin();
+            tampilkanNotif("🔒 Admin Mode dinonaktifkan.");
+        }
+        function updateUIAdmin() {
+            const btn = document.getElementById("btnAdminToggle");
+            const adminSection = document.getElementById("adminSection");
+            const btnTabDashboard = document.getElementById("btnTabDashboard");
+            
+            if (adminMode) {
+                btn.classList.add("active");
+                btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
+                adminSection.classList.add("show");
+                btnTabDashboard.style.display = "block";
+                filterByCabang();
+            } else {
+                btn.classList.remove("active");
+                btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
+                adminSection.classList.remove("show");
+                btnTabDashboard.style.display = "none";
+                // Sembunyikan tab dashboard jika sedang aktif
+                document.getElementById("btnTabDashboard").classList.remove("active");
+                document.getElementById("tabDashboard").classList.remove("active");
+                gantiTab("lacak");
+            }
+        }
+
+        // =============================================
+        // DAFTAR UNIT (ADMIN ONLY, MIN STATUS 1)
+        // =============================================
         function filterByCabang() {
             cabangFilter = document.getElementById("filterCabang").value;
             renderDashboard();
         }
 
         function dapatkanUnitTerfilter() {
+            let hasil = daftarUnit.filter(u => u.status >= 1); // Minimal DR Created
             if (!cabangFilter) return [];
-            if (cabangFilter === "__semua__") return daftarUnit;
-            return daftarUnit.filter(u => u.tujuan === cabangFilter);
+            if (cabangFilter === "__semua__") return hasil;
+            return hasil.filter(u => u.tujuan === cabangFilter);
         }
 
         function renderDashboard() {
@@ -718,7 +795,7 @@
             if (!cabangFilter) {
                 tbody.innerHTML = "";
                 empty.style.display = "block";
-                empty.textContent = "🏢 Silakan pilih cabang untuk melihat daftar unit.";
+                empty.textContent = "🏢 Silakan pilih cabang untuk melihat daftar unit (minimal status DR Created).";
                 filterInfo.textContent = "";
                 return;
             }
@@ -728,7 +805,7 @@
             if (filtered.length === 0) {
                 tbody.innerHTML = "";
                 empty.style.display = "block";
-                empty.textContent = "📭 Tidak ada unit untuk filter ini.";
+                empty.textContent = "📭 Tidak ada unit dengan status DR Created atau lebih tinggi.";
                 return;
             }
             empty.style.display = "none";
@@ -745,7 +822,6 @@
                     else if (unit.status === steps[i].statusNum) dotClass = "aktif";
                     dots += `<div class="dot-mini ${dotClass}"></div>`;
                 }
-                
                 let infoTanggal = unit.estimasiKirim || unit.drCreated || "-";
                 if (unit.status === 4) infoTanggal = "In Transit: " + (unit.inTransit || "-");
                 if (unit.status === 5) infoTanggal = "Delivered: " + (unit.delivered || "-");
@@ -774,163 +850,68 @@
         }
 
         // =============================================
-        // TOGGLE QR
+        // MULTI CEK STATUS
         // =============================================
-        function toggleQR() {
-            if (!adminMode || !unitAktif || (unitAktif.status !== 2 && unitAktif.status !== 3)) return;
-            const sekarang = new Date();
-            const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
-            const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
-            const jamStr = sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
-
-            if (unitAktif.status === 3) {
-                unitAktif.status = 2;
-                unitAktif.qrSelesai = "";
-                tampilkanNotif("✅ QR dibatalkan. Unit kembali ke Preparation.");
-            } else {
-                unitAktif.status = 3;
-                const tglSelesai = new Date(sekarang);
-                tglSelesai.setDate(tglSelesai.getDate() + 2);
-                unitAktif.qrSelesai = tglSelesai.getDate() + " " + bulan[tglSelesai.getMonth()] + " " + tglSelesai.getFullYear();
-                tampilkanNotif("✨ QR dimulai. Estimasi selesai: " + unitAktif.qrSelesai);
-            }
-            updatePanelAdmin();
-            tampilkanProgress(unitAktif);
-            renderDashboard();
-        }
-
-        function toggleAdmin() { adminMode ? logoutAdmin() : tampilkanPopupLogin(); }
-        function tampilkanPopupLogin() {
-            document.getElementById("overlayLogin").classList.add("show");
-            document.getElementById("inputPIN").value = "";
-            document.getElementById("loginError").classList.remove("show");
-            setTimeout(() => document.getElementById("inputPIN").focus(), 300);
-        }
-        function batalLogin() { document.getElementById("overlayLogin").classList.remove("show"); }
-        function verifikasiPIN() {
-            if (document.getElementById("inputPIN").value.trim() === ADMIN_PIN) {
-                document.getElementById("overlayLogin").classList.remove("show");
-                adminMode = true;
-                localStorage.setItem("trackora_admin_sesi", Date.now());
-                updateUIAdmin();
-                tampilkanNotif("🔓 Admin Mode aktif.");
-            } else {
-                document.getElementById("loginError").classList.add("show");
-                document.getElementById("inputPIN").value = "";
-                document.getElementById("inputPIN").focus();
-                const popup = document.querySelector(".popup-login");
-                popup.style.animation = "none"; popup.offsetHeight;
-                popup.style.animation = "shake 0.4s ease-out";
-            }
-        }
-        function logoutAdmin() {
-            adminMode = false;
-            localStorage.removeItem("trackora_admin_sesi");
-            updateUIAdmin();
-            tampilkanNotif("🔒 Admin Mode dinonaktifkan.");
-        }
-        function updateUIAdmin() {
-            const btn = document.getElementById("btnAdminToggle");
-            const panel = document.getElementById("panelAdmin");
-            if (adminMode) {
-                btn.classList.add("active");
-                btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
-                panel.classList.add("show");
-                if (unitAktif) updatePanelAdmin();
-            } else {
-                btn.classList.remove("active");
-                btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
-                panel.classList.remove("show");
-            }
-        }
-        function updatePanelAdmin() {
-            const btnMaju = document.getElementById("btnMaju");
-            const btnReset = document.getElementById("btnReset");
-            const btnQR = document.getElementById("btnQR");
-            const unitTerpilih = document.getElementById("unitTerpilih");
-
-            if (!unitAktif) {
-                unitTerpilih.innerHTML = "🔍 Silakan cari unit terlebih dahulu";
-                btnMaju.disabled = true; btnReset.disabled = true; btnQR.disabled = true;
-                btnQR.textContent = "✨ QR: ...";
+        function cekMultiStatus() {
+            const raw = document.getElementById("multiInput").value.trim();
+            if (!raw) {
+                tampilkanNotif("⚠️ Masukkan setidaknya satu No. Rangka.");
                 return;
             }
-
-            const st = statusList[unitAktif.status];
-            unitTerpilih.innerHTML = `📋 <span>${unitAktif.rangka}</span> — ${unitAktif.tujuan}<br>Status: <strong>${st.ikon} ${st.nama}</strong> (${unitAktif.status}/5)`;
-
-            btnMaju.disabled = (unitAktif.status >= 5);
-            btnReset.disabled = (unitAktif.status <= 0);
-
-            if (unitAktif.status === 2 || unitAktif.status === 3) {
-                btnQR.disabled = false;
-                if (unitAktif.status === 3) {
-                    btnQR.textContent = "✅ Selesaikan QR";
-                    btnQR.classList.add("selesai-qr");
+            const nomorList = raw.split("\n").map(s => s.trim()).filter(s => s !== "");
+            const tbody = document.getElementById("multiResultBody");
+            const section = document.getElementById("multiResultSection");
+            
+            let html = "";
+            let ditemukan = 0;
+            
+            for (let noka of nomorList) {
+                const unit = daftarUnit.find(u => u.rangka.toLowerCase() === noka.toLowerCase());
+                if (unit) {
+                    ditemukan++;
+                    const st = statusList[unit.status];
+                    const steps = getProgressDisplay(unit);
+                    let dots = "";
+                    for (let i = 0; i < steps.length; i++) {
+                        if (i > 0) dots += `<div class="line-mini ${unit.status >= steps[i].statusNum ? 'selesai' : ''}"></div>`;
+                        let dotClass = "";
+                        if (unit.status > steps[i].statusNum) dotClass = "selesai";
+                        else if (unit.status === steps[i].statusNum) dotClass = "aktif";
+                        dots += `<div class="dot-mini ${dotClass}"></div>`;
+                    }
+                    html += `
+                        <tr onclick="lihatDariMulti('${unit.rangka}')">
+                            <td class="td-rangka">🚗 ${unit.rangka}</td>
+                            <td>📍 ${unit.tujuan}</td>
+                            <td>${unit.trueDestination || "-"}</td>
+                            <td>${unit.model || "-"}</td>
+                            <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td>
+                            <td><div class="progress-mini">${dots}</div></td>
+                        </tr>
+                    `;
                 } else {
-                    btnQR.textContent = "✨ Mulai QR";
-                    btnQR.classList.remove("selesai-qr");
+                    html += `
+                        <tr>
+                            <td class="td-rangka" style="color:#c62828;">❌ ${noka}</td>
+                            <td colspan="5" style="color:#9e9e9e;">Tidak ditemukan</td>
+                        </tr>
+                    `;
                 }
-            } else {
-                btnQR.disabled = true;
-                btnQR.textContent = "✨ QR (hanya saat Preparation)";
-                btnQR.classList.remove("selesai-qr");
-            }
-        }
-
-        function majuStatus() {
-            if (!adminMode || !unitAktif || unitAktif.status >= 5) return;
-            const sekarang = new Date();
-            const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
-            const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear() + " " + 
-                           sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
-
-            if (unitAktif.status === 2) {
-                unitAktif.status = (unitAktif.qrSelesai) ? 3 : 4;
-            } else if (unitAktif.status === 3) {
-                unitAktif.status = 4;
-            } else {
-                unitAktif.status++;
             }
             
-            if (unitAktif.status === 1) unitAktif.drCreated = tglStr;
-            else if (unitAktif.status === 2) unitAktif.estimasiKirim = tglStr;
-            else if (unitAktif.status === 4) unitAktif.inTransit = tglStr;
-            else if (unitAktif.status === 5) unitAktif.delivered = tglStr;
-
-            tampilkanProgress(unitAktif);
-            updatePanelAdmin();
-            renderDashboard();
-            tampilkanNotif("✅ Status dimajukan ke: " + statusList[unitAktif.status].nama);
+            tbody.innerHTML = html;
+            section.classList.add("show");
+            tampilkanNotif(`🔍 ${ditemukan} dari ${nomorList.length} unit ditemukan.`);
         }
 
-        function resetStatus() {
-            if (!adminMode || !unitAktif || unitAktif.status <= 0) return;
-            unitAktif.status = 0;
-            unitAktif.drCreated = "";
-            unitAktif.estimasiKirim = "";
-            unitAktif.qrSelesai = "";
-            unitAktif.inTransit = "";
-            unitAktif.delivered = "";
-            tampilkanProgress(unitAktif);
-            updatePanelAdmin();
-            renderDashboard();
-            tampilkanNotif("🔄 Status di-reset ke Belum DR");
-        }
-
-        function tampilkanNotif(pesan) {
-            const notif = document.getElementById("notifSukses");
-            notif.textContent = pesan;
-            notif.classList.add("show");
-            setTimeout(() => notif.classList.remove("show"), 3000);
-        }
-
-        function formatTanggalFlex(tglStr) {
-            return tglStr || "-";
+        function lihatDariMulti(rangka) {
+            document.getElementById("inputRangka").value = rangka;
+            cekStatus();
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
         // =============================================
-        // CEK STATUS
+        // SINGLE CEK STATUS
         // =============================================
         function cekStatus() {
             const input = document.getElementById("inputRangka").value.trim();
@@ -941,19 +922,18 @@
             if (!input) {
                 document.getElementById("errorMsg").textContent = "⚠️ Silakan masukkan No. Rangka.";
                 document.getElementById("errorMsg").classList.add("show");
-                unitAktif = null; updatePanelAdmin(); return;
+                unitAktif = null; return;
             }
             
             const unitDitemukan = daftarUnit.find(u => u.rangka.toLowerCase() === input.toLowerCase());
             if (!unitDitemukan) {
                 document.getElementById("errorMsg").textContent = "⚠️ No. Rangka tidak ditemukan.";
                 document.getElementById("errorMsg").classList.add("show");
-                unitAktif = null; updatePanelAdmin(); return;
+                unitAktif = null; return;
             }
 
             unitAktif = unitDitemukan;
 
-            // Hanya tampilkan banner Belum DR jika status = 0
             if (unitAktif.status === 0) {
                 document.getElementById("noDrBanner").classList.add("show");
             }
@@ -961,7 +941,6 @@
             tampilkanDetailUnit(unitAktif);
             tampilkanProgress(unitAktif);
             document.getElementById("infoUnit").classList.add("show");
-            updatePanelAdmin();
         }
 
         function tampilkanDetailUnit(unit) {
@@ -973,12 +952,11 @@
                 <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
             `;
             
-            // Info RVDC Ngoro — ditampilkan di detail unit
             if (unit.sedangKeRVDC) {
                 html += `
                     <div class="rvdc-info-box">
                         <p style="color:#0d47a1;font-weight:600;">🚛 Unit sedang dalam perjalanan ke RVDC Ngoro</p>
-                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba di RVDC: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
+                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
                     </div>
                 `;
             }
@@ -994,32 +972,19 @@
                 document.getElementById("progressContainer").innerHTML = "";
                 return;
             }
-
             const steps = getProgressDisplay(unit);
             let html = "";
-            
             for (let i = 0; i < steps.length; i++) {
                 const step = steps[i];
                 let kelasStep = "", kelasIndikator = "", isiIndikator = "", kelasTeks = "";
-                
                 if (unit.status > step.statusNum) {
-                    kelasStep = "selesai";
-                    kelasIndikator = "indikator-selesai";
-                    isiIndikator = "✓";
-                    kelasTeks = "teks-selesai";
+                    kelasStep = "selesai"; kelasIndikator = "indikator-selesai"; isiIndikator = "✓"; kelasTeks = "teks-selesai";
                 } else if (unit.status === step.statusNum) {
-                    kelasStep = "aktif";
-                    kelasIndikator = "indikator-aktif";
-                    isiIndikator = "●";
-                    kelasTeks = "teks-aktif";
+                    kelasStep = "aktif"; kelasIndikator = "indikator-aktif"; isiIndikator = "●"; kelasTeks = "teks-aktif";
                 } else {
-                    kelasIndikator = "indikator-menunggu";
-                    isiIndikator = "○";
-                    kelasTeks = "teks-menunggu";
+                    kelasIndikator = "indikator-menunggu"; isiIndikator = "○"; kelasTeks = "teks-menunggu";
                 }
-                
                 let detailTeks = dapatkanDetailStatus(unit, step);
-                
                 html += `
                     <div class="step ${kelasStep}">
                         <div class="indikator ${kelasIndikator}">${isiIndikator}</div>
@@ -1035,7 +1000,6 @@
 
         function dapatkanDetailStatus(unit, step) {
             if (unit.status !== step.statusNum) return "";
-            
             switch(step.statusNum) {
                 case 1: return `DR dibuat — ${formatTanggalFlex(unit.drCreated)}`;
                 case 2: return "Unit sedang dalam proses persiapan";
@@ -1044,6 +1008,15 @@
                 case 5: return `Unit tiba di tujuan — ${formatTanggalFlex(unit.delivered)}`;
                 default: return "";
             }
+        }
+
+        function formatTanggalFlex(tglStr) { return tglStr || "-"; }
+
+        function tampilkanNotif(pesan) {
+            const notif = document.getElementById("notifSukses");
+            notif.textContent = pesan;
+            notif.classList.add("show");
+            setTimeout(() => notif.classList.remove("show"), 3000);
         }
 
         // =============================================
