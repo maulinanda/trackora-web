@@ -351,7 +351,6 @@
             display: block;
         }
 
-        /* Filter bar */
         .filter-bar {
             display: flex;
             gap: 10px;
@@ -549,7 +548,7 @@
             </div>
         </div>
 
-        <!-- ADMIN SECTION (DAFTAR UNIT) -->
+        <!-- ADMIN SECTION (DAFTAR UNIT) — disembunyikan sampai Admin Mode AKTIF + filter -->
         <div class="admin-section" id="adminSection">
             <div class="filter-bar">
                 <div class="filter-group">
@@ -579,7 +578,7 @@
                 </div>
                 <button class="btn-reset-filter" onclick="resetFilter()">✕ Reset</button>
             </div>
-            <div class="table-container">
+            <div class="table-container" id="dashboardTableContainer" style="display:none;">
                 <table class="dashboard-table">
                     <thead>
                         <tr>
@@ -593,8 +592,8 @@
                     </thead>
                     <tbody id="dashboardBody"></tbody>
                 </table>
-                <div class="empty-state" id="emptyState">🔍 Gunakan filter di atas untuk mencari unit.</div>
             </div>
+            <div class="empty-state" id="emptyState" style="display:none;"></div>
         </div>
     </div>
 
@@ -631,10 +630,11 @@
         // =============================================
         async function init() {
             cekSesiAdmin();
-            document.getElementById("emptyState").style.display = "block";
+            // Jangan tampilkan apa pun sampai user/admin melakukan aksi
+            document.getElementById("dashboardTableContainer").style.display = "none";
+            document.getElementById("emptyState").style.display = "none";
             await fetchDataDariSheets();
             populateDatalists();
-            applyFilter();
         }
 
         function cekSesiAdmin() {
@@ -643,6 +643,9 @@
                 if (Date.now() - parseInt(sesi) < SESI_DURASI) {
                     adminMode = true;
                     updateUIAdmin();
+                    // Admin mode aktif, tapi tetap sembunyikan data sampai filter diisi
+                    document.getElementById("dashboardTableContainer").style.display = "none";
+                    document.getElementById("emptyState").style.display = "none";
                 } else {
                     localStorage.removeItem("trackora_admin_sesi");
                 }
@@ -656,12 +659,10 @@
                 daftarUnit = parseCSV(csvText);
                 console.log("✅ Data dari Google Sheets: " + daftarUnit.length + " unit");
                 populateDatalists();
-                applyFilter();
             } catch (error) {
                 console.error("❌ Gagal fetch data:", error);
                 daftarUnit = getDataDummy();
                 populateDatalists();
-                applyFilter();
             }
         }
 
@@ -720,7 +721,6 @@
         function populateDatalists() {
             const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
             const modelSet = new Set(daftarUnit.map(u => u.model).filter(Boolean));
-            
             document.getElementById("cabangList").innerHTML = Array.from(cabangSet).map(v => `<option value="${v}">`).join("");
             document.getElementById("modelList").innerHTML = Array.from(modelSet).map(v => `<option value="${v}">`).join("");
         }
@@ -753,7 +753,6 @@
             } else if (tab === "dashboard") {
                 document.getElementById("btnTabDashboard").classList.add("active");
                 document.getElementById("tabDashboard").classList.add("active");
-                applyFilter();
             }
         }
 
@@ -788,6 +787,7 @@
             adminMode = false;
             localStorage.removeItem("trackora_admin_sesi");
             updateUIAdmin();
+            resetFilter();
             tampilkanNotif("🔒 Admin Mode dinonaktifkan.");
         }
         function updateUIAdmin() {
@@ -800,7 +800,9 @@
                 btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
                 adminSection.classList.add("show");
                 btnTabDashboard.style.display = "block";
-                applyFilter();
+                // TETAP SEMBUNYIKAN data sampai filter diisi
+                document.getElementById("dashboardTableContainer").style.display = "none";
+                document.getElementById("emptyState").style.display = "none";
             } else {
                 btn.classList.remove("active");
                 btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
@@ -808,6 +810,8 @@
                 btnTabDashboard.style.display = "none";
                 document.getElementById("btnTabDashboard").classList.remove("active");
                 document.getElementById("tabDashboard").classList.remove("active");
+                document.getElementById("dashboardTableContainer").style.display = "none";
+                document.getElementById("emptyState").style.display = "none";
                 gantiTab("lacak");
             }
         }
@@ -816,10 +820,23 @@
         // FILTER & RENDER DAFTAR UNIT
         // =============================================
         function applyFilter() {
+            if (!adminMode) return;
             filterNoRangka = document.getElementById("filterRangka").value.trim().toLowerCase();
             filterCabang = document.getElementById("filterCabang").value.trim().toLowerCase();
             filterModel = document.getElementById("filterModel").value.trim().toLowerCase();
             filterStatus = document.getElementById("filterStatus").value;
+            
+            // Cek apakah minimal satu filter diisi
+            const adaFilter = filterNoRangka || filterCabang || filterModel || filterStatus;
+            
+            if (!adaFilter) {
+                // Sembunyikan semua jika tidak ada filter
+                document.getElementById("dashboardTableContainer").style.display = "none";
+                document.getElementById("emptyState").style.display = "none";
+                document.getElementById("dashboardBody").innerHTML = "";
+                return;
+            }
+            
             renderDashboard();
         }
 
@@ -828,24 +845,21 @@
             document.getElementById("filterCabang").value = "";
             document.getElementById("filterModel").value = "";
             document.getElementById("filterStatus").value = "";
-            applyFilter();
+            filterNoRangka = "";
+            filterCabang = "";
+            filterModel = "";
+            filterStatus = "";
+            document.getElementById("dashboardTableContainer").style.display = "none";
+            document.getElementById("emptyState").style.display = "none";
+            document.getElementById("dashboardBody").innerHTML = "";
         }
 
         function dapatkanUnitTerfilter() {
-            let hasil = daftarUnit.filter(u => u.status >= 1); // minimal DR Created
-            
-            if (filterNoRangka) {
-                hasil = hasil.filter(u => u.rangka.toLowerCase().includes(filterNoRangka));
-            }
-            if (filterCabang) {
-                hasil = hasil.filter(u => u.tujuan.toLowerCase().includes(filterCabang));
-            }
-            if (filterModel) {
-                hasil = hasil.filter(u => (u.model || "").toLowerCase().includes(filterModel));
-            }
-            if (filterStatus) {
-                hasil = hasil.filter(u => u.status === parseInt(filterStatus));
-            }
+            let hasil = daftarUnit.filter(u => u.status >= 1);
+            if (filterNoRangka) hasil = hasil.filter(u => u.rangka.toLowerCase().includes(filterNoRangka));
+            if (filterCabang) hasil = hasil.filter(u => u.tujuan.toLowerCase().includes(filterCabang));
+            if (filterModel) hasil = hasil.filter(u => (u.model || "").toLowerCase().includes(filterModel));
+            if (filterStatus) hasil = hasil.filter(u => u.status === parseInt(filterStatus));
             return hasil;
         }
 
@@ -854,15 +868,17 @@
             const filtered = dapatkanUnitTerfilter();
             const tbody = document.getElementById("dashboardBody");
             const empty = document.getElementById("emptyState");
+            const tableContainer = document.getElementById("dashboardTableContainer");
 
             if (filtered.length === 0) {
                 tbody.innerHTML = "";
+                tableContainer.style.display = "none";
                 empty.style.display = "block";
-                const adaFilter = filterNoRangka || filterCabang || filterModel || filterStatus;
-                empty.textContent = adaFilter ? "📭 Tidak ada unit yang cocok dengan filter." : "📭 Tidak ada unit dengan status DR Created atau lebih tinggi.";
+                empty.textContent = "📭 Tidak ada unit yang cocok dengan filter.";
                 return;
             }
             empty.style.display = "none";
+            tableContainer.style.display = "block";
 
             let html = "";
             for (let unit of filtered) {
