@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackORA Web - Lacak Pengiriman Unit</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -18,7 +14,7 @@
         }
 
         .main-content {
-            max-width: 950px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -31,11 +27,7 @@
             gap: 15px;
             margin-bottom: 5px;
         }
-        .header-kiri {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .header-kiri { display: flex; align-items: center; gap: 12px; }
         .logo-icon { font-size: 32px; }
         h1 { color: #1a237e; font-size: 26px; margin: 0; }
         .tagline { color: #757575; font-size: 14px; margin-bottom: 5px; }
@@ -96,11 +88,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
 
-        hr {
-            border: none;
-            border-top: 1px solid #e0e0e0;
-            margin: 20px 0;
-        }
+        hr { border: none; border-top: 1px solid #e0e0e0; margin: 20px 0; }
 
         .overlay {
             display: none;
@@ -177,11 +165,7 @@
         .login-error { color: #c62828; font-size: 13px; margin-top: 8px; display: none; }
         .login-error.show { display: block; }
 
-        .search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
+        .search-box { display: flex; gap: 10px; margin-bottom: 10px; }
         .search-box input {
             flex: 1;
             padding: 12px 15px;
@@ -204,11 +188,7 @@
             cursor: pointer;
         }
         .search-box button:hover { background-color: #0d47a1; }
-        .search-hint {
-            font-size: 12px;
-            color: #9e9e9e;
-            margin-bottom: 20px;
-        }
+        .search-hint { font-size: 12px; color: #9e9e9e; margin-bottom: 20px; }
         .search-hint code {
             background-color: #f5f5f5;
             padding: 2px 6px;
@@ -307,14 +287,8 @@
 
         .info-unit { display: none; }
         .info-unit.show { display: block; }
-        .info-unit p {
-            margin: 8px 0;
-            color: #424242;
-            font-size: 15px;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .label { color: #9e9e9e; font-weight: normal; min-width: 110px; }
+        .info-unit p { margin: 8px 0; color: #424242; font-size: 15px; display: flex; flex-wrap: wrap; }
+        .label { color: #9e9e9e; font-weight: normal; min-width: 130px; }
         .nilai { font-weight: 600; color: #212121; }
         .nilai-rangka {
             font-weight: 600;
@@ -322,25 +296,16 @@
             font-family: 'Courier New', monospace;
             letter-spacing: 0.5px;
         }
-        .estimasi-besar {
-            font-weight: 700;
-            color: #1565c0;
-            font-size: 16px;
-        }
+        .estimasi-besar { font-weight: 700; color: #1565c0; font-size: 16px; }
+        .detail-extra { font-size: 13px; color: #757575; margin-top: 2px; }
 
         .progress-title { font-weight: 700; color: #333; margin-bottom: 20px; font-size: 16px; }
         .progress-container { margin: 10px 0; }
-        .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 22px;
-            position: relative;
-        }
+        .step { display: flex; align-items: flex-start; margin-bottom: 22px; position: relative; }
         .step:last-child { margin-bottom: 0; }
 
         .indikator {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -370,10 +335,8 @@
         .step:not(:last-child)::after {
             content: '';
             position: absolute;
-            left: 17px;
-            top: 40px;
-            width: 2px;
-            height: 26px;
+            left: 17px; top: 40px;
+            width: 2px; height: 26px;
             background-color: #e0e0e0;
         }
         .step.selesai:not(:last-child)::after { background-color: #2e7d32; }
@@ -389,7 +352,7 @@
             color: #9e9e9e;
         }
 
-        /* === DASHBOARD FILTER === */
+        /* === DASHBOARD === */
         .dashboard-filter {
             display: flex;
             gap: 10px;
@@ -407,19 +370,10 @@
             outline: none;
         }
         .dashboard-filter select:focus { border-color: #1565c0; }
-        .filter-info {
-            font-size: 13px;
-            color: #757575;
-        }
+        .filter-info { font-size: 13px; color: #757575; }
 
-        .table-container {
-            overflow-x: auto;
-        }
-        table.dashboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+        .table-container { overflow-x: auto; }
+        table.dashboard-table { width: 100%; border-collapse: collapse; font-size: 14px; }
         table.dashboard-table th {
             background-color: #f5f5f5;
             padding: 12px 15px;
@@ -434,18 +388,9 @@
             border-bottom: 1px solid #f0f0f0;
             vertical-align: middle;
         }
-        table.dashboard-table tr {
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        table.dashboard-table tbody tr:hover {
-            background-color: #fafafa;
-        }
-        .td-rangka {
-            font-family: 'Courier New', monospace;
-            font-weight: 600;
-            color: #1565c0;
-        }
+        table.dashboard-table tr { cursor: pointer; transition: background-color 0.2s; }
+        table.dashboard-table tbody tr:hover { background-color: #fafafa; }
+        .td-rangka { font-family: 'Courier New', monospace; font-weight: 600; color: #1565c0; }
         .badge-cell {
             display: inline-block;
             padding: 4px 12px;
@@ -453,34 +398,21 @@
             font-size: 12px;
             font-weight: 700;
         }
-        .badge-dr { background-color: #fff3e0; color: #e65100; }
-        .badge-prep { background-color: #e3f2fd; color: #1565c0; }
-        .badge-transit { background-color: #e8f5e9; color: #2e7d32; }
-        .badge-delivered { background-color: #f3e5f5; color: #7b1fa2; }
+        .badge-0 { background-color: #f5f5f5; color: #9e9e9e; }
+        .badge-1 { background-color: #fff3e0; color: #e65100; }
+        .badge-2 { background-color: #e3f2fd; color: #1565c0; }
+        .badge-3 { background-color: #fff3e0; color: #e65100; border: 1px dashed #ff9800; }
+        .badge-4 { background-color: #e8f5e9; color: #2e7d32; }
+        .badge-5 { background-color: #f3e5f5; color: #7b1fa2; }
 
-        .progress-mini {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-        .dot-mini {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background-color: #e0e0e0;
-        }
+        .progress-mini { display: flex; gap: 3px; align-items: center; }
+        .dot-mini { width: 7px; height: 7px; border-radius: 50%; background-color: #e0e0e0; }
         .dot-mini.selesai { background-color: #2e7d32; }
         .dot-mini.aktif { background-color: #1565c0; }
-        .line-mini {
-            width: 12px; height: 2px;
-            background-color: #e0e0e0;
-        }
+        .line-mini { width: 10px; height: 2px; background-color: #e0e0e0; }
         .line-mini.selesai { background-color: #2e7d32; }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #9e9e9e;
-        }
+        .empty-state { text-align: center; padding: 40px; color: #9e9e9e; }
 
         @media (max-width: 600px) {
             .main-content { padding: 10px; }
@@ -488,15 +420,10 @@
             h1 { font-size: 20px; }
             .search-box { flex-direction: column; }
             .search-box button { width: 100%; }
-            .label { min-width: 90px; font-size: 13px; }
+            .label { min-width: 100px; font-size: 13px; }
             .nilai, .nilai-rangka { font-size: 13px; }
-            .indikator {
-                width: 30px; height: 30px;
-                font-size: 14px; margin-right: 10px;
-            }
-            .step:not(:last-child)::after {
-                left: 14px; top: 34px; height: 24px;
-            }
+            .indikator { width: 30px; height: 30px; font-size: 14px; margin-right: 10px; }
+            .step:not(:last-child)::after { left: 14px; top: 34px; height: 24px; }
             .nama-status { font-size: 13px; }
             .detail-status { font-size: 11px; }
             .panel-admin { padding: 15px; }
@@ -549,7 +476,7 @@
             <p class="admin-subtitle">Ubah status unit yang sedang ditampilkan</p>
             <div class="unit-terpilih" id="unitTerpilih">🔍 Silakan cari unit terlebih dahulu</div>
             <button class="btn-admin btn-maju" id="btnMaju" onclick="majuStatus()" disabled>⏭ Maju ke Tahap Berikutnya</button>
-            <button class="btn-admin btn-reset" id="btnReset" onclick="resetStatus()" disabled>🔄 Reset ke DR Created</button>
+            <button class="btn-admin btn-reset" id="btnReset" onclick="resetStatus()" disabled>🔄 Reset ke Belum DR</button>
             <button class="btn-admin btn-qr" id="btnQR" onclick="toggleQR()" disabled>✨ QR: ...</button>
             <button class="btn-admin btn-reset" onclick="logoutAdmin()" style="margin-top:10px;">🚪 Keluar dari Admin Mode</button>
         </div>
@@ -560,12 +487,10 @@
                     <input type="text" id="inputRangka" placeholder="Masukkan No. Rangka" maxlength="17">
                     <button onclick="cekStatus()">🔍 Cek Status</button>
                 </div>
-                <p class="search-hint">
-                    Contoh: <code>MHFAB1CJ2N1234567</code> · <code>MHFAB1CJ2N7654321</code> · <code>MHFAB1CJ2N9999999</code>
-                </p>
+                <p class="search-hint">Masukkan No. Rangka untuk melacak status pengiriman unit</p>
 
                 <div class="rvdc-banner" id="rvdcBanner">
-                    🚛 Unit sedang dalam perjalanan ke <strong>RVDC Ngoro</strong>. Progress pengiriman ke cabang akan muncul setelah unit tiba di RVDC.
+                    🚛 Unit sedang dalam perjalanan ke <strong>RVDC Ngoro</strong>.
                 </div>
 
                 <div class="info-unit" id="infoUnit">
@@ -594,13 +519,13 @@
                         <tr>
                             <th>No. Rangka</th>
                             <th>Cabang Tujuan</th>
+                            <th>Model</th>
                             <th>Status</th>
                             <th>Progress</th>
                             <th>Estimasi / Tanggal</th>
                         </tr>
                     </thead>
-                    <tbody id="dashboardBody">
-                    </tbody>
+                    <tbody id="dashboardBody"></tbody>
                 </table>
                 <div class="empty-state" id="emptyState">🏢 Silakan pilih cabang untuk melihat daftar unit.</div>
             </div>
@@ -613,67 +538,25 @@
         // =============================================
         const ADMIN_PIN = "1234";
         const SESI_DURASI = 30 * 60000;
+        // Ganti URL ini dengan URL publikasi Google Sheets CSV kamu
+        const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/11ZLdHW5gO4eVl6q3LIHASgMpEGemJGWmc6cjUf4ffsw/pub?gid=0&single=true&output=csv";
 
         // =============================================
-        // DATA DUMMY
+        // STATUS LIST (6 status: 0-5)
         // =============================================
-        const daftarUnit = [
-            {
-                rangka: "MHFAB1CJ2N1234567",
-                tujuan: "Cabang Jakarta Pusat",
-                status: 3,
-                perluReconditioning: false,
-                sedangKeRVDC: false,
-                tanggal: {
-                    drCreated: "15 Mar 2026",
-                    unitPreparation: "17 Mar 2026",
-                    inTransit: "19 Mar 2026",
-                    estimasiKirim: "20 Mar 2026",
-                    estimasiTiba: "22 Mar 2026"
-                }
-            },
-            {
-                rangka: "MHFAB1CJ2N7654321",
-                tujuan: "Cabang Bandung",
-                status: 2,
-                perluReconditioning: true,
-                sedangKeRVDC: true,
-                tanggal: {
-                    drCreated: "16 Mar 2026",
-                    unitPreparation: "18 Mar 2026",
-                    qrMulai: "19 Mar 2026",
-                    qrSelesai: "21 Mar 2026",
-                    estimasiKirim: "22 Mar 2026",
-                    estimasiTiba: "24 Mar 2026"
-                }
-            },
-            {
-                rangka: "MHFAB1CJ2N9999999",
-                tujuan: "Cabang Surabaya",
-                status: 4,
-                perluReconditioning: false,
-                sedangKeRVDC: false,
-                tanggal: {
-                    drCreated: "10 Mar 2026",
-                    unitPreparation: "12 Mar 2026",
-                    inTransit: "13 Mar 2026",
-                    estimasiKirim: "13 Mar 2026",
-                    estimasiTiba: "15 Mar 2026",
-                    delivered: "15 Mar 2026"
-                }
-            }
-        ];
-
         const statusList = [
-            { nama: "DR Created",       ikon: "📝", badgeClass: "badge-dr" },
-            { nama: "Unit Preparation", ikon: "🔧", badgeClass: "badge-prep" },
-            { nama: "In Transit",       ikon: "🚛", badgeClass: "badge-transit" },
-            { nama: "Delivered",        ikon: "✅", badgeClass: "badge-delivered" }
+            { nama: "Belum DR",              ikon: "⚪", badgeClass: "badge-0" },
+            { nama: "DR Created",            ikon: "📝", badgeClass: "badge-1" },
+            { nama: "On Preparation",        ikon: "🔧", badgeClass: "badge-2" },
+            { nama: "Quality Reconditioning",ikon: "✨", badgeClass: "badge-3" },
+            { nama: "In Transit",            ikon: "🚛", badgeClass: "badge-4" },
+            { nama: "Delivered",             ikon: "✅", badgeClass: "badge-5" }
         ];
 
         // =============================================
         // STATE
         // =============================================
+        let daftarUnit = [];
         let adminMode = false;
         let unitAktif = null;
         let cabangFilter = "";
@@ -681,18 +564,16 @@
         // =============================================
         // INISIALISASI
         // =============================================
-        function init() {
+        async function init() {
             cekSesiAdmin();
-            populateFilterCabang();
-            document.getElementById("dashboardBody").innerHTML = "";
             document.getElementById("emptyState").style.display = "block";
+            await fetchDataDariSheets();
         }
 
         function cekSesiAdmin() {
             const sesi = localStorage.getItem("trackora_admin_sesi");
             if (sesi) {
-                const waktuLogin = parseInt(sesi);
-                if (Date.now() - waktuLogin < SESI_DURASI) {
+                if (Date.now() - parseInt(sesi) < SESI_DURASI) {
                     adminMode = true;
                     updateUIAdmin();
                 } else {
@@ -701,8 +582,113 @@
             }
         }
 
+        // =============================================
+        // FETCH DATA DARI GOOGLE SHEETS CSV
+        // =============================================
+        async function fetchDataDariSheets() {
+            try {
+                const response = await fetch(SHEETS_CSV_URL);
+                const csvText = await response.text();
+                daftarUnit = parseCSV(csvText);
+                console.log("✅ Data dari Google Sheets: " + daftarUnit.length + " unit");
+                populateFilterCabang();
+            } catch (error) {
+                console.error("❌ Gagal fetch data:", error);
+                // Fallback ke data dummy jika gagal
+                daftarUnit = getDataDummy();
+                populateFilterCabang();
+            }
+        }
+
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split("\n");
+            if (lines.length < 2) return [];
+            
+            const headers = lines[0].split(",").map(h => h.trim());
+            const result = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = parseCSVLine(lines[i]);
+                if (values.length < headers.length) continue;
+                
+                const unit = {
+                    rangka: values[0]?.trim() || "",
+                    tujuan: values[1]?.trim() || "",
+                    model: values[2]?.trim() || "",
+                    warna: values[3]?.trim() || "",
+                    areaProcess: values[4]?.trim() || "",
+                    permintaanSampaiCabang: values[5]?.trim() || "",
+                    drCreated: values[6]?.trim() || "",
+                    etaRVDC: values[7]?.trim() || "",
+                    qrSelesai: values[8]?.trim() || "",
+                    trueDestination: values[9]?.trim() || "",
+                    estimasiKirim: values[10]?.trim() || "",
+                    sedangKeRVDC: values[11]?.trim()?.toUpperCase() === "TRUE",
+                    inTransit: values[12]?.trim() || "",
+                    delivered: values[13]?.trim() || "",
+                    status: parseInt(values[14]?.trim()) || 0
+                };
+                result.push(unit);
+            }
+            return result;
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = "";
+            let inQuotes = false;
+            for (let char of line) {
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = "";
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current);
+            return result;
+        }
+
+        function getDataDummy() {
+            return [
+                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, perluReconditioning: false, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026", estimasiTiba: "22 Mar 2026" },
+                { rangka: "MHFAB1CJ2N7654321", tujuan: "Cabang Bandung", model: "Innova", warna: "Hitam", status: 3, perluReconditioning: true, sedangKeRVDC: true, drCreated: "16 Mar 2026", qrSelesai: "21 Mar 2026", estimasiKirim: "22 Mar 2026" },
+                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, perluReconditioning: false, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026" }
+            ];
+        }
+
+        // =============================================
+        // HELPER: Apakah unit melewati QR?
+        // =============================================
+        function pernahQR(unit) {
+            return unit.status >= 3 && (unit.qrSelesai || unit.status === 3);
+        }
+
+        function getProgressSteps(unit) {
+            // Base steps (tanpa QR)
+            let steps = [
+                { label: "Belum DR",              icon: "⚪", key: "drCreated" },
+                { label: "DR Created",            icon: "📝", key: "drCreated" },
+                { label: "On Preparation",        icon: "🔧", key: "estimasiKirim" },
+                { label: "In Transit",            icon: "🚛", key: "inTransit" },
+                { label: "Delivered",             icon: "✅", key: "delivered" }
+            ];
+            
+            // Jika unit pernah/sedang QR, sisipkan QR step setelah Preparation
+            if (pernahQR(unit)) {
+                steps.splice(3, 0, { label: "Quality Reconditioning", icon: "✨", key: "qrSelesai" });
+            }
+            
+            return steps;
+        }
+
+        // =============================================
+        // POPULATE FILTER CABANG
+        // =============================================
         function populateFilterCabang() {
-            const cabangSet = new Set(daftarUnit.map(u => u.tujuan));
+            const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
             const select = document.getElementById("filterCabang");
             select.innerHTML = '<option value="">-- Pilih Cabang --</option><option value="__semua__">Semua Cabang</option>';
             cabangSet.forEach(cabang => {
@@ -713,12 +699,12 @@
             });
         }
 
+        // =============================================
+        // GANTI TAB
+        // =============================================
         function gantiTab(tab) {
-            document.getElementById("btnTabLacak").classList.remove("active");
-            document.getElementById("btnTabDashboard").classList.remove("active");
-            document.getElementById("tabLacak").classList.remove("active");
-            document.getElementById("tabDashboard").classList.remove("active");
-
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
             if (tab === "lacak") {
                 document.getElementById("btnTabLacak").classList.add("active");
                 document.getElementById("tabLacak").classList.add("active");
@@ -735,18 +721,21 @@
         }
 
         function dapatkanUnitTerfilter() {
-            if (cabangFilter === "" || cabangFilter === null) return [];
+            if (!cabangFilter) return [];
             if (cabangFilter === "__semua__") return daftarUnit;
             return daftarUnit.filter(u => u.tujuan === cabangFilter);
         }
 
+        // =============================================
+        // RENDER DASHBOARD
+        // =============================================
         function renderDashboard() {
             const filtered = dapatkanUnitTerfilter();
             const tbody = document.getElementById("dashboardBody");
             const empty = document.getElementById("emptyState");
             const filterInfo = document.getElementById("filterInfo");
 
-            if (cabangFilter === "") {
+            if (!cabangFilter) {
                 tbody.innerHTML = "";
                 empty.style.display = "block";
                 empty.textContent = "🏢 Silakan pilih cabang untuk melihat daftar unit.";
@@ -754,11 +743,7 @@
                 return;
             }
 
-            if (cabangFilter === "__semua__") {
-                filterInfo.textContent = `(Total: ${filtered.length} unit)`;
-            } else {
-                filterInfo.textContent = `(${filtered.length} unit di ${cabangFilter})`;
-            }
+            filterInfo.textContent = cabangFilter === "__semua__" ? `(Total: ${filtered.length} unit)` : `(${filtered.length} unit di ${cabangFilter})`;
 
             if (filtered.length === 0) {
                 tbody.innerHTML = "";
@@ -770,30 +755,28 @@
 
             let html = "";
             for (let unit of filtered) {
-                const st = statusList[unit.status - 1];
+                const st = statusList[unit.status];
+                const steps = getProgressSteps(unit);
                 let dots = "";
-                for (let i = 0; i < 4; i++) {
-                    if (i > 0) dots += `<div class="line-mini ${i <= unit.status - 1 ? 'selesai' : ''}"></div>`;
+                for (let i = 0; i < steps.length; i++) {
+                    if (i > 0) dots += `<div class="line-mini ${i <= unit.status ? 'selesai' : ''}"></div>`;
                     let dotClass = "";
-                    if (i + 1 < unit.status) dotClass = "selesai";
-                    else if (i + 1 === unit.status) dotClass = "aktif";
+                    if (i < unit.status) dotClass = "selesai";
+                    else if (i === unit.status) dotClass = "aktif";
                     dots += `<div class="dot-mini ${dotClass}"></div>`;
                 }
-                let infoTanggal = "";
-                if (unit.status === 1) infoTanggal = unit.tanggal.drCreated;
-                else if (unit.status === 2) {
-                    if (unit.perluReconditioning && unit.tanggal.qrMulai) infoTanggal = "QR selesai: " + (unit.tanggal.qrSelesai || "-");
-                    else infoTanggal = unit.tanggal.unitPreparation;
-                } else if (unit.status === 3) infoTanggal = "Estimasi tiba: " + (unit.tanggal.estimasiTiba || "-");
-                else if (unit.status === 4) infoTanggal = "Selesai: " + unit.tanggal.delivered;
+                
+                let infoTanggal = unit.estimasiKirim || unit.drCreated || "-";
+                if (unit.status === 4) infoTanggal = "In Transit: " + (unit.inTransit || "-");
+                if (unit.status === 5) infoTanggal = "Delivered: " + (unit.delivered || "-");
 
-                let statusTambahan = "";
-                if (unit.status === 2 && unit.perluReconditioning) statusTambahan = " (QR)";
+                let statusTambahan = unit.status === 3 ? " (QR)" : "";
 
                 html += `
                     <tr onclick="lihatDariDashboard('${unit.rangka}')">
                         <td class="td-rangka">🚗 ${unit.rangka}</td>
                         <td>📍 ${unit.tujuan}</td>
+                        <td>${unit.model || "-"}</td>
                         <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}${statusTambahan}</span></td>
                         <td><div class="progress-mini">${dots}</div></td>
                         <td style="font-size:12px;color:#757575;">${infoTanggal}</td>
@@ -811,33 +794,35 @@
         }
 
         // =============================================
-        // TOGGLE QR
+        // TOGGLE QR (hanya dari Preparation → QR)
         // =============================================
         function toggleQR() {
             if (!adminMode || !unitAktif || unitAktif.status !== 2) return;
             const sekarang = new Date();
             const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
             const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
+            const jamStr = sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
 
-            if (unitAktif.perluReconditioning) {
-                unitAktif.perluReconditioning = false;
-                unitAktif.tanggal.qrSelesai = tglStr;
-                tampilkanNotif("✅ Quality Reconditioning selesai.");
+            if (unitAktif.status === 3) {
+                unitAktif.status = 2;
+                unitAktif.qrSelesai = undefined;
+                tampilkanNotif("✅ QR dibatalkan. Unit kembali ke Preparation.");
             } else {
-                unitAktif.perluReconditioning = true;
-                unitAktif.tanggal.qrMulai = tglStr;
-                // Set estimasi selesai 2 hari setelah mulai
+                unitAktif.status = 3;
                 const tglSelesai = new Date(sekarang);
                 tglSelesai.setDate(tglSelesai.getDate() + 2);
-                unitAktif.tanggal.qrSelesai = tglSelesai.getDate() + " " + bulan[tglSelesai.getMonth()] + " " + tglSelesai.getFullYear();
-                tampilkanNotif("✨ Quality Reconditioning dimulai. Estimasi selesai: " + unitAktif.tanggal.qrSelesai);
+                unitAktif.qrSelesai = tglSelesai.getDate() + " " + bulan[tglSelesai.getMonth()] + " " + tglSelesai.getFullYear();
+                tampilkanNotif("✨ QR dimulai. Estimasi selesai: " + unitAktif.qrSelesai);
             }
             updatePanelAdmin();
             tampilkanProgress(unitAktif);
             renderDashboard();
         }
 
-        function toggleAdmin() { if (adminMode) logoutAdmin(); else tampilkanPopupLogin(); }
+        // =============================================
+        // ADMIN MODE
+        // =============================================
+        function toggleAdmin() { adminMode ? logoutAdmin() : tampilkanPopupLogin(); }
         function tampilkanPopupLogin() {
             document.getElementById("overlayLogin").classList.add("show");
             document.getElementById("inputPIN").value = "";
@@ -891,19 +876,18 @@
                 unitTerpilih.innerHTML = "🔍 Silakan cari unit terlebih dahulu";
                 btnMaju.disabled = true; btnReset.disabled = true; btnQR.disabled = true;
                 btnQR.textContent = "✨ QR: ...";
-                btnQR.classList.remove("selesai-qr");
                 return;
             }
 
-            const st = statusList[unitAktif.status - 1];
-            unitTerpilih.innerHTML = `📋 <span>${unitAktif.rangka}</span> — ${unitAktif.tujuan}<br>Status: <strong>${st.ikon} ${st.nama}</strong> (Tahap ${unitAktif.status}/4)`;
+            const st = statusList[unitAktif.status];
+            unitTerpilih.innerHTML = `📋 <span>${unitAktif.rangka}</span> — ${unitAktif.tujuan}<br>Status: <strong>${st.ikon} ${st.nama}</strong> (${unitAktif.status}/5)`;
 
-            btnMaju.disabled = (unitAktif.status >= 4);
-            btnReset.disabled = (unitAktif.status <= 1);
+            btnMaju.disabled = (unitAktif.status >= 5);
+            btnReset.disabled = (unitAktif.status <= 0);
 
-            if (unitAktif.status === 2) {
+            if (unitAktif.status === 2 || unitAktif.status === 3) {
                 btnQR.disabled = false;
-                if (unitAktif.perluReconditioning) {
+                if (unitAktif.status === 3) {
                     btnQR.textContent = "✅ Selesaikan QR";
                     btnQR.classList.add("selesai-qr");
                 } else {
@@ -917,45 +901,43 @@
             }
         }
 
+        // =============================================
+        // MAJU / RESET STATUS
+        // =============================================
         function majuStatus() {
-            if (!adminMode || !unitAktif || unitAktif.status >= 4) return;
+            if (!adminMode || !unitAktif || unitAktif.status >= 5) return;
             const sekarang = new Date();
             const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
-            const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
+            const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear() + " " + 
+                           sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
 
             unitAktif.status++;
-            if (unitAktif.status === 2) unitAktif.tanggal.unitPreparation = tglStr;
-            else if (unitAktif.status === 3) {
-                unitAktif.tanggal.inTransit = tglStr;
-                unitAktif.tanggal.estimasiTiba = "dalam 2-3 hari";
-            } else if (unitAktif.status === 4) unitAktif.tanggal.delivered = tglStr;
+            
+            if (unitAktif.status === 1) unitAktif.drCreated = tglStr;
+            else if (unitAktif.status === 2) unitAktif.estimasiKirim = tglStr;
+            else if (unitAktif.status === 4) unitAktif.inTransit = tglStr;
+            else if (unitAktif.status === 5) unitAktif.delivered = tglStr;
 
-            if (unitAktif.status === 3) unitAktif.perluReconditioning = false;
+            if (unitAktif.status === 4) unitAktif.status = 4; // lewati QR jika tidak ada
 
             tampilkanProgress(unitAktif);
             updatePanelAdmin();
             renderDashboard();
-            tampilkanNotif("✅ Status dimajukan ke: " + statusList[unitAktif.status - 1].nama);
+            tampilkanNotif("✅ Status dimajukan ke: " + statusList[unitAktif.status].nama);
         }
 
         function resetStatus() {
-            if (!adminMode || !unitAktif || unitAktif.status <= 1) return;
-            unitAktif.status = 1;
-            const sekarang = new Date();
-            const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
-            unitAktif.tanggal.drCreated = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
-            delete unitAktif.tanggal.unitPreparation;
-            delete unitAktif.tanggal.inTransit;
-            delete unitAktif.tanggal.estimasiKirim;
-            delete unitAktif.tanggal.estimasiTiba;
-            delete unitAktif.tanggal.delivered;
-            delete unitAktif.tanggal.qrMulai;
-            delete unitAktif.tanggal.qrSelesai;
-            unitAktif.perluReconditioning = false;
+            if (!adminMode || !unitAktif || unitAktif.status <= 0) return;
+            unitAktif.status = 0;
+            unitAktif.drCreated = "";
+            unitAktif.estimasiKirim = "";
+            unitAktif.qrSelesai = "";
+            unitAktif.inTransit = "";
+            unitAktif.delivered = "";
             tampilkanProgress(unitAktif);
             updatePanelAdmin();
             renderDashboard();
-            tampilkanNotif("🔄 Status di-reset ke DR Created");
+            tampilkanNotif("🔄 Status di-reset ke Belum DR");
         }
 
         function tampilkanNotif(pesan) {
@@ -965,17 +947,30 @@
             setTimeout(() => notif.classList.remove("show"), 3000);
         }
 
+        // =============================================
+        // FORMAT TANGGAL FLEKSIBEL
+        // =============================================
+        function formatTanggalFlex(tglStr) {
+            if (!tglStr) return "-";
+            // Kembalikan apa adanya (bisa tanggal saja atau tanggal+jam)
+            return tglStr;
+        }
+
+        // =============================================
+        // CEK STATUS
+        // =============================================
         function cekStatus() {
             const input = document.getElementById("inputRangka").value.trim();
             document.getElementById("errorMsg").classList.remove("show");
             document.getElementById("infoUnit").classList.remove("show");
             document.getElementById("rvdcBanner").classList.remove("show");
 
-            if (input === "") {
+            if (!input) {
                 document.getElementById("errorMsg").textContent = "⚠️ Silakan masukkan No. Rangka.";
                 document.getElementById("errorMsg").classList.add("show");
                 unitAktif = null; updatePanelAdmin(); return;
             }
+            
             const unitDitemukan = daftarUnit.find(u => u.rangka.toLowerCase() === input.toLowerCase());
             if (!unitDitemukan) {
                 document.getElementById("errorMsg").textContent = "⚠️ No. Rangka tidak ditemukan.";
@@ -996,28 +991,32 @@
         }
 
         function tampilkanDetailUnit(unit) {
-            let estimasi = unit.tanggal.estimasiKirim || "Belum tersedia";
             let html = `
                 <p><span class="label">No. Rangka</span> <span class="nilai-rangka">${unit.rangka}</span></p>
-                <p><span class="label">Tujuan</span> <span class="nilai">${unit.tujuan}</span></p>
-                <p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${estimasi}</span></p>
+                <p><span class="label">Tujuan</span> <span class="nilai">${unit.trueDestination || unit.tujuan}</span></p>
+                <p><span class="label">Model</span> <span class="nilai">${unit.model || "-"}</span></p>
+                <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
+                <p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>
             `;
-            if (unit.perluReconditioning && unit.status === 2) {
-                html += `<p style="color:#e65100;font-size:13px;">✨ Sedang Quality Reconditioning — Estimasi selesai: ${unit.tanggal.qrSelesai || "dalam proses"}</p>`;
+            if (unit.status === 3 && unit.qrSelesai) {
+                html += `<p style="color:#e65100;font-size:13px;">✨ Sedang Quality Reconditioning — Estimasi selesai: ${formatTanggalFlex(unit.qrSelesai)}</p>`;
             }
             document.getElementById("detailUnit").innerHTML = html;
         }
 
         function tampilkanProgress(unit) {
+            const steps = getProgressSteps(unit);
             let html = "";
-            for (let i = 0; i < statusList.length; i++) {
-                let kelasStep = "", kelasIndikator = "", isiIndikator = "", kelasTeks = "", detailTeks = "";
-                if (i + 1 < unit.status) {
+            
+            for (let i = 0; i < steps.length; i++) {
+                let kelasStep = "", kelasIndikator = "", isiIndikator = "", kelasTeks = "";
+                
+                if (i < unit.status) {
                     kelasStep = "selesai";
                     kelasIndikator = "indikator-selesai";
                     isiIndikator = "✓";
                     kelasTeks = "teks-selesai";
-                } else if (i + 1 === unit.status) {
+                } else if (i === unit.status) {
                     kelasStep = "aktif";
                     kelasIndikator = "indikator-aktif";
                     isiIndikator = "●";
@@ -1027,16 +1026,14 @@
                     isiIndikator = "○";
                     kelasTeks = "teks-menunggu";
                 }
-                detailTeks = dapatkanDetailStatus(unit, i);
-                let namaStatus = statusList[i].ikon + " " + statusList[i].nama;
-                if (i === 1 && unit.status === 2 && unit.perluReconditioning) {
-                    namaStatus += " (Quality Reconditioning)";
-                }
+                
+                let detailTeks = dapatkanDetailStatus(unit, i, steps);
+                
                 html += `
                     <div class="step ${kelasStep}">
                         <div class="indikator ${kelasIndikator}">${isiIndikator}</div>
                         <div class="teks-status ${kelasTeks}">
-                            <p class="nama-status">${namaStatus}</p>
+                            <p class="nama-status">${steps[i].icon} ${steps[i].label}</p>
                             <p class="detail-status">${detailTeks}</p>
                         </div>
                     </div>
@@ -1045,27 +1042,28 @@
             document.getElementById("progressContainer").innerHTML = html;
         }
 
-        function dapatkanDetailStatus(unit, index) {
-            const t = unit.tanggal;
-            switch(index) {
-                case 0: return `Delivery Request dibuat — ${t.drCreated || "-"}`;
-                case 1:
-                    if (unit.status > 2) return `Persiapan selesai — ${t.unitPreparation || "-"}`;
-                    else if (unit.status === 2) {
-                        if (unit.perluReconditioning && t.qrMulai) return `Estimasi selesai rekondisi kualitas ${t.qrSelesai || "dalam proses"}`;
-                        else return `Sedang dipersiapkan — ${t.unitPreparation || "-"}`;
-                    } else return `Menunggu persiapan`;
-                case 2:
-                    if (unit.status > 3) return `Unit telah tiba — ${t.delivered}`;
-                    else if (unit.status === 3) return `Dalam perjalanan — ${t.inTransit || "-"}. Estimasi tiba ${t.estimasiTiba || "-"}`;
-                    else return `Menunggu pengiriman`;
-                case 3:
-                    if (unit.status === 4) return `Unit tiba di cabang — ${t.delivered}`;
-                    else return `Menunggu konfirmasi`;
-                default: return "";
+        function dapatkanDetailStatus(unit, index, steps) {
+            const key = steps[index]?.key;
+            switch(key) {
+                case "drCreated":
+                    if (index === 0) return unit.drCreated ? `DR sudah dibuat — ${formatTanggalFlex(unit.drCreated)}` : "Menunggu DR";
+                    return unit.drCreated ? `DR dibuat — ${formatTanggalFlex(unit.drCreated)}` : "Menunggu DR";
+                case "estimasiKirim":
+                    return unit.estimasiKirim ? `Estimasi kirim — ${formatTanggalFlex(unit.estimasiKirim)}` : "Menunggu estimasi";
+                case "qrSelesai":
+                    return unit.qrSelesai ? `Estimasi selesai — ${formatTanggalFlex(unit.qrSelesai)}` : "Sedang proses";
+                case "inTransit":
+                    return unit.inTransit ? `Dalam perjalanan — ${formatTanggalFlex(unit.inTransit)}` : "Menunggu pengiriman";
+                case "delivered":
+                    return unit.delivered ? `Unit tiba — ${formatTanggalFlex(unit.delivered)}` : "Menunggu konfirmasi";
+                default:
+                    return "";
             }
         }
 
+        // =============================================
+        // EVENT LISTENERS
+        // =============================================
         document.getElementById("inputRangka").addEventListener("keypress", e => { if (e.key === "Enter") cekStatus(); });
         document.getElementById("inputPIN").addEventListener("keypress", e => { if (e.key === "Enter") verifikasiPIN(); });
         document.getElementById("overlayLogin").addEventListener("click", function(e) { if (e.target === this) batalLogin(); });
