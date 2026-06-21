@@ -363,21 +363,19 @@
             display: block;
         }
 
-        /* Filter bar layout: label di atas, field di bawah, center align */
+        /* Filter bar – LAPTOP: label di atas, field bawah, horizontal wrap, center */
         .filter-bar {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 15px;
-            align-items: center;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: center;
         }
         .filter-group {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            width: 100%;
-            max-width: 300px;
+            gap: 3px;
         }
         .filter-group label {
             font-size: 12px;
@@ -387,14 +385,13 @@
         }
         .filter-group input,
         .filter-group select {
-            width: 100%;
             padding: 8px 12px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 13px;
             outline: none;
+            min-width: 150px;
             text-align: center;
-            transition: border-color 0.3s;
         }
         .filter-group input:focus,
         .filter-group select:focus { border-color: #1565c0; }
@@ -412,9 +409,10 @@
             background-color: #f5f5f5;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             color: #757575;
+            height: fit-content;
             align-self: flex-end;
         }
 
@@ -468,6 +466,7 @@
             display: block;
         }
 
+        /* MOBILE: label di atas, field full width, tidak dua kolom */
         @media (max-width: 600px) {
             .main-content { padding: 10px; }
             .kartu { padding: 20px; }
@@ -482,8 +481,24 @@
             .tab-btn { padding: 10px 15px; font-size: 14px; }
             table.dashboard-table { font-size: 12px; }
             table.dashboard-table th, table.dashboard-table td { padding: 8px 10px; }
+
+            .filter-bar {
+                justify-content: center;
+                gap: 12px;
+            }
             .filter-group {
+                width: 100%;
                 max-width: 100%;
+                flex: 1 1 auto;
+            }
+            .filter-group input,
+            .filter-group select {
+                min-width: 0;
+                width: 100%;
+            }
+            .btn-reset-filter {
+                align-self: stretch;
+                text-align: center;
             }
         }
     </style>
