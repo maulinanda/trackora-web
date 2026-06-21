@@ -208,6 +208,20 @@
         }
         .rvdc-banner.show { display: block; }
 
+        .no-dr-banner {
+            background-color: #fafafa;
+            border-left: 4px solid #9e9e9e;
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #616161;
+            display: none;
+            text-align: center;
+        }
+        .no-dr-banner.show { display: block; }
+        .no-dr-banner .no-dr-icon { font-size: 36px; margin-bottom: 8px; }
+
         .error-msg {
             background-color: #fff3f3;
             border: 1px solid #ffcdd2;
@@ -297,7 +311,6 @@
             letter-spacing: 0.5px;
         }
         .estimasi-besar { font-weight: 700; color: #1565c0; font-size: 16px; }
-        .detail-extra { font-size: 13px; color: #757575; margin-top: 2px; }
 
         .progress-title { font-weight: 700; color: #333; margin-bottom: 20px; font-size: 16px; }
         .progress-container { margin: 10px 0; }
@@ -327,7 +340,8 @@
 
         .teks-status { flex: 1; }
         .nama-status { font-weight: 600; margin: 0; font-size: 15px; }
-        .detail-status { margin: 3px 0 0 0; font-size: 13px; color: #757575; }
+        .detail-status { margin: 3px 0 0 0; font-size: 13px; color: #757575; display: none; }
+        .teks-aktif .detail-status { display: block; }
         .teks-selesai .nama-status { color: #2e7d32; }
         .teks-aktif .nama-status { color: #1565c0; }
         .teks-menunggu .nama-status { color: #bdbdbd; }
@@ -341,6 +355,19 @@
         }
         .step.selesai:not(:last-child)::after { background-color: #2e7d32; }
         .step.aktif:not(:last-child)::after { background-color: #e0e0e0; }
+
+        /* QR Sub-step */
+        .qr-substep {
+            margin-left: 51px;
+            padding: 8px 12px;
+            background-color: #fff8e1;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e65100;
+            margin-bottom: 8px;
+            display: none;
+        }
+        .qr-substep.show { display: block; }
 
         .footer-note {
             margin-top: 25px;
@@ -432,6 +459,7 @@
             .tab-btn { padding: 10px 15px; font-size: 14px; }
             table.dashboard-table { font-size: 12px; }
             table.dashboard-table th, table.dashboard-table td { padding: 8px 10px; }
+            .qr-substep { margin-left: 40px; }
         }
     </style>
 </head>
@@ -493,6 +521,12 @@
                     🚛 Unit sedang dalam perjalanan ke <strong>RVDC Ngoro</strong>.
                 </div>
 
+                <div class="no-dr-banner" id="noDrBanner">
+                    <div class="no-dr-icon">📋</div>
+                    <strong>Unit belum memiliki Delivery Request (DR).</strong><br>
+                    <span style="font-size:12px;">Progress pengiriman akan muncul setelah DR dibuat.</span>
+                </div>
+
                 <div class="info-unit" id="infoUnit">
                     <div id="detailUnit"></div>
                     <hr>
@@ -538,12 +572,8 @@
         // =============================================
         const ADMIN_PIN = "1234";
         const SESI_DURASI = 30 * 60000;
-        // Ganti URL ini dengan URL publikasi Google Sheets CSV kamu
         const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKAaGXzzufPDknUNGa1u3sEEt_Py0lUS8PJKslvYt7b5Y5IgzklmLg10BkIz3uStTbR83hjinxZc7V/pub?gid=0&single=true&output=csv";
 
-        // =============================================
-        // STATUS LIST (6 status: 0-5)
-        // =============================================
         const statusList = [
             { nama: "Belum DR",              ikon: "⚪", badgeClass: "badge-0" },
             { nama: "DR Created",            ikon: "📝", badgeClass: "badge-1" },
@@ -553,9 +583,6 @@
             { nama: "Delivered",             ikon: "✅", badgeClass: "badge-5" }
         ];
 
-        // =============================================
-        // STATE
-        // =============================================
         let daftarUnit = [];
         let adminMode = false;
         let unitAktif = null;
@@ -582,9 +609,6 @@
             }
         }
 
-        // =============================================
-        // FETCH DATA DARI GOOGLE SHEETS CSV
-        // =============================================
         async function fetchDataDariSheets() {
             try {
                 const response = await fetch(SHEETS_CSV_URL);
@@ -594,7 +618,6 @@
                 populateFilterCabang();
             } catch (error) {
                 console.error("❌ Gagal fetch data:", error);
-                // Fallback ke data dummy jika gagal
                 daftarUnit = getDataDummy();
                 populateFilterCabang();
             }
@@ -603,15 +626,12 @@
         function parseCSV(csvText) {
             const lines = csvText.trim().split("\n");
             if (lines.length < 2) return [];
-            
             const headers = lines[0].split(",").map(h => h.trim());
             const result = [];
-            
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
                 if (values.length < headers.length) continue;
-                
-                const unit = {
+                result.push({
                     rangka: values[0]?.trim() || "",
                     tujuan: values[1]?.trim() || "",
                     model: values[2]?.trim() || "",
@@ -627,8 +647,7 @@
                     inTransit: values[12]?.trim() || "",
                     delivered: values[13]?.trim() || "",
                     status: parseInt(values[14]?.trim()) || 0
-                };
-                result.push(unit);
+                });
             }
             return result;
         }
@@ -638,14 +657,9 @@
             let current = "";
             let inQuotes = false;
             for (let char of line) {
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
-                    result.push(current);
-                    current = "";
-                } else {
-                    current += char;
-                }
+                if (char === '"') { inQuotes = !inQuotes; }
+                else if (char === ',' && !inQuotes) { result.push(current); current = ""; }
+                else { current += char; }
             }
             result.push(current);
             return result;
@@ -653,40 +667,32 @@
 
         function getDataDummy() {
             return [
-                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, perluReconditioning: false, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026", estimasiTiba: "22 Mar 2026" },
-                { rangka: "MHFAB1CJ2N7654321", tujuan: "Cabang Bandung", model: "Innova", warna: "Hitam", status: 3, perluReconditioning: true, sedangKeRVDC: true, drCreated: "16 Mar 2026", qrSelesai: "21 Mar 2026", estimasiKirim: "22 Mar 2026" },
-                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, perluReconditioning: false, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026" }
+                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026" },
+                { rangka: "MHFAB1CJ2N7654321", tujuan: "Cabang Bandung", model: "Innova", warna: "Hitam", status: 3, sedangKeRVDC: true, drCreated: "16 Mar 2026", qrSelesai: "21 Mar 2026", estimasiKirim: "22 Mar 2026" },
+                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026" }
             ];
         }
 
         // =============================================
-        // HELPER: Apakah unit melewati QR?
+        // HELPER: Progress steps (0-5 mapping ke tampilan)
         // =============================================
-        function pernahQR(unit) {
-            return unit.status >= 3 && (unit.qrSelesai || unit.status === 3);
-        }
-
-        function getProgressSteps(unit) {
-            // Base steps (tanpa QR)
-            let steps = [
-                { label: "Belum DR",              icon: "⚪", key: "drCreated" },
-                { label: "DR Created",            icon: "📝", key: "drCreated" },
-                { label: "On Preparation",        icon: "🔧", key: "estimasiKirim" },
-                { label: "In Transit",            icon: "🚛", key: "inTransit" },
-                { label: "Delivered",             icon: "✅", key: "delivered" }
+        function getProgressDisplay(unit) {
+            // Base 4 steps (DR Created, Preparation, In Transit, Delivered)
+            const steps = [
+                { label: "DR Created",     icon: "📝", statusNum: 1 },
+                { label: "On Preparation", icon: "🔧", statusNum: 2 },
+                { label: "In Transit",     icon: "🚛", statusNum: 4 },
+                { label: "Delivered",      icon: "✅", statusNum: 5 }
             ];
             
-            // Jika unit pernah/sedang QR, sisipkan QR step setelah Preparation
-            if (pernahQR(unit)) {
-                steps.splice(3, 0, { label: "Quality Reconditioning", icon: "✨", key: "qrSelesai" });
+            // Sisipkan QR setelah Preparation jika unit pernah/sedang QR
+            if (unit.status >= 3 && (unit.qrSelesai || unit.status === 3)) {
+                steps.splice(2, 0, { label: "Quality Reconditioning", icon: "✨", statusNum: 3, isQR: true });
             }
             
             return steps;
         }
 
-        // =============================================
-        // POPULATE FILTER CABANG
-        // =============================================
         function populateFilterCabang() {
             const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
             const select = document.getElementById("filterCabang");
@@ -699,9 +705,6 @@
             });
         }
 
-        // =============================================
-        // GANTI TAB
-        // =============================================
         function gantiTab(tab) {
             document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
             document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
@@ -726,9 +729,6 @@
             return daftarUnit.filter(u => u.tujuan === cabangFilter);
         }
 
-        // =============================================
-        // RENDER DASHBOARD
-        // =============================================
         function renderDashboard() {
             const filtered = dapatkanUnitTerfilter();
             const tbody = document.getElementById("dashboardBody");
@@ -756,28 +756,27 @@
             let html = "";
             for (let unit of filtered) {
                 const st = statusList[unit.status];
-                const steps = getProgressSteps(unit);
+                const steps = getProgressDisplay(unit);
                 let dots = "";
                 for (let i = 0; i < steps.length; i++) {
-                    if (i > 0) dots += `<div class="line-mini ${i <= unit.status ? 'selesai' : ''}"></div>`;
+                    if (i > 0) dots += `<div class="line-mini ${unit.status >= steps[i].statusNum ? 'selesai' : ''}"></div>`;
                     let dotClass = "";
-                    if (i < unit.status) dotClass = "selesai";
-                    else if (i === unit.status) dotClass = "aktif";
+                    if (unit.status > steps[i].statusNum) dotClass = "selesai";
+                    else if (unit.status === steps[i].statusNum) dotClass = "aktif";
                     dots += `<div class="dot-mini ${dotClass}"></div>`;
                 }
                 
                 let infoTanggal = unit.estimasiKirim || unit.drCreated || "-";
                 if (unit.status === 4) infoTanggal = "In Transit: " + (unit.inTransit || "-");
                 if (unit.status === 5) infoTanggal = "Delivered: " + (unit.delivered || "-");
-
-                let statusTambahan = unit.status === 3 ? " (QR)" : "";
+                if (unit.status === 3) infoTanggal = "QR selesai: " + (unit.qrSelesai || "-");
 
                 html += `
                     <tr onclick="lihatDariDashboard('${unit.rangka}')">
                         <td class="td-rangka">🚗 ${unit.rangka}</td>
                         <td>📍 ${unit.tujuan}</td>
                         <td>${unit.model || "-"}</td>
-                        <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}${statusTambahan}</span></td>
+                        <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td>
                         <td><div class="progress-mini">${dots}</div></td>
                         <td style="font-size:12px;color:#757575;">${infoTanggal}</td>
                     </tr>
@@ -794,10 +793,10 @@
         }
 
         // =============================================
-        // TOGGLE QR (hanya dari Preparation → QR)
+        // TOGGLE QR
         // =============================================
         function toggleQR() {
-            if (!adminMode || !unitAktif || unitAktif.status !== 2) return;
+            if (!adminMode || !unitAktif || (unitAktif.status !== 2 && unitAktif.status !== 3)) return;
             const sekarang = new Date();
             const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
             const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear();
@@ -805,7 +804,7 @@
 
             if (unitAktif.status === 3) {
                 unitAktif.status = 2;
-                unitAktif.qrSelesai = undefined;
+                unitAktif.qrSelesai = "";
                 tampilkanNotif("✅ QR dibatalkan. Unit kembali ke Preparation.");
             } else {
                 unitAktif.status = 3;
@@ -819,9 +818,6 @@
             renderDashboard();
         }
 
-        // =============================================
-        // ADMIN MODE
-        // =============================================
         function toggleAdmin() { adminMode ? logoutAdmin() : tampilkanPopupLogin(); }
         function tampilkanPopupLogin() {
             document.getElementById("overlayLogin").classList.add("show");
@@ -901,9 +897,6 @@
             }
         }
 
-        // =============================================
-        // MAJU / RESET STATUS
-        // =============================================
         function majuStatus() {
             if (!adminMode || !unitAktif || unitAktif.status >= 5) return;
             const sekarang = new Date();
@@ -911,14 +904,19 @@
             const tglStr = sekarang.getDate() + " " + bulan[sekarang.getMonth()] + " " + sekarang.getFullYear() + " " + 
                            sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
 
-            unitAktif.status++;
+            // Lompat dari 3 (QR) ke 4 (In Transit), atau 2 ke 4 jika tidak QR
+            if (unitAktif.status === 2) {
+                unitAktif.status = (unitAktif.qrSelesai) ? 3 : 4;
+            } else if (unitAktif.status === 3) {
+                unitAktif.status = 4;
+            } else {
+                unitAktif.status++;
+            }
             
             if (unitAktif.status === 1) unitAktif.drCreated = tglStr;
             else if (unitAktif.status === 2) unitAktif.estimasiKirim = tglStr;
             else if (unitAktif.status === 4) unitAktif.inTransit = tglStr;
             else if (unitAktif.status === 5) unitAktif.delivered = tglStr;
-
-            if (unitAktif.status === 4) unitAktif.status = 4; // lewati QR jika tidak ada
 
             tampilkanProgress(unitAktif);
             updatePanelAdmin();
@@ -947,13 +945,8 @@
             setTimeout(() => notif.classList.remove("show"), 3000);
         }
 
-        // =============================================
-        // FORMAT TANGGAL FLEKSIBEL
-        // =============================================
         function formatTanggalFlex(tglStr) {
-            if (!tglStr) return "-";
-            // Kembalikan apa adanya (bisa tanggal saja atau tanggal+jam)
-            return tglStr;
+            return tglStr || "-";
         }
 
         // =============================================
@@ -964,6 +957,7 @@
             document.getElementById("errorMsg").classList.remove("show");
             document.getElementById("infoUnit").classList.remove("show");
             document.getElementById("rvdcBanner").classList.remove("show");
+            document.getElementById("noDrBanner").classList.remove("show");
 
             if (!input) {
                 document.getElementById("errorMsg").textContent = "⚠️ Silakan masukkan No. Rangka.";
@@ -980,7 +974,10 @@
 
             unitAktif = unitDitemukan;
 
-            if (unitAktif.sedangKeRVDC) {
+            // Tampilkan banner sesuai kondisi
+            if (unitAktif.status === 0) {
+                document.getElementById("noDrBanner").classList.add("show");
+            } else if (unitAktif.sedangKeRVDC) {
                 document.getElementById("rvdcBanner").classList.add("show");
             }
 
@@ -996,44 +993,53 @@
                 <p><span class="label">Tujuan</span> <span class="nilai">${unit.trueDestination || unit.tujuan}</span></p>
                 <p><span class="label">Model</span> <span class="nilai">${unit.model || "-"}</span></p>
                 <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
-                <p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>
             `;
-            if (unit.status === 3 && unit.qrSelesai) {
-                html += `<p style="color:#e65100;font-size:13px;">✨ Sedang Quality Reconditioning — Estimasi selesai: ${formatTanggalFlex(unit.qrSelesai)}</p>`;
+            if (unit.status >= 2) {
+                html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
             }
             document.getElementById("detailUnit").innerHTML = html;
         }
 
         function tampilkanProgress(unit) {
-            const steps = getProgressSteps(unit);
+            // Jika status 0, jangan tampilkan progress bar
+            if (unit.status === 0) {
+                document.getElementById("progressContainer").innerHTML = "";
+                return;
+            }
+
+            const steps = getProgressDisplay(unit);
             let html = "";
             
             for (let i = 0; i < steps.length; i++) {
+                const step = steps[i];
                 let kelasStep = "", kelasIndikator = "", isiIndikator = "", kelasTeks = "";
                 
-                if (i < unit.status) {
+                if (unit.status > step.statusNum) {
+                    // Sudah lewat
                     kelasStep = "selesai";
                     kelasIndikator = "indikator-selesai";
                     isiIndikator = "✓";
                     kelasTeks = "teks-selesai";
-                } else if (i === unit.status) {
+                } else if (unit.status === step.statusNum) {
+                    // Sedang aktif
                     kelasStep = "aktif";
                     kelasIndikator = "indikator-aktif";
                     isiIndikator = "●";
                     kelasTeks = "teks-aktif";
                 } else {
+                    // Belum sampai
                     kelasIndikator = "indikator-menunggu";
                     isiIndikator = "○";
                     kelasTeks = "teks-menunggu";
                 }
                 
-                let detailTeks = dapatkanDetailStatus(unit, i, steps);
+                let detailTeks = dapatkanDetailStatus(unit, step);
                 
                 html += `
                     <div class="step ${kelasStep}">
                         <div class="indikator ${kelasIndikator}">${isiIndikator}</div>
                         <div class="teks-status ${kelasTeks}">
-                            <p class="nama-status">${steps[i].icon} ${steps[i].label}</p>
+                            <p class="nama-status">${step.icon} ${step.label}</p>
                             <p class="detail-status">${detailTeks}</p>
                         </div>
                     </div>
@@ -1042,20 +1048,21 @@
             document.getElementById("progressContainer").innerHTML = html;
         }
 
-        function dapatkanDetailStatus(unit, index, steps) {
-            const key = steps[index]?.key;
-            switch(key) {
-                case "drCreated":
-                    if (index === 0) return unit.drCreated ? `DR sudah dibuat — ${formatTanggalFlex(unit.drCreated)}` : "Menunggu DR";
-                    return unit.drCreated ? `DR dibuat — ${formatTanggalFlex(unit.drCreated)}` : "Menunggu DR";
-                case "estimasiKirim":
-                    return unit.estimasiKirim ? `Estimasi kirim — ${formatTanggalFlex(unit.estimasiKirim)}` : "Menunggu estimasi";
-                case "qrSelesai":
-                    return unit.qrSelesai ? `Estimasi selesai — ${formatTanggalFlex(unit.qrSelesai)}` : "Sedang proses";
-                case "inTransit":
-                    return unit.inTransit ? `Dalam perjalanan — ${formatTanggalFlex(unit.inTransit)}` : "Menunggu pengiriman";
-                case "delivered":
-                    return unit.delivered ? `Unit tiba — ${formatTanggalFlex(unit.delivered)}` : "Menunggu konfirmasi";
+        function dapatkanDetailStatus(unit, step) {
+            // Hanya tampilkan detail untuk status yang SEDANG AKTIF
+            if (unit.status !== step.statusNum) return "";
+            
+            switch(step.statusNum) {
+                case 1: // DR Created
+                    return `DR dibuat — ${formatTanggalFlex(unit.drCreated)}`;
+                case 2: // On Preparation
+                    return "Unit sedang dalam proses persiapan";
+                case 3: // Quality Reconditioning
+                    return unit.qrSelesai ? `Estimasi selesai — ${formatTanggalFlex(unit.qrSelesai)}` : "Sedang proses rekondisi";
+                case 4: // In Transit
+                    return `Unit sedang dalam perjalanan ke tujuan — ${formatTanggalFlex(unit.inTransit)}`;
+                case 5: // Delivered
+                    return `Unit tiba di tujuan — ${formatTanggalFlex(unit.delivered)}`;
                 default:
                     return "";
             }
