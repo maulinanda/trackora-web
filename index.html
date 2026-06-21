@@ -224,6 +224,18 @@
             margin-bottom: 10px;
         }
         .btn-back:hover { background-color: #e3f2fd; }
+        .btn-back-daftar {
+            background-color: transparent;
+            color: #1565c0;
+            border: 1px solid #1565c0;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .btn-back-daftar:hover { background-color: #e3f2fd; }
 
         .rvdc-info-box {
             background-color: #e3f2fd;
@@ -358,6 +370,7 @@
             margin-bottom: 15px;
             flex-wrap: wrap;
             align-items: flex-end;
+            justify-content: center;
         }
         .filter-group {
             display: flex;
@@ -368,6 +381,7 @@
             font-size: 12px;
             font-weight: 600;
             color: #757575;
+            text-align: center;
         }
         .filter-group input,
         .filter-group select {
@@ -377,6 +391,7 @@
             font-size: 13px;
             outline: none;
             min-width: 150px;
+            text-align: center;
         }
         .filter-group input:focus,
         .filter-group select:focus { border-color: #1565c0; }
@@ -465,8 +480,18 @@
             .tab-btn { padding: 10px 15px; font-size: 14px; }
             table.dashboard-table { font-size: 12px; }
             table.dashboard-table th, table.dashboard-table td { padding: 8px 10px; }
-            .filter-bar { flex-direction: column; }
-            .filter-group input, .filter-group select { min-width: 100%; }
+            .filter-bar {
+                justify-content: center;
+                gap: 8px;
+            }
+            .filter-group {
+                min-width: 45%;
+                flex: 0 0 auto;
+            }
+            .filter-group input, .filter-group select {
+                min-width: 100%;
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -560,7 +585,8 @@
 
         <!-- ADMIN SECTION (DAFTAR UNIT) -->
         <div class="admin-section" id="adminSection">
-            <div class="filter-bar">
+            <!-- FILTER BAR -->
+            <div class="filter-bar" id="filterBar">
                 <div class="filter-group">
                     <label>No. Rangka</label>
                     <input type="text" class="filter-rangka" id="filterRangka" placeholder="Ketik No. Rangka" oninput="applyFilter()">
@@ -587,6 +613,11 @@
                 </div>
                 <button class="btn-reset-filter" onclick="resetFilter()">✕ Reset</button>
             </div>
+
+            <!-- TOMBOL KEMBALI KE DAFTAR (dari detail) -->
+            <button class="btn-back-daftar" id="btnBackDaftar" onclick="kembaliKeDaftarAdmin()">← Kembali ke Daftar Unit</button>
+
+            <!-- TABEL DAFTAR UNIT -->
             <div class="table-container" id="dashboardTableContainer" style="display:none;">
                 <table class="dashboard-table">
                     <thead>
@@ -603,6 +634,26 @@
                 </table>
             </div>
             <div class="empty-state" id="emptyState" style="display:none;"></div>
+
+            <!-- DETAIL UNIT (dari klik daftar) -->
+            <div id="adminDetailWrapper" style="display:none;">
+                <div class="kartu">
+                    <div class="no-dr-banner" id="adminNoDrBanner">
+                        <div class="no-dr-icon">📋</div>
+                        <strong>Unit belum memiliki Delivery Request (DR).</strong><br>
+                        <span style="font-size:12px;">Progress pengiriman akan muncul setelah DR dibuat.</span>
+                    </div>
+                    <div class="info-unit show" id="adminInfoUnit">
+                        <div id="adminDetailUnit"></div>
+                        <hr>
+                        <p class="progress-title">📋 Progress Pengiriman</p>
+                        <div class="progress-container" id="adminProgressContainer"></div>
+                        <div class="footer-note">
+                            📌 Lacak status unit berdasarkan <strong>No. Rangka</strong><br>Informasi diperbarui secara berkala
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -627,6 +678,7 @@
         let adminMode = false;
         let unitAktif = null;
         let daftarMultiTerakhir = [];
+        let hasilFilterTerakhir = []; // menyimpan hasil filter admin
 
         // =============================================
         // INISIALISASI
@@ -718,17 +770,17 @@
         }
 
         // =============================================
-        // DATALISTS & MULTI SELECTS
+        // DATALISTS & MULTI SELECTS (SORTED)
         // =============================================
         function populateDatalists() {
             const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
-            document.getElementById("cabangList").innerHTML = Array.from(cabangSet).map(v => `<option value="${v}">`).join("");
+            document.getElementById("cabangList").innerHTML = Array.from(cabangSet).sort().map(v => `<option value="${v}">`).join("");
         }
 
         function populateMultiSelects() {
             const modelSet = new Set(daftarUnit.map(u => u.model).filter(Boolean));
             const modelSelect = document.getElementById("filterModel");
-            modelSelect.innerHTML = Array.from(modelSet).map(v => `<option value="${v}">${v}</option>`).join("");
+            modelSelect.innerHTML = Array.from(modelSet).sort().map(v => `<option value="${v}">${v}</option>`).join("");
         }
 
         // =============================================
@@ -818,6 +870,9 @@
                 if (tabDashboard) tabDashboard.classList.add("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
+                document.getElementById("adminDetailWrapper").style.display = "none";
+                document.getElementById("btnBackDaftar").style.display = "none";
+                document.getElementById("filterBar").style.display = "flex";
             } else {
                 btn.classList.remove("active");
                 btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
@@ -827,6 +882,8 @@
                 if (tabDashboard) tabDashboard.classList.remove("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
+                document.getElementById("adminDetailWrapper").style.display = "none";
+                document.getElementById("btnBackDaftar").style.display = "none";
                 if (btnTabLacak) btnTabLacak.style.display = "block";
                 if (tabLacak) tabLacak.classList.add("active");
                 if (btnTabLacak) btnTabLacak.classList.add("active");
@@ -851,6 +908,10 @@
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
                 document.getElementById("dashboardBody").innerHTML = "";
+                document.getElementById("adminDetailWrapper").style.display = "none";
+                document.getElementById("btnBackDaftar").style.display = "none";
+                document.getElementById("filterBar").style.display = "flex";
+                hasilFilterTerakhir = [];
                 return;
             }
             
@@ -860,7 +921,8 @@
             if (filterModelSelected.length > 0) hasil = hasil.filter(u => filterModelSelected.includes(u.model || ""));
             if (filterStatusSelected.length > 0) hasil = hasil.filter(u => filterStatusSelected.includes(String(u.status)));
             
-            renderDashboardFromData(hasil);
+            hasilFilterTerakhir = hasil;
+            tampilkanTabelAdmin();
         }
 
         function resetFilter() {
@@ -871,14 +933,26 @@
             document.getElementById("dashboardTableContainer").style.display = "none";
             document.getElementById("emptyState").style.display = "none";
             document.getElementById("dashboardBody").innerHTML = "";
+            document.getElementById("adminDetailWrapper").style.display = "none";
+            document.getElementById("btnBackDaftar").style.display = "none";
+            document.getElementById("filterBar").style.display = "flex";
+            hasilFilterTerakhir = [];
         }
 
-        function renderDashboardFromData(filtered) {
+        function tampilkanTabelAdmin() {
             const tbody = document.getElementById("dashboardBody");
             const empty = document.getElementById("emptyState");
             const tableContainer = document.getElementById("dashboardTableContainer");
+            const adminDetail = document.getElementById("adminDetailWrapper");
+            const btnBackDaftar = document.getElementById("btnBackDaftar");
+            const filterBar = document.getElementById("filterBar");
 
-            if (filtered.length === 0) {
+            // Sembunyikan detail, tampilkan tabel
+            adminDetail.style.display = "none";
+            btnBackDaftar.style.display = "none";
+            filterBar.style.display = "flex";
+
+            if (hasilFilterTerakhir.length === 0) {
                 tbody.innerHTML = "";
                 tableContainer.style.display = "none";
                 empty.style.display = "block";
@@ -889,7 +963,7 @@
             tableContainer.style.display = "block";
 
             let html = "";
-            for (let unit of filtered) {
+            for (let unit of hasilFilterTerakhir) {
                 const st = statusList[unit.status];
                 const steps = getProgressDisplay(unit);
                 let dots = "";
@@ -907,7 +981,7 @@
                 if (unit.sedangKeRVDC && unit.etaRVDC) infoTanggal = "RVDC: " + unit.etaRVDC;
 
                 html += `
-                    <tr onclick="lihatDariDashboard('${unit.rangka}')">
+                    <tr onclick="lihatDetailDariAdmin('${unit.rangka}')">
                         <td class="td-rangka">${unit.rangka}</td>
                         <td>${unit.tujuan}</td>
                         <td>${unit.model || "-"}</td>
@@ -920,10 +994,33 @@
             tbody.innerHTML = html;
         }
 
-        function lihatDariDashboard(rangka) {
-            document.getElementById("multiInput").value = rangka;
-            gantiTab("lacak");
-            tampilkanSingleDetail(rangka);
+        function lihatDetailDariAdmin(rangka) {
+            const unit = daftarUnit.find(u => u.rangka.toLowerCase() === ranga.toLowerCase());
+            if (!unit) return;
+            
+            // Sembunyikan filter bar & tabel
+            document.getElementById("filterBar").style.display = "none";
+            document.getElementById("dashboardTableContainer").style.display = "none";
+            document.getElementById("emptyState").style.display = "none";
+            
+            // Tampilkan detail
+            const wrapper = document.getElementById("adminDetailWrapper");
+            const noDrBanner = document.getElementById("adminNoDrBanner");
+            
+            wrapper.style.display = "block";
+            document.getElementById("btnBackDaftar").style.display = "inline-block";
+            
+            noDrBanner.classList.remove("show");
+            if (unit.status === 0) {
+                noDrBanner.classList.add("show");
+            }
+            
+            tampilkanDetailUnitDiContainer(unit, "adminDetailUnit");
+            tampilkanProgressDiContainer(unit, "adminProgressContainer");
+        }
+
+        function kembaliKeDaftarAdmin() {
+            tampilkanTabelAdmin();
         }
 
         // =============================================
@@ -955,24 +1052,29 @@
             
             const wrapper = document.getElementById("singleDetailWrapper");
             const infoUnit = document.getElementById("infoUnit");
+            const inputArea = document.getElementById("inputAreaLacak");
             
             if (!unit) {
                 document.getElementById("errorMsg").textContent = "⚠️ No. Rangka tidak ditemukan.";
                 document.getElementById("errorMsg").classList.add("show");
                 unitAktif = null;
                 wrapper.style.display = "none";
+                inputArea.style.display = "block";
                 return;
             }
             
             unitAktif = unit;
+            
+            // Sembunyikan input area
+            inputArea.style.display = "none";
             wrapper.style.display = "block";
             
             if (unit.status === 0) {
                 document.getElementById("noDrBanner").classList.add("show");
             }
             
-            tampilkanDetailUnit(unit);
-            tampilkanProgress(unit);
+            tampilkanDetailUnitDiContainer(unit, "detailUnit");
+            tampilkanProgressDiContainer(unit, "progressContainer");
             infoUnit.classList.add("show");
             
             const btnBack = wrapper.querySelector(".btn-back");
@@ -986,10 +1088,12 @@
         function tampilkanMultiResult(nomorList) {
             const tbody = document.getElementById("multiResultBody");
             const section = document.getElementById("multiResultSection");
+            const inputArea = document.getElementById("inputAreaLacak");
             let html = "";
             let ditemukan = 0;
             
             daftarMultiTerakhir = nomorList;
+            inputArea.style.display = "block";
             
             for (let noka of nomorList) {
                 const unit = daftarUnit.find(u => u.rangka.toLowerCase() === noka.toLowerCase());
@@ -1038,6 +1142,8 @@
         }
 
         function kembaliKeDaftar() {
+            const inputArea = document.getElementById("inputAreaLacak");
+            inputArea.style.display = "block";
             sembunyikanSingleDetail();
             tampilkanMultiResult(daftarMultiTerakhir);
         }
@@ -1065,13 +1171,14 @@
             unitAktif = null;
             daftarMultiTerakhir = [];
             document.getElementById("multiResultBody").innerHTML = "";
+            document.getElementById("inputAreaLacak").style.display = "block";
             tampilkanNotif("🔄 Tampilan di-reset.");
         }
 
         // =============================================
-        // DETAIL UNIT & PROGRESS
+        // DETAIL UNIT & PROGRESS (REUSABLE)
         // =============================================
-        function tampilkanDetailUnit(unit) {
+        function tampilkanDetailUnitDiContainer(unit, containerId) {
             let html = `
                 <p><span class="label">No. Rangka</span> <span class="nilai-rangka">${unit.rangka}</span></p>
                 <p><span class="label">Cabang Pemilik</span> <span class="nilai">${unit.tujuan || "-"}</span></p>
@@ -1092,12 +1199,12 @@
             if (unit.status >= 2) {
                 html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
             }
-            document.getElementById("detailUnit").innerHTML = html;
+            document.getElementById(containerId).innerHTML = html;
         }
 
-        function tampilkanProgress(unit) {
+        function tampilkanProgressDiContainer(unit, containerId) {
             if (unit.status === 0) {
-                document.getElementById("progressContainer").innerHTML = "";
+                document.getElementById(containerId).innerHTML = "";
                 return;
             }
             const steps = getProgressDisplay(unit);
@@ -1123,7 +1230,7 @@
                     </div>
                 `;
             }
-            document.getElementById("progressContainer").innerHTML = html;
+            document.getElementById(containerId).innerHTML = html;
         }
 
         function dapatkanDetailStatus(unit, step) {
