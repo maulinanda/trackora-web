@@ -382,7 +382,12 @@
         .filter-group select:focus { border-color: #1565c0; }
         .filter-group .filter-rangka { font-family: 'Courier New', monospace; }
         .filter-group select[multiple] {
-            min-height: 80px;
+            min-height: auto;
+            height: auto;
+        }
+        .filter-group select[multiple] option:checked {
+            background-color: #e3f2fd;
+            color: #1565c0;
         }
         .btn-reset-filter {
             padding: 8px 16px;
@@ -567,12 +572,12 @@
                 </div>
                 <div class="filter-group">
                     <label>Model</label>
-                    <select id="filterModel" multiple onchange="applyFilter()">
+                    <select id="filterModel" multiple onchange="applyFilter()" size="1">
                     </select>
                 </div>
                 <div class="filter-group">
                     <label>Status</label>
-                    <select id="filterStatus" multiple onchange="applyFilter()">
+                    <select id="filterStatus" multiple onchange="applyFilter()" size="1">
                         <option value="1">📝 DR Created</option>
                         <option value="2">🔧 On Preparation</option>
                         <option value="3">✨ Quality Reconditioning</option>
@@ -791,7 +796,7 @@
             resetFilter();
             tampilkanNotif("🔒 Admin Mode dinonaktifkan.");
         }
-                function updateUIAdmin() {
+        function updateUIAdmin() {
             const btn = document.getElementById("btnAdminToggle");
             const adminSection = document.getElementById("adminSection");
             const btnTabDashboard = document.getElementById("btnTabDashboard");
@@ -804,13 +809,11 @@
                 btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
                 adminSection.classList.add("show");
                 if (btnTabDashboard) btnTabDashboard.style.display = "block";
-                // SEMBUNYIKAN TAB LACAK
                 if (tabLacak) tabLacak.classList.remove("active");
                 if (btnTabLacak) {
                     btnTabLacak.classList.remove("active");
                     btnTabLacak.style.display = "none";
                 }
-                // Tampilkan dashboard sebagai default
                 if (btnTabDashboard) btnTabDashboard.classList.add("active");
                 if (tabDashboard) tabDashboard.classList.add("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
@@ -824,7 +827,6 @@
                 if (tabDashboard) tabDashboard.classList.remove("active");
                 document.getElementById("dashboardTableContainer").style.display = "none";
                 document.getElementById("emptyState").style.display = "none";
-                // TAMPILKAN KEMBALI TAB LACAK
                 if (btnTabLacak) btnTabLacak.style.display = "block";
                 if (tabLacak) tabLacak.classList.add("active");
                 if (btnTabLacak) btnTabLacak.classList.add("active");
