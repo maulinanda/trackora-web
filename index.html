@@ -196,27 +196,18 @@
             font-family: 'Courier New', monospace;
         }
 
-        /* === BANNER RVDC === */
-        .rvdc-banner {
+        /* === RVDC INFO DI DETAIL === */
+        .rvdc-info-box {
             background-color: #e3f2fd;
             border-left: 4px solid #1565c0;
-            padding: 15px 20px;
+            padding: 10px 15px;
             border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #0d47a1;
-            display: none;
-            line-height: 1.6;
+            margin: 8px 0;
         }
-        .rvdc-banner.show { display: block; }
-        .rvdc-banner .rvdc-icon { font-size: 28px; margin-bottom: 5px; }
-        .rvdc-banner .rvdc-estimasi {
-            font-size: 16px;
-            font-weight: 700;
-            margin-top: 5px;
+        .rvdc-info-box p {
+            margin: 0;
         }
 
-        /* === BANNER BELUM DR === */
         .no-dr-banner {
             background-color: #fafafa;
             border-left: 4px solid #9e9e9e;
@@ -227,7 +218,6 @@
             color: #616161;
             display: none;
             text-align: center;
-            line-height: 1.6;
         }
         .no-dr-banner.show { display: block; }
         .no-dr-banner .no-dr-icon { font-size: 36px; margin-bottom: 8px; }
@@ -513,14 +503,6 @@
                 </div>
                 <p class="search-hint">Masukkan No. Rangka untuk melacak status pengiriman unit</p>
 
-                <!-- BANNER RVDC -->
-                <div class="rvdc-banner" id="rvdcBanner">
-                    <div class="rvdc-icon">🚛</div>
-                    <strong>Unit sedang dalam perjalanan ke RVDC Ngoro.</strong>
-                    <div class="rvdc-estimasi" id="rvdcEstimasi"></div>
-                </div>
-
-                <!-- BANNER BELUM DR (hanya jika tidak ke RVDC) -->
                 <div class="no-dr-banner" id="noDrBanner">
                     <div class="no-dr-icon">📋</div>
                     <strong>Unit belum memiliki Delivery Request (DR).</strong><br>
@@ -667,24 +649,23 @@
 
         function getDataDummy() {
             return [
-                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026", etaRVDC: "" },
+                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026" },
                 { rangka: "MHFAB1CJ2N7654321", tujuan: "Cabang Bandung", model: "Innova", warna: "Hitam", status: 3, sedangKeRVDC: true, drCreated: "16 Mar 2026", qrSelesai: "21 Mar 2026", estimasiKirim: "22 Mar 2026", etaRVDC: "19 Mar 2026" },
-                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026", etaRVDC: "" }
+                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026" }
             ];
         }
 
         // =============================================
-        // HELPER: Progress steps (tanpa Delivered)
+        // HELPER: Progress steps
         // =============================================
         function getProgressDisplay(unit) {
-            // Base 3 steps (DR Created, Preparation, In Transit) — Delivered disembunyikan
             const steps = [
                 { label: "DR Created",     icon: "📝", statusNum: 1 },
                 { label: "On Preparation", icon: "🔧", statusNum: 2 },
-                { label: "In Transit",     icon: "🚛", statusNum: 4 }
+                { label: "In Transit",     icon: "🚛", statusNum: 4 },
+                { label: "Delivered",      icon: "✅", statusNum: 5 }
             ];
             
-            // Sisipkan QR setelah Preparation jika unit pernah/sedang QR
             if (unit.status >= 3 && (unit.qrSelesai || unit.status === 3)) {
                 steps.splice(2, 0, { label: "Quality Reconditioning", icon: "✨", statusNum: 3, isQR: true });
             }
@@ -955,7 +936,6 @@
             const input = document.getElementById("inputRangka").value.trim();
             document.getElementById("errorMsg").classList.remove("show");
             document.getElementById("infoUnit").classList.remove("show");
-            document.getElementById("rvdcBanner").classList.remove("show");
             document.getElementById("noDrBanner").classList.remove("show");
 
             if (!input) {
@@ -973,17 +953,8 @@
 
             unitAktif = unitDitemukan;
 
-            // PRIORITAS BANNER:
-            // 1. Jika ETARVDC_Stat = TRUE → tampilkan banner RVDC (apa pun statusnya)
-            // 2. Jika status = 0 dan TIDAK ke RVDC → tampilkan banner Belum DR
-            if (unitAktif.sedangKeRVDC) {
-                document.getElementById("rvdcBanner").classList.add("show");
-                if (unitAktif.etaRVDC) {
-                    document.getElementById("rvdcEstimasi").textContent = "📅 Estimasi tiba di RVDC Ngoro: " + formatTanggalFlex(unitAktif.etaRVDC);
-                } else {
-                    document.getElementById("rvdcEstimasi").textContent = "";
-                }
-            } else if (unitAktif.status === 0) {
+            // Hanya tampilkan banner Belum DR jika status = 0
+            if (unitAktif.status === 0) {
                 document.getElementById("noDrBanner").classList.add("show");
             }
 
@@ -1000,6 +971,17 @@
                 <p><span class="label">Model</span> <span class="nilai">${unit.model || "-"}</span></p>
                 <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
             `;
+            
+            // Info RVDC Ngoro — ditampilkan di detail unit
+            if (unit.sedangKeRVDC) {
+                html += `
+                    <div class="rvdc-info-box">
+                        <p style="color:#0d47a1;font-weight:600;">🚛 Unit sedang dalam perjalanan ke RVDC Ngoro</p>
+                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
+                    </div>
+                `;
+            }
+            
             if (unit.status >= 2) {
                 html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
             }
@@ -1007,7 +989,6 @@
         }
 
         function tampilkanProgress(unit) {
-            // Status 0: jangan tampilkan progress bar
             if (unit.status === 0) {
                 document.getElementById("progressContainer").innerHTML = "";
                 return;
