@@ -565,7 +565,7 @@
         <div class="notif-sukses" id="notifSukses"></div>
         <div class="error-msg" id="errorMsg">⚠️ No. Rangka tidak ditemukan.</div>
 
-        <!-- TAB LACAK (disembunyikan saat admin mode) -->
+        <!-- TAB LACAK -->
         <div class="tab-content active" id="tabLacak">
             <div class="kartu">
                 <div class="input-area" id="inputAreaLacak">
@@ -619,7 +619,6 @@
 
         <!-- ADMIN SECTION (DAFTAR UNIT) -->
         <div class="admin-section" id="adminSection">
-            <!-- FILTER BAR -->
             <div class="filter-bar" id="filterBar">
                 <div class="filter-group">
                     <label>No. Rangka</label>
@@ -660,10 +659,8 @@
                 <button class="btn-reset-filter" onclick="resetFilter()">✕ Reset</button>
             </div>
 
-            <!-- TOMBOL KEMBALI KE DAFTAR (dari detail) -->
             <button class="btn-back-daftar" id="btnBackDaftar" onclick="kembaliKeDaftarAdmin()">← Kembali ke Daftar Unit</button>
 
-            <!-- TABEL DAFTAR UNIT -->
             <div class="table-container" id="dashboardTableContainer" style="display:none;">
                 <table class="dashboard-table">
                     <thead>
@@ -681,7 +678,6 @@
             </div>
             <div class="empty-state" id="emptyState" style="display:none;"></div>
 
-            <!-- DETAIL UNIT (dari klik daftar) -->
             <div id="adminDetailWrapper" style="display:none;">
                 <div class="kartu">
                     <div class="no-dr-banner" id="adminNoDrBanner">
@@ -816,7 +812,7 @@
         }
 
         // =============================================
-        // DATALISTS & MULTI SELECTS (SORTED)
+        // DATALISTS & MULTI SELECTS
         // =============================================
         function populateDatalists() {
             const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
@@ -946,10 +942,8 @@
                 field.value = '';
             } else if (type === 'select') {
                 field.selectedIndex = -1;
-                // trigger change event
                 field.dispatchEvent(new Event('change'));
             }
-            // Sembunyikan tombol clear
             const btn = field.parentElement.querySelector('.btn-clear-field');
             if (btn) btn.classList.remove('visible');
             applyFilter();
@@ -960,11 +954,9 @@
             const btn = wrapper.querySelector('.btn-clear-field');
             if (!btn) return;
             if (element.tagName === 'SELECT') {
-                // Untuk select multiple, cek apakah ada yang dipilih
                 const hasValue = Array.from(element.selectedOptions).length > 0;
                 btn.style.display = hasValue ? 'inline-block' : 'none';
             } else {
-                // Untuk input text
                 const hasValue = element.value.trim().length > 0;
                 btn.style.display = hasValue ? 'inline-block' : 'none';
             }
@@ -982,7 +974,6 @@
             const filterStatusSelect = document.getElementById("filterStatus");
             const filterStatusSelected = Array.from(filterStatusSelect.selectedOptions).map(o => o.value);
             
-            // Update clear button visibility
             document.querySelectorAll('.filter-group input[type="text"], .filter-group select').forEach(el => {
                 toggleClearButton(el);
             });
@@ -1015,7 +1006,6 @@
             document.getElementById("filterCabang").value = "";
             document.getElementById("filterModel").selectedIndex = -1;
             document.getElementById("filterStatus").selectedIndex = -1;
-            // Sembunyikan semua clear button
             document.querySelectorAll('.btn-clear-field').forEach(b => b.style.display = 'none');
             document.getElementById("dashboardTableContainer").style.display = "none";
             document.getElementById("emptyState").style.display = "none";
@@ -1161,10 +1151,21 @@
             infoUnit.classList.add("show");
             
             const btnBack = wrapper.querySelector(".btn-back");
+            btnBack.style.display = "inline-block";
             if (daftarMultiTerakhir.length === 0) {
-                btnBack.style.display = "none";
+                btnBack.textContent = "← Kembali ke Pencarian";
+                btnBack.onclick = function() {
+                    document.getElementById("inputAreaLacak").style.display = "block";
+                    document.getElementById("singleDetailWrapper").style.display = "none";
+                    document.getElementById("infoUnit").classList.remove("show");
+                    document.getElementById("noDrBanner").classList.remove("show");
+                    document.getElementById("errorMsg").classList.remove("show");
+                    document.getElementById("multiInput").value = "";
+                    unitAktif = null;
+                };
             } else {
-                btnBack.style.display = "inline-block";
+                btnBack.textContent = "← Kembali ke Daftar";
+                btnBack.onclick = kembaliKeDaftar;
             }
         }
 
@@ -1255,6 +1256,11 @@
             daftarMultiTerakhir = [];
             document.getElementById("multiResultBody").innerHTML = "";
             document.getElementById("inputAreaLacak").style.display = "block";
+            const btnBack = document.querySelector("#singleDetailWrapper .btn-back");
+            if (btnBack) {
+                btnBack.textContent = "← Kembali ke Daftar";
+                btnBack.onclick = kembaliKeDaftar;
+            }
             tampilkanNotif("🔄 Tampilan di-reset.");
         }
 
