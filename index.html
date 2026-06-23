@@ -1276,8 +1276,8 @@
                 <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
             `;
             
-            // Banner: Status 1 + ETARVDC_Stat = TRUE
-            if (unit.status === 1 && unit.sedangKeRVDC) {
+            // Banner oranye: Status 1 + ETARVDC_Stat = FALSE (belum masuk RVDC)
+            if (unit.status === 1 && !unit.sedangKeRVDC) {
                 html += `
                     <div class="rvdc-info-box" style="background-color:#fff8e1;border-left-color:#ff9800;">
                         <p style="color:#e65100;font-weight:600;">📍 Unit belum masuk RVDC Ngoro</p>
@@ -1285,8 +1285,8 @@
                 `;
             }
             
-            // Banner: Sedang dalam perjalanan ke RVDC (Status >= 2)
-            if (unit.sedangKeRVDC && unit.status >= 2) {
+            // Banner biru: ETARVDC_Stat = TRUE (dalam perjalanan ke RVDC)
+            if (unit.sedangKeRVDC) {
                 html += `
                     <div class="rvdc-info-box">
                         <p style="color:#0d47a1;font-weight:600;">🚛 Unit sedang dalam perjalanan ke RVDC Ngoro</p>
