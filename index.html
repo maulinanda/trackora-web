@@ -1276,11 +1276,11 @@
                 <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
             `;
             
-            // Banner oranye: Status 1 + ETARVDC_Stat = FALSE (belum masuk RVDC)
+            // Banner oranye: Status 1 + ETARVDC_Stat = FALSE (Belum Summary DR)
             if (unit.status === 1 && !unit.sedangKeRVDC) {
                 html += `
                     <div class="rvdc-info-box" style="background-color:#fff8e1;border-left-color:#ff9800;">
-                        <p style="color:#e65100;font-weight:600;">📍 Unit belum masuk RVDC Ngoro</p>
+                        <p style="color:#e65100;font-weight:600;">Menunggu Tanggal Estimasi Kirim</p>
                     </div>
                 `;
             }
