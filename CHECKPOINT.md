@@ -1,77 +1,59 @@
-📦 CHECKPOINT #5 — TrackORA Web
+📦 CHECKPOINT #8 — Branch fitur-multi-dan-admin
 Tanggal: 22 Juni 2026
-Status Project: Frontend terintegrasi Google Sheets, progress bar dinamis 6 status, dashboard list, semua fitur berfungsi. Siap setup Power Automate.
+Status Project: Branch fitur-multi-dan-admin dengan fitur lengkap: multi input, navigasi detail↔daftar, admin mode dengan filter per kolom + tombol clear individual, UI responsif (laptop horizontal wrap center, mobile label di atas field full width). Siap untuk evaluasi sebelum merge ke main.
 
-🎯 Tujuan Project
-Webapp TrackORA untuk melacak pengiriman unit mobil baru dari pusat distribusi → RVDC Ngoro → cabang. Data bersumber dari Google Sheets (via CSV publish), yang nantinya akan disinkronkan otomatis dari Excel via Power Automate.
+🎯 Tujuan Branch
+Menggabungkan multi No. Rangka dan daftar unit admin-only. Admin mode hanya untuk melihat daftar unit dengan filter yang bisa di-reset per field. User biasa tetap bisa lacak 1 atau banyak No. Rangka.
 
 🧰 Tools & URL
-Tools	Fungsi
-GitHub	Repository & version control
-GitHub Pages	Hosting live & publik
-Google Sheets	Database (CSV publish)
-Power Automate	Sinkronisasi Excel → Sheets
 Repo: https://github.com/maulinanda/trackora-web
 
-Live: https://maulinanda.github.io/trackora-web/
+Branch: fitur-multi-dan-admin
 
-Sheets CSV: https://docs.google.com/spreadsheets/d/e/2PACX-1vRKAaGXzzufPDknUNGa1u3sEEt_Py0lUS8PJKslvYt7b5Y5IgzklmLg10BkIz3uStTbR83hjinxZc7V/pub?gid=0&single=true&output=csv
+Live (main): https://maulinanda.github.io/trackora-web/
 
-📁 Struktur File
-text
-trackora-web/
-├── README.md
-└── index.html        ← HTML + CSS + JS (1 file)
+Preview branch: https://htmlpreview.github.io/?https://github.com/maulinanda/trackora-web/blob/fitur-multi-dan-admin/index.html
+
 🚗 6 Status Final
-Angka	Status	Ikon	Progress Bar
-0	Belum DR	⚪	Tidak muncul, banner "Belum DR"
-1	DR Created	📝	Step 1 aktif
-2	On Preparation	🔧	Step 2 aktif
-3	Quality Reconditioning	✨	Step 3 (hanya jika QR terjadi)
-4	In Transit	🚛	Step 4 aktif
-5	Delivered	✅	Step 5 (disembunyikan sementara)
+Angka	Status	Ikon
+0	Belum DR	⚪
+1	DR Created	📝
+2	On Preparation	🔧
+3	Quality Reconditioning	✨
+4	In Transit	🚛
+5	Delivered	✅
 📊 Google Sheets — 15 Kolom
-#	Header	Sumber
-A	FrameNumber	Excel
-B	BranchName	Excel
-C	Model	Excel
-D	Warna	Excel
-E	AreaProcess	Excel
-F	PermintaanSampaiCabang	Excel
-G	TransactionDate	Excel
-H	ETARVDC	Excel
-I	ESTIMASI_SELESAI_REPAIR	Excel
-J	TRUEDESTINATION	Excel
-K	ESTIMASI_KIRIM_ADJUSTABLE	Excel
-L	ETARVDC_Stat	Excel
-M	InTransit	Formula (nanti)
-N	Delivered	Formula (nanti)
-O	Status	Formula
-📋 Semua Fitur
+A: FrameNumber, B: BranchName, C: Model, D: Warna, E: AreaProcess, F: PermintaanSampaiCabang, G: TransactionDate, H: ETARVDC, I: ESTIMASI_SELESAI_REPAIR, J: TRUEDESTINATION, K: ESTIMASI_KIRIM_ADJUSTABLE, L: ETARVDC_Stat, M: InTransit, N: Delivered, O: Status
+
+📋 Fitur Branch fitur-multi-dan-admin
 Fitur	Status
-🔍 Lacak unit by No. Rangka	✅ Berfungsi
-📋 Progress bar dinamis (QR opsional)	✅ Berfungsi
-🚛 Info RVDC Ngoro di detail unit	✅ Berfungsi
-📅 Estimasi tiba RVDC	✅ Berfungsi
-🏢 Cabang Pemilik + Tujuan Kirim di detail	✅ Berfungsi
-📊 Dashboard list + filter cabang	✅ Berfungsi
-🔐 Login Admin PIN	✅ Berfungsi
-💾 Sesi admin 30 menit (localStorage)	✅ Berfungsi
-🛠️ Panel Admin (maju/reset/QR)	✅ Berfungsi
-📱 Responsive mobile	✅ Berfungsi
-🔗 Fetch data dari Google Sheets CSV	✅ Berfungsi
-📅 Format tanggal fleksibel	✅ Berfungsi
-⚡ Power Automate sinkronisasi	❌ Belum setup
-🔜 Langkah Selanjutnya
-Setup Power Automate — sinkronkan Excel (OneDrive) → Google Sheets
+🔍 1 textarea untuk single/multi No. Rangka	✅
+📋 Multi result tabel, klik → detail	✅
+↩️ Navigasi detail ↔ daftar	✅
+✕ Tombol Clear all	✅
+🔐 Admin Mode password Toyota2026	✅
+📊 Daftar unit admin-only (min status 1)	✅
+🔍 Filter No. Rangka (text)	✅
+🏢 Filter Cabang Pemilik (text + datalist)	✅
+🚗 Filter Model (multi-select dropdown, sorted A-Z)	✅
+📝 Filter Status (multi-select dropdown)	✅
+✕ Reset semua filter	✅
+🔘 Tombol clear individual di tiap field filter	✅
+🙈 Data tersembunyi sebelum aksi	✅
+🔒 Tab Lacak sembunyi saat Admin Mode	✅
+📱 Responsive: laptop horizontal wrap center, mobile field full width	✅
+🎨 Tampilan Filter
+Laptop: label di atas field, field berukuran minimum 150px, wrap horizontal, align center, tombol reset di akhir baris.
 
-Test sinkronisasi — ubah data di Excel, lihat perubahan di webapp
+Mobile: label di atas field, field full width, tombol reset rata kanan/stretch.
 
-Setup formula InTransit & Delivered di Google Sheets
+Setiap field input/select memiliki tombol ✕ kecil di samping kanan untuk clear isi field tersebut saja.
 
-Checkpoint #6 — dokumentasi setelah integrasi penuh
+🔜 Rencana Selanjutnya
+Power Automate — sinkronisasi Excel (OneDrive) → Google Sheets.
 
-💡 Cara Melanjutkan di Chat Baru
-Copy-paste checkpoint ini ke chat baru:
+Formula InTransit & Delivered di Google Sheets.
 
-"Saya sedang membangun project TrackORA Web. Ini checkpoint #5. Semua fitur frontend berfungsi. Saya ingin lanjut setup Power Automate untuk sinkronisasi Excel ke Google Sheets."
+Evaluasi — apakah fitur di branch ini layak digabung ke main.
+
+Merge ke main — setelah puas dengan uji coba.
