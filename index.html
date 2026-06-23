@@ -8,524 +8,487 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #F1F5F9;
+            color: #1E293B;
             min-height: 100vh;
+            line-height: 1.5;
         }
 
         .main-content {
-            max-width: 1000px;
+            max-width: 1040px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 24px;
         }
 
-        .header {
+        /* === HEADER === */
+        .navbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 5px;
+            gap: 16px;
+            margin-bottom: 24px;
         }
-        .header-kiri { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { font-size: 32px; }
-        h1 { color: #1a237e; font-size: 26px; margin: 0; }
-        .tagline { color: #757575; font-size: 14px; margin-bottom: 5px; }
-
-        .admin-toggle {
-            background-color: #f5f5f5;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px;
-            padding: 6px 12px;
-            font-size: 12px;
-            cursor: pointer;
-            color: #757575;
-            transition: all 0.3s;
-            white-space: nowrap;
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .admin-toggle:hover { background-color: #eeeeee; }
-        .admin-toggle.active {
-            background-color: #ff9800;
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background-color: #2563EB;
             color: white;
-            border-color: #ff9800;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .navbar-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0F172A;
+            letter-spacing: -0.5px;
+        }
+        .navbar-title span {
+            font-size: 12px;
+            color: #64748B;
         }
 
+        .btn-admin-toggle {
+            background-color: white;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #475569;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .btn-admin-toggle:hover { background-color: #F8FAFC; border-color: #94A3B8; }
+        .btn-admin-toggle.active {
+            background-color: #2563EB;
+            color: white;
+            border-color: #2563EB;
+        }
+
+        /* === TAB NAVIGASI === */
         .tab-nav {
             display: flex;
-            gap: 0;
-            margin: 20px 0;
-            background-color: #e0e0e0;
-            border-radius: 10px;
+            gap: 4px;
+            margin-bottom: 20px;
+            background-color: #E2E8F0;
+            border-radius: 8px;
             padding: 4px;
         }
         .tab-btn {
             flex: 1;
-            padding: 12px 20px;
+            padding: 10px 20px;
             border: none;
-            background-color: transparent;
-            font-size: 15px;
-            font-weight: 600;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            border-radius: 8px;
-            color: #757575;
-            transition: all 0.3s;
+            border-radius: 6px;
+            color: #64748B;
+            transition: all 0.2s;
         }
         .tab-btn.active {
             background-color: white;
-            color: #1a237e;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            color: #0F172A;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
-        .tab-btn:hover:not(.active) { color: #424242; }
-
+        .tab-btn:hover:not(.active) { color: #334155; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        /* === KARTU === */
         .kartu {
-            width: 100%;
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 28px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
+        hr { border: none; border-top: 1px solid #E2E8F0; margin: 24px 0; }
 
-        hr { border: none; border-top: 1px solid #e0e0e0; margin: 20px 0; }
-
+        /* === OVERLAY & POPUP === */
         .overlay {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background: rgba(15,23,42,0.5);
+            backdrop-filter: blur(2px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
         }
         .overlay.show { display: flex; }
-
         .popup-login {
-            background-color: white;
-            padding: 30px;
+            background: white;
+            padding: 32px;
             border-radius: 12px;
             width: 90%;
-            max-width: 350px;
+            max-width: 360px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            animation: popIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            animation: slideUp 0.3s ease-out;
         }
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            50% { transform: translateX(8px); }
-            75% { transform: translateX(-5px); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
         }
-        .popup-login .login-icon { font-size: 40px; margin-bottom: 10px; }
-        .popup-login h3 { color: #333; margin-bottom: 5px; }
-        .popup-login .login-subtitle { font-size: 13px; color: #9e9e9e; margin-bottom: 20px; }
+        .popup-login .login-icon { font-size: 36px; margin-bottom: 8px; }
+        .popup-login h3 { color: #0F172A; margin-bottom: 4px; font-size: 18px; }
+        .popup-login .login-subtitle { font-size: 13px; color: #94A3B8; margin-bottom: 24px; }
         .popup-login input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 20px;
+            padding: 12px 16px;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            font-size: 18px;
             text-align: center;
-            letter-spacing: 8px;
-            font-family: 'Courier New', monospace;
+            letter-spacing: 6px;
+            font-family: 'Inter', system-ui, sans-serif;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.2s;
         }
-        .popup-login input:focus { border-color: #1565c0; }
-        .popup-login .btn-login {
+        .popup-login input:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .btn-login {
             width: 100%;
-            margin-top: 15px;
+            margin-top: 16px;
             padding: 12px;
-            background-color: #ff9800;
+            background-color: #2563EB;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
-        .popup-login .btn-login:hover { background-color: #f57c00; }
-        .popup-login .btn-batal {
+        .btn-login:hover { background-color: #1D4ED8; }
+        .btn-batal {
             width: 100%;
             margin-top: 8px;
             padding: 10px;
-            background-color: transparent;
-            color: #9e9e9e;
+            background: transparent;
+            color: #94A3B8;
             border: none;
-            border-radius: 8px;
             font-size: 13px;
             cursor: pointer;
         }
-        .login-error { color: #c62828; font-size: 13px; margin-top: 8px; display: none; }
+        .login-error { color: #DC2626; font-size: 13px; margin-top: 8px; display: none; }
         .login-error.show { display: block; }
 
         /* === INPUT AREA === */
-        .input-area {
-            margin-bottom: 15px;
-        }
+        .input-area { margin-bottom: 16px; }
         .input-area textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 12px 16px;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
             font-size: 14px;
-            font-family: 'Courier New', monospace;
+            font-family: 'SF Mono', 'Cascadia Code', 'Courier New', monospace;
             resize: vertical;
             min-height: 80px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.2s;
+            background-color: #F8FAFC;
         }
-        .input-area textarea:focus { border-color: #1565c0; }
-        .input-area .hint {
-            font-size: 12px;
-            color: #9e9e9e;
-            margin-top: 5px;
-        }
-        .btn-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
+        .input-area textarea:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); background: white; }
+        .input-area .hint { font-size: 12px; color: #94A3B8; margin-top: 6px; }
+        .btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
         .btn-aksi {
             padding: 10px 20px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.2s;
         }
-        .btn-cek {
-            background-color: #1565c0;
-            color: white;
-        }
-        .btn-cek:hover { background-color: #0d47a1; }
-        .btn-clear {
-            background-color: #f5f5f5;
-            color: #757575;
-            border: 1px solid #e0e0e0;
-        }
-        .btn-clear:hover { background-color: #eeeeee; }
+        .btn-cek { background-color: #2563EB; color: white; }
+        .btn-cek:hover { background-color: #1D4ED8; }
+        .btn-clear { background-color: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; }
+        .btn-clear:hover { background-color: #E2E8F0; }
         .btn-back {
-            background-color: transparent;
-            color: #1565c0;
-            border: 1px solid #1565c0;
+            background: transparent;
+            color: #2563EB;
+            border: 1px solid #2563EB;
             padding: 6px 14px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            font-weight: 500;
         }
-        .btn-back:hover { background-color: #e3f2fd; }
+        .btn-back:hover { background-color: #EFF6FF; }
         .btn-back-daftar {
-            background-color: transparent;
-            color: #1565c0;
-            border: 1px solid #1565c0;
+            background: transparent;
+            color: #2563EB;
+            border: 1px solid #2563EB;
             padding: 6px 14px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             display: none;
+            font-weight: 500;
         }
-        .btn-back-daftar:hover { background-color: #e3f2fd; }
+        .btn-back-daftar:hover { background-color: #EFF6FF; }
 
+        /* === BANNER === */
         .rvdc-info-box {
-            background-color: #e3f2fd;
-            border-left: 4px solid #1565c0;
-            padding: 10px 15px;
+            padding: 10px 14px;
             border-radius: 6px;
             margin: 8px 0;
+            font-size: 13px;
+            font-weight: 500;
         }
-        .rvdc-info-box p { margin: 0; }
-
         .no-dr-banner {
-            background-color: #fafafa;
-            border-left: 4px solid #9e9e9e;
-            padding: 15px 20px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            padding: 20px;
             border-radius: 6px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             font-size: 14px;
-            color: #616161;
+            color: #64748B;
             display: none;
             text-align: center;
         }
         .no-dr-banner.show { display: block; }
-        .no-dr-banner .no-dr-icon { font-size: 36px; margin-bottom: 8px; }
+        .no-dr-banner .no-dr-icon { font-size: 32px; margin-bottom: 8px; }
 
         .error-msg {
-            background-color: #fff3f3;
-            border: 1px solid #ffcdd2;
-            color: #c62828;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #DC2626;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
             display: none;
         }
         .error-msg.show { display: block; }
 
         .notif-sukses {
-            background-color: #e8f5e9;
-            border: 1px solid #a5d6a7;
-            color: #2e7d32;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #059669;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
             display: none;
-            font-size: 14px;
+            font-size: 13px;
             animation: fadeIn 0.3s;
         }
         .notif-sukses.show { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
+            from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* === INFO UNIT === */
         .info-unit { display: none; }
         .info-unit.show { display: block; }
-        .info-unit p { margin: 8px 0; color: #424242; font-size: 15px; display: flex; flex-wrap: wrap; }
-        .label { color: #9e9e9e; font-weight: normal; min-width: 130px; }
-        .nilai { font-weight: 600; color: #212121; }
+        .info-unit p { margin: 8px 0; color: #334155; font-size: 14px; display: flex; flex-wrap: wrap; }
+        .label { color: #94A3B8; font-weight: 500; min-width: 130px; font-size: 13px; }
+        .nilai { font-weight: 600; color: #0F172A; }
         .nilai-rangka {
             font-weight: 600;
-            color: #1565c0;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 0.5px;
+            color: #2563EB;
+            font-family: 'SF Mono', 'Cascadia Code', 'Courier New', monospace;
+            letter-spacing: 0.3px;
         }
-        .estimasi-besar { font-weight: 700; color: #1565c0; font-size: 16px; }
+        .estimasi-besar { font-weight: 700; color: #2563EB; font-size: 15px; }
 
-        .progress-title { font-weight: 700; color: #333; margin-bottom: 20px; font-size: 16px; }
+        /* === PROGRESS BAR === */
+        .progress-title { font-weight: 600; color: #0F172A; margin-bottom: 20px; font-size: 15px; }
         .progress-container { margin: 10px 0; }
-        .step { display: flex; align-items: flex-start; margin-bottom: 22px; position: relative; }
+        .step { display: flex; align-items: flex-start; margin-bottom: 24px; position: relative; }
         .step:last-child { margin-bottom: 0; }
-
         .indikator {
-            width: 36px; height: 36px;
+            width: 28px; height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            margin-right: 15px;
+            font-size: 13px;
+            margin-right: 12px;
             flex-shrink: 0;
             z-index: 1;
+            border: 2px solid #CBD5E1;
+            background: white;
+            color: #94A3B8;
+            transition: all 0.3s;
         }
-        .indikator-selesai { background-color: #e8f5e9; color: #2e7d32; }
-        .indikator-aktif { background-color: #e3f2fd; color: #1565c0; animation: pulse 1.5s infinite; }
-        .indikator-menunggu { background-color: #f5f5f5; color: #bdbdbd; }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(21, 101, 192, 0.3); }
-            70% { box-shadow: 0 0 0 8px rgba(21, 101, 192, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(21, 101, 192, 0); }
+        .indikator-selesai { border-color: #059669; background: #ECFDF5; color: #059669; }
+        .indikator-aktif { border-color: #2563EB; background: #EFF6FF; color: #2563EB; animation: pulse-ring 2s infinite; }
+        .indikator-menunggu { border-color: #E2E8F0; background: white; color: #CBD5E1; }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(37,99,235,0.2); }
+            70% { box-shadow: 0 0 0 6px rgba(37,99,235,0); }
+            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
         }
-
         .teks-status { flex: 1; }
-        .nama-status { font-weight: 600; margin: 0; font-size: 15px; }
-        .detail-status { margin: 3px 0 0 0; font-size: 13px; color: #757575; display: none; }
-        .teks-aktif .detail-status { display: block; }
-        .teks-selesai .nama-status { color: #2e7d32; }
-        .teks-aktif .nama-status { color: #1565c0; }
-        .teks-menunggu .nama-status { color: #bdbdbd; }
-
+        .nama-status { font-weight: 600; margin: 0; font-size: 14px; }
+        .detail-status { margin: 2px 0 0 0; font-size: 12px; color: #94A3B8; display: none; }
+        .teks-aktif .detail-status { display: block; color: #64748B; }
+        .teks-selesai .nama-status { color: #059669; }
+        .teks-aktif .nama-status { color: #2563EB; }
+        .teks-menunggu .nama-status { color: #CBD5E1; }
         .step:not(:last-child)::after {
             content: '';
             position: absolute;
-            left: 17px; top: 40px;
-            width: 2px; height: 26px;
-            background-color: #e0e0e0;
+            left: 13px; top: 32px;
+            width: 1px; height: 22px;
+            background-color: #E2E8F0;
         }
-        .step.selesai:not(:last-child)::after { background-color: #2e7d32; }
-        .step.aktif:not(:last-child)::after { background-color: #e0e0e0; }
-
-        .footer-note {
-            margin-top: 25px;
-            padding: 12px;
-            background-color: #f9fafb;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 13px;
-            color: #9e9e9e;
-        }
+        .step.selesai:not(:last-child)::after { background-color: #059669; }
+        .step.aktif:not(:last-child)::after { background-color: #E2E8F0; }
 
         /* === ADMIN SECTION === */
-        .admin-section {
-            display: none;
-        }
-        .admin-section.show {
-            display: block;
-        }
+        .admin-section { display: none; }
+        .admin-section.show { display: block; }
 
-        /* Filter bar */
+        /* === FILTER === */
         .filter-bar {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
             align-items: flex-end;
             justify-content: center;
         }
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            position: relative;
-        }
-        .filter-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #757575;
-            text-align: center;
-        }
-        .filter-group .input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0;
-        }
-        .filter-group input,
-        .filter-group select {
+        .filter-group { display: flex; flex-direction: column; gap: 3px; }
+        .filter-group label { font-size: 11px; font-weight: 600; color: #64748B; text-align: center; }
+        .input-wrapper { display: flex; align-items: center; gap: 0; }
+        .filter-group input, .filter-group select {
             padding: 8px 12px;
-            border: 2px solid #e0e0e0;
+            border: 1px solid #CBD5E1;
             border-radius: 6px;
             font-size: 13px;
             outline: none;
-            min-width: 150px;
+            min-width: 140px;
             text-align: center;
             flex: 1;
+            background: white;
+            transition: all 0.2s;
         }
-        .filter-group input:focus,
-        .filter-group select:focus { border-color: #1565c0; }
-        .filter-group .filter-rangka { font-family: 'Courier New', monospace; }
-        .filter-group select[multiple] {
-            min-height: auto;
-            height: auto;
-        }
-        .filter-group select[multiple] option:checked {
-            background-color: #e3f2fd;
-            color: #1565c0;
-        }
+        .filter-group input:focus, .filter-group select:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+        .filter-group .filter-rangka { font-family: 'SF Mono', 'Cascadia Code', 'Courier New', monospace; }
+        .filter-group select[multiple] { min-height: auto; height: auto; }
+        .filter-group select[multiple] option:checked { background-color: #EFF6FF; color: #2563EB; }
         .btn-clear-field {
-            background: none;
-            border: none;
-            color: #bdbdbd;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 4px 6px;
-            line-height: 1;
-            display: none;
-            margin-left: 2px;
+            background: none; border: none; color: #CBD5E1; font-size: 14px;
+            cursor: pointer; padding: 4px 6px; line-height: 1; display: none; margin-left: 2px;
         }
+        .btn-clear-field:hover { color: #DC2626; }
         .filter-group:hover .btn-clear-field,
         .filter-group input:not(:placeholder-shown) ~ .btn-clear-field,
-        .filter-group select:valid ~ .btn-clear-field,
-        .btn-clear-field.visible {
-            display: inline-block;
-        }
-        .btn-clear-field:hover {
-            color: #c62828;
-        }
+        .btn-clear-field.visible { display: inline-block; }
         .btn-reset-filter {
             padding: 8px 16px;
-            background-color: #f5f5f5;
-            border: 1px solid #e0e0e0;
+            background: #F1F5F9;
+            border: 1px solid #CBD5E1;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
-            color: #757575;
+            color: #64748B;
             height: fit-content;
             align-self: flex-end;
+            transition: all 0.2s;
         }
+        .btn-reset-filter:hover { background: #E2E8F0; }
 
+        /* === TABLE === */
         .table-container { overflow-x: auto; }
-        table.dashboard-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        table.dashboard-table { width: 100%; border-collapse: collapse; font-size: 13px; }
         table.dashboard-table th {
-            background-color: #f5f5f5;
-            padding: 12px 15px;
+            background-color: #F8FAFC;
+            padding: 12px 14px;
             text-align: left;
             font-weight: 600;
-            color: #424242;
-            border-bottom: 2px solid #e0e0e0;
+            color: #475569;
+            border-bottom: 1px solid #E2E8F0;
             white-space: nowrap;
+            font-size: 12px;
+            letter-spacing: 0.3px;
         }
         table.dashboard-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 12px 14px;
+            border-bottom: 1px solid #F1F5F9;
             vertical-align: middle;
         }
-        table.dashboard-table tr { cursor: pointer; transition: background-color 0.2s; }
-        table.dashboard-table tbody tr:hover { background-color: #fafafa; }
-        .td-rangka { font-family: 'Courier New', monospace; font-weight: 600; color: #1565c0; }
+        table.dashboard-table tr { cursor: pointer; transition: background-color 0.15s; }
+        table.dashboard-table tbody tr:hover { background-color: #F8FAFC; }
+        .td-rangka {
+            font-family: 'SF Mono', 'Cascadia Code', 'Courier New', monospace;
+            font-weight: 600; color: #2563EB; font-size: 12px;
+        }
         .badge-cell {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .badge-0 { background: #F1F5F9; color: #94A3B8; }
+        .badge-1 { background: #FFF7ED; color: #D97706; }
+        .badge-2 { background: #EFF6FF; color: #2563EB; }
+        .badge-3 { background: #FFF7ED; color: #D97706; border: 1px dashed #D97706; }
+        .badge-4 { background: #ECFDF5; color: #059669; }
+        .badge-5 { background: #F5F3FF; color: #7C3AED; }
+
+        .progress-mini { display: flex; gap: 2px; align-items: center; }
+        .dot-mini { width: 6px; height: 6px; border-radius: 50%; background-color: #E2E8F0; }
+        .dot-mini.selesai { background-color: #059669; }
+        .dot-mini.aktif { background-color: #2563EB; }
+        .line-mini { width: 8px; height: 1px; background-color: #E2E8F0; }
+        .line-mini.selesai { background-color: #059669; }
+
+        .empty-state { text-align: center; padding: 40px; color: #94A3B8; font-size: 13px; }
+
+        .multi-result-section { display: none; }
+        .multi-result-section.show { display: block; }
+
+        .footer-note {
+            margin-top: 24px;
+            padding: 12px;
+            background: #F8FAFC;
+            border-radius: 6px;
+            text-align: center;
             font-size: 12px;
-            font-weight: 700;
-        }
-        .badge-0 { background-color: #f5f5f5; color: #9e9e9e; }
-        .badge-1 { background-color: #fff3e0; color: #e65100; }
-        .badge-2 { background-color: #e3f2fd; color: #1565c0; }
-        .badge-3 { background-color: #fff3e0; color: #e65100; border: 1px dashed #ff9800; }
-        .badge-4 { background-color: #e8f5e9; color: #2e7d32; }
-        .badge-5 { background-color: #f3e5f5; color: #7b1fa2; }
-
-        .progress-mini { display: flex; gap: 3px; align-items: center; }
-        .dot-mini { width: 7px; height: 7px; border-radius: 50%; background-color: #e0e0e0; }
-        .dot-mini.selesai { background-color: #2e7d32; }
-        .dot-mini.aktif { background-color: #1565c0; }
-        .line-mini { width: 10px; height: 2px; background-color: #e0e0e0; }
-        .line-mini.selesai { background-color: #2e7d32; }
-
-        .empty-state { text-align: center; padding: 40px; color: #9e9e9e; }
-
-        /* === MULTI RESULT SECTION === */
-        .multi-result-section {
-            display: none;
-        }
-        .multi-result-section.show {
-            display: block;
+            color: #94A3B8;
         }
 
-        @media (max-width: 600px) {
-            .main-content { padding: 10px; }
+        @media (max-width: 640px) {
+            .main-content { padding: 12px; }
             .kartu { padding: 20px; }
-            h1 { font-size: 20px; }
-            .label { min-width: 100px; font-size: 13px; }
-            .nilai, .nilai-rangka { font-size: 13px; }
-            .indikator { width: 30px; height: 30px; font-size: 14px; margin-right: 10px; }
-            .step:not(:last-child)::after { left: 14px; top: 34px; height: 24px; }
+            .navbar-title h1 { font-size: 18px; }
+            .label { min-width: 90px; font-size: 12px; }
+            .indikator { width: 24px; height: 24px; font-size: 11px; margin-right: 10px; }
+            .step:not(:last-child)::after { left: 11px; top: 28px; height: 20px; }
             .nama-status { font-size: 13px; }
-            .detail-status { font-size: 11px; }
-            .popup-login { padding: 20px; }
-            .tab-btn { padding: 10px 15px; font-size: 14px; }
+            .popup-login { padding: 24px; }
+            .tab-btn { padding: 10px 14px; font-size: 13px; }
             table.dashboard-table { font-size: 12px; }
             table.dashboard-table th, table.dashboard-table td { padding: 8px 10px; }
-
-            .filter-bar {
-                justify-content: center;
-                gap: 12px;
-            }
-            .filter-group {
-                width: 100%;
-                max-width: 100%;
-                flex: 1 1 auto;
-            }
-            .filter-group input,
-            .filter-group select {
-                min-width: 0;
-                width: 100%;
-            }
-            .btn-reset-filter {
-                align-self: stretch;
-                text-align: center;
-            }
+            .filter-bar { justify-content: stretch; gap: 8px; }
+            .filter-group { width: 100%; }
+            .filter-group input, .filter-group select { min-width: 0; width: 100%; }
+            .btn-reset-filter { align-self: stretch; text-align: center; }
         }
     </style>
 </head>
@@ -537,26 +500,28 @@
             <h3>Admin Access</h3>
             <p class="login-subtitle">Masukkan password untuk mengakses Panel Admin</p>
             <input type="password" id="inputPIN" placeholder="Password" autocomplete="off">
-            <div class="login-error" id="loginError">❌ Password salah. Silakan coba lagi.</div>
-            <button class="btn-login" onclick="verifikasiPIN()">🔓 Buka Admin Mode</button>
+            <div class="login-error" id="loginError">❌ Password salah.</div>
+            <button class="btn-login" onclick="verifikasiPIN()">Buka Admin Mode</button>
             <button class="btn-batal" onclick="batalLogin()">Batal</button>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="header">
-            <div class="header-kiri">
-                <span class="logo-icon">🚗</span>
-                <div>
-                    <h1>TrackORA Web</h1>
-                    <p class="tagline">Track Every Request, Deliver with Confidence</p>
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <div class="navbar-brand">
+                <div class="navbar-logo">🚗</div>
+                <div class="navbar-title">
+                    <h1>TrackORA</h1>
+                    <span>Track Every Request, Deliver with Confidence</span>
                 </div>
             </div>
-            <button class="admin-toggle" id="btnAdminToggle" onclick="toggleAdmin()">
-                <span class="admin-lock">🔒</span> Admin Mode
+            <button class="btn-admin-toggle" id="btnAdminToggle" onclick="toggleAdmin()">
+                🔒 Admin Mode
             </button>
         </div>
 
+        <!-- TABS -->
         <div class="tab-nav">
             <button class="tab-btn active" id="btnTabLacak" onclick="gantiTab('lacak')">🔍 Lacak Unit</button>
             <button class="tab-btn" id="btnTabDashboard" onclick="gantiTab('dashboard')" style="display:none;">📊 Daftar Unit</button>
@@ -570,161 +535,82 @@
             <div class="kartu">
                 <div class="input-area" id="inputAreaLacak">
                     <textarea id="multiInput" placeholder="Masukkan No. Rangka (satu per baris untuk banyak unit)&#10;Contoh:&#10;MHFAB1CJ2N1234567&#10;MHFAB1CJ2N7654321"></textarea>
-                    <p class="hint">Masukkan 1 No. Rangka untuk detail, atau lebih dari 1 untuk daftar (pisah Enter)</p>
+                    <p class="hint">1 No. Rangka → detail. Lebih dari 1 → daftar.</p>
                     <div class="btn-row">
-                        <button class="btn-aksi btn-cek" onclick="prosesInput()">🔍 Cek Status</button>
-                        <button class="btn-aksi btn-clear" onclick="clearAll()">✕ Clear</button>
+                        <button class="btn-aksi btn-cek" onclick="prosesInput()">Cek Status</button>
+                        <button class="btn-aksi btn-clear" onclick="clearAll()">Clear</button>
                     </div>
                 </div>
 
                 <div class="multi-result-section" id="multiResultSection">
                     <hr>
-                    <p class="progress-title">📋 Hasil Pencarian</p>
+                    <p class="progress-title">Hasil Pencarian</p>
                     <div class="table-container">
                         <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>No. Rangka</th>
-                                    <th>Cabang Pemilik</th>
-                                    <th>Tujuan Kirim</th>
-                                    <th>Model</th>
-                                    <th>Status</th>
-                                    <th>Progress</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>No. Rangka</th><th>Cabang Pemilik</th><th>Tujuan Kirim</th><th>Model</th><th>Status</th><th>Progress</th></tr></thead>
                             <tbody id="multiResultBody"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div id="singleDetailWrapper" style="display:none;">
-                    <button class="btn-back" onclick="kembaliKeDaftar()">← Kembali ke Daftar</button>
+                    <button class="btn-back" onclick="kembaliKeDaftar()">← Kembali</button>
                     <div class="no-dr-banner" id="noDrBanner">
                         <div class="no-dr-icon">📋</div>
                         <strong>Unit belum memiliki Delivery Request (DR).</strong><br>
-                        <span style="font-size:12px;">Progress pengiriman akan muncul setelah DR dibuat.</span>
+                        <span style="font-size:12px;">Progress akan muncul setelah DR dibuat.</span>
                     </div>
                     <div class="info-unit show" id="infoUnit">
                         <div id="detailUnit"></div>
                         <hr>
-                        <p class="progress-title">📋 Progress Pengiriman</p>
+                        <p class="progress-title">Progress Pengiriman</p>
                         <div class="progress-container" id="progressContainer"></div>
-                        <div class="footer-note">
-                            📌 Lacak status unit berdasarkan <strong>No. Rangka</strong><br>Informasi diperbarui secara berkala
-                        </div>
+                        <div class="footer-note">📌 Lacak status unit berdasarkan <strong>No. Rangka</strong>. Informasi diperbarui secara berkala.</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ADMIN SECTION (DAFTAR UNIT) -->
+        <!-- ADMIN SECTION -->
         <div class="admin-section" id="adminSection">
             <div class="filter-bar" id="filterBar">
-                <div class="filter-group">
-                    <label>No. Rangka</label>
-                    <div class="input-wrapper">
-                        <input type="text" class="filter-rangka" id="filterRangka" placeholder="Ketik No. Rangka" oninput="applyFilter(); toggleClearButton(this)">
-                        <button class="btn-clear-field" onclick="clearFilterField('filterRangka', 'text')" title="Hapus filter">✕</button>
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <label>Cabang Pemilik</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="filterCabang" list="cabangList" placeholder="Ketik atau pilih" oninput="applyFilter(); toggleClearButton(this)">
-                        <datalist id="cabangList"></datalist>
-                        <button class="btn-clear-field" onclick="clearFilterField('filterCabang', 'text')" title="Hapus filter">✕</button>
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <label>Model</label>
-                    <div class="input-wrapper">
-                        <select id="filterModel" multiple onchange="applyFilter(); toggleClearButton(this)" size="1">
-                        </select>
-                        <button class="btn-clear-field" onclick="clearFilterField('filterModel', 'select')" title="Hapus filter">✕</button>
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <label>Status</label>
-                    <div class="input-wrapper">
-                        <select id="filterStatus" multiple onchange="applyFilter(); toggleClearButton(this)" size="1">
-                            <option value="1">📝 DR Created</option>
-                            <option value="2">🔧 On Preparation</option>
-                            <option value="3">✨ Quality Reconditioning</option>
-                            <option value="4">🚛 In Transit</option>
-                            <option value="5">✅ Delivered</option>
-                        </select>
-                        <button class="btn-clear-field" onclick="clearFilterField('filterStatus', 'select')" title="Hapus filter">✕</button>
-                    </div>
-                </div>
-                <button class="btn-reset-filter" onclick="resetFilter()">✕ Reset</button>
+                <div class="filter-group"><label>No. Rangka</label><div class="input-wrapper"><input type="text" class="filter-rangka" id="filterRangka" placeholder="Ketik No. Rangka" oninput="applyFilter(); toggleClearButton(this)"><button class="btn-clear-field" onclick="clearFilterField('filterRangka','text')">✕</button></div></div>
+                <div class="filter-group"><label>Cabang</label><div class="input-wrapper"><input type="text" id="filterCabang" list="cabangList" placeholder="Ketik atau pilih" oninput="applyFilter(); toggleClearButton(this)"><datalist id="cabangList"></datalist><button class="btn-clear-field" onclick="clearFilterField('filterCabang','text')">✕</button></div></div>
+                <div class="filter-group"><label>Model</label><div class="input-wrapper"><select id="filterModel" multiple onchange="applyFilter(); toggleClearButton(this)" size="1"></select><button class="btn-clear-field" onclick="clearFilterField('filterModel','select')">✕</button></div></div>
+                <div class="filter-group"><label>Status</label><div class="input-wrapper"><select id="filterStatus" multiple onchange="applyFilter(); toggleClearButton(this)" size="1"><option value="1">📝 DR Created</option><option value="2">🔄 On Preparation</option><option value="3">✨ Quality Reconditioning</option><option value="4">🚛 In Transit</option><option value="5">✅ Delivered</option></select><button class="btn-clear-field" onclick="clearFilterField('filterStatus','select')">✕</button></div></div>
+                <button class="btn-reset-filter" onclick="resetFilter()">Reset</button>
             </div>
-
             <button class="btn-back-daftar" id="btnBackDaftar" onclick="kembaliKeDaftarAdmin()">← Kembali ke Daftar Unit</button>
-
             <div class="table-container" id="dashboardTableContainer" style="display:none;">
                 <table class="dashboard-table">
-                    <thead>
-                        <tr>
-                            <th>No. Rangka</th>
-                            <th>Cabang Pemilik</th>
-                            <th>Model</th>
-                            <th>Status</th>
-                            <th>Progress</th>
-                            <th>Estimasi / Tanggal</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>No. Rangka</th><th>Cabang</th><th>Model</th><th>Status</th><th>Progress</th><th>Estimasi / Tanggal</th></tr></thead>
                     <tbody id="dashboardBody"></tbody>
                 </table>
             </div>
             <div class="empty-state" id="emptyState" style="display:none;"></div>
-
             <div id="adminDetailWrapper" style="display:none;">
                 <div class="kartu">
-                    <div class="no-dr-banner" id="adminNoDrBanner">
-                        <div class="no-dr-icon">📋</div>
-                        <strong>Unit belum memiliki Delivery Request (DR).</strong><br>
-                        <span style="font-size:12px;">Progress pengiriman akan muncul setelah DR dibuat.</span>
-                    </div>
-                    <div class="info-unit show" id="adminInfoUnit">
-                        <div id="adminDetailUnit"></div>
-                        <hr>
-                        <p class="progress-title">📋 Progress Pengiriman</p>
-                        <div class="progress-container" id="adminProgressContainer"></div>
-                        <div class="footer-note">
-                            📌 Lacak status unit berdasarkan <strong>No. Rangka</strong><br>Informasi diperbarui secara berkala
-                        </div>
-                    </div>
+                    <div class="no-dr-banner" id="adminNoDrBanner"><div class="no-dr-icon">📋</div><strong>Unit belum memiliki DR.</strong></div>
+                    <div class="info-unit show" id="adminInfoUnit"><div id="adminDetailUnit"></div><hr><p class="progress-title">Progress Pengiriman</p><div class="progress-container" id="adminProgressContainer"></div><div class="footer-note">📌 Lacak status unit berdasarkan <strong>No. Rangka</strong>.</div></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // =============================================
-        // KONFIGURASI
-        // =============================================
         const ADMIN_PASSWORD = "Toyota2026";
         const SESI_DURASI = 30 * 60000;
         const SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKAaGXzzufPDknUNGa1u3sEEt_Py0lUS8PJKslvYt7b5Y5IgzklmLg10BkIz3uStTbR83hjinxZc7V/pub?gid=0&single=true&output=csv";
-
         const statusList = [
-            { nama: "Belum DR",              ikon: "⚪", badgeClass: "badge-0" },
-            { nama: "DR Created",            ikon: "📝", badgeClass: "badge-1" },
-            { nama: "On Preparation",        ikon: "🔧", badgeClass: "badge-2" },
-            { nama: "Quality Reconditioning",ikon: "✨", badgeClass: "badge-3" },
-            { nama: "In Transit",            ikon: "🚛", badgeClass: "badge-4" },
-            { nama: "Delivered",             ikon: "✅", badgeClass: "badge-5" }
+            { nama: "Belum DR", ikon: "⚪", badgeClass: "badge-0" },
+            { nama: "DR Created", ikon: "📝", badgeClass: "badge-1" },
+            { nama: "On Preparation", ikon: "🔄", badgeClass: "badge-2" },
+            { nama: "Quality Reconditioning", ikon: "✨", badgeClass: "badge-3" },
+            { nama: "In Transit", ikon: "🚛", badgeClass: "badge-4" },
+            { nama: "Delivered", ikon: "✅", badgeClass: "badge-5" }
         ];
+        let daftarUnit = [], adminMode = false, unitAktif = null, daftarMultiTerakhir = [], hasilFilterTerakhir = [];
 
-        let daftarUnit = [];
-        let adminMode = false;
-        let unitAktif = null;
-        let daftarMultiTerakhir = [];
-        let hasilFilterTerakhir = [];
-
-        // =============================================
-        // INISIALISASI
-        // =============================================
         async function init() {
             cekSesiAdmin();
             document.getElementById("dashboardTableContainer").style.display = "none";
@@ -733,640 +619,64 @@
             populateDatalists();
             populateMultiSelects();
         }
-
         function cekSesiAdmin() {
             const sesi = localStorage.getItem("trackora_admin_sesi");
-            if (sesi) {
-                if (Date.now() - parseInt(sesi) < SESI_DURASI) {
-                    adminMode = true;
-                    updateUIAdmin();
-                } else {
-                    localStorage.removeItem("trackora_admin_sesi");
-                }
-            }
+            if (sesi && Date.now() - parseInt(sesi) < SESI_DURASI) { adminMode = true; updateUIAdmin(); }
+            else localStorage.removeItem("trackora_admin_sesi");
         }
-
         async function fetchDataDariSheets() {
             try {
-                const response = await fetch(SHEETS_CSV_URL);
-                const csvText = await response.text();
-                daftarUnit = parseCSV(csvText);
-                console.log("✅ Data dari Google Sheets: " + daftarUnit.length + " unit");
-                populateDatalists();
-                populateMultiSelects();
-            } catch (error) {
-                console.error("❌ Gagal fetch data:", error);
-                daftarUnit = getDataDummy();
-                populateDatalists();
-                populateMultiSelects();
-            }
+                const r = await fetch(SHEETS_CSV_URL);
+                daftarUnit = parseCSV(await r.text());
+                console.log("✅ Data: " + daftarUnit.length + " unit");
+                populateDatalists(); populateMultiSelects();
+            } catch (e) { console.error(e); daftarUnit = getDataDummy(); populateDatalists(); populateMultiSelects(); }
         }
-
-        function parseCSV(csvText) {
-            const lines = csvText.trim().split("\n");
-            if (lines.length < 2) return [];
+        function parseCSV(t) {
+            const lines = t.trim().split("\n"); if (lines.length < 2) return [];
             const result = [];
             for (let i = 1; i < lines.length; i++) {
-                const values = parseCSVLine(lines[i]);
-                if (values.length < 15) continue;
-                result.push({
-                    rangka: values[0]?.trim() || "",
-                    tujuan: values[1]?.trim() || "",
-                    model: values[2]?.trim() || "",
-                    warna: values[3]?.trim() || "",
-                    areaProcess: values[4]?.trim() || "",
-                    permintaanSampaiCabang: values[5]?.trim() || "",
-                    drCreated: values[6]?.trim() || "",
-                    etaRVDC: values[7]?.trim() || "",
-                    qrSelesai: values[8]?.trim() || "",
-                    trueDestination: values[9]?.trim() || "",
-                    estimasiKirim: values[10]?.trim() || "",
-                    sedangKeRVDC: values[11]?.trim()?.toUpperCase() === "TRUE",
-                    inTransit: values[12]?.trim() || "",
-                    delivered: values[13]?.trim() || "",
-                    status: parseInt(values[14]?.trim()) || 0
-                });
+                const v = parseCSVLine(lines[i]); if (v.length < 15) continue;
+                result.push({ rangka: v[0]?.trim()||"", tujuan: v[1]?.trim()||"", model: v[2]?.trim()||"", warna: v[3]?.trim()||"", areaProcess: v[4]?.trim()||"", permintaanSampaiCabang: v[5]?.trim()||"", drCreated: v[6]?.trim()||"", etaRVDC: v[7]?.trim()||"", qrSelesai: v[8]?.trim()||"", trueDestination: v[9]?.trim()||"", estimasiKirim: v[10]?.trim()||"", sedangKeRVDC: v[11]?.trim()?.toUpperCase()==="TRUE", inTransit: v[12]?.trim()||"", delivered: v[13]?.trim()||"", status: parseInt(v[14]?.trim())||0 });
             }
             return result;
         }
-
-        function parseCSVLine(line) {
-            const result = [];
-            let current = "";
-            let inQuotes = false;
-            for (let char of line) {
-                if (char === '"') { inQuotes = !inQuotes; }
-                else if (char === ',' && !inQuotes) { result.push(current); current = ""; }
-                else { current += char; }
-            }
-            result.push(current);
-            return result;
-        }
-
-        function getDataDummy() {
-            return [
-                { rangka: "MHFAB1CJ2N1234567", tujuan: "Cabang Jakarta Pusat", model: "Avanza", warna: "Putih", status: 4, sedangKeRVDC: false, drCreated: "15 Mar 2026", estimasiKirim: "20 Mar 2026", inTransit: "19 Mar 2026", trueDestination: "" },
-                { rangka: "MHFAB1CJ2N7654321", tujuan: "Cabang Bandung", model: "Innova", warna: "Hitam", status: 3, sedangKeRVDC: true, drCreated: "16 Mar 2026", qrSelesai: "21 Mar 2026", estimasiKirim: "22 Mar 2026", etaRVDC: "19 Mar 2026", trueDestination: "NVDC" },
-                { rangka: "MHFAB1CJ2N9999999", tujuan: "Cabang Surabaya", model: "Fortuner", warna: "Silver", status: 5, sedangKeRVDC: false, drCreated: "10 Mar 2026", estimasiKirim: "13 Mar 2026", inTransit: "13 Mar 2026", delivered: "15 Mar 2026", trueDestination: "Cabang Surabaya" }
-            ];
-        }
-
-        // =============================================
-        // DATALISTS & MULTI SELECTS
-        // =============================================
-        function populateDatalists() {
-            const cabangSet = new Set(daftarUnit.map(u => u.tujuan).filter(Boolean));
-            document.getElementById("cabangList").innerHTML = Array.from(cabangSet).sort().map(v => `<option value="${v}">`).join("");
-        }
-
-        function populateMultiSelects() {
-            const modelSet = new Set(daftarUnit.map(u => u.model).filter(Boolean));
-            const modelSelect = document.getElementById("filterModel");
-            modelSelect.innerHTML = Array.from(modelSet).sort().map(v => `<option value="${v}">${v}</option>`).join("");
-        }
-
-        // =============================================
-        // PROGRESS STEPS
-        // =============================================
-        function getProgressDisplay(unit) {
-            const steps = [
-                { label: "DR Created",     icon: "📝", statusNum: 1 },
-                { label: "On Preparation", icon: "🔧", statusNum: 2 },
-                { label: "In Transit",     icon: "🚛", statusNum: 4 },
-                { label: "Delivered",      icon: "✅", statusNum: 5 }
-            ];
-            if (unit.status >= 3 && (unit.qrSelesai || unit.status === 3)) {
-                steps.splice(2, 0, { label: "Quality Reconditioning", icon: "✨", statusNum: 3, isQR: true });
-            }
-            return steps;
-        }
-
-        // =============================================
-        // GANTI TAB
-        // =============================================
-        function gantiTab(tab) {
-            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-            document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-            if (tab === "lacak") {
-                document.getElementById("btnTabLacak").classList.add("active");
-                document.getElementById("tabLacak").classList.add("active");
-            } else if (tab === "dashboard") {
-                document.getElementById("btnTabDashboard").classList.add("active");
-                document.getElementById("tabDashboard").classList.add("active");
-            }
-        }
-
-        // =============================================
-        // ADMIN MODE
-        // =============================================
-        function toggleAdmin() { adminMode ? logoutAdmin() : tampilkanPopupLogin(); }
-        function tampilkanPopupLogin() {
-            document.getElementById("overlayLogin").classList.add("show");
-            document.getElementById("inputPIN").value = "";
-            document.getElementById("loginError").classList.remove("show");
-            setTimeout(() => document.getElementById("inputPIN").focus(), 300);
-        }
+        function parseCSVLine(l) { const r=[]; let c="", q=false; for (let ch of l) { if (ch==='"') q=!q; else if (ch===',' && !q) { r.push(c); c=""; } else c+=ch; } r.push(c); return r; }
+        function getDataDummy() { return [{ rangka:"MHFAB1CJ2N1234567", tujuan:"Cabang Jakarta Pusat", model:"Avanza", warna:"Putih", status:4, sedangKeRVDC:false, drCreated:"15 Mar 2026", estimasiKirim:"20 Mar 2026", inTransit:"19 Mar 2026" },{ rangka:"MHFAB1CJ2N7654321", tujuan:"Cabang Bandung", model:"Innova", warna:"Hitam", status:3, sedangKeRVDC:true, drCreated:"16 Mar 2026", qrSelesai:"21 Mar 2026", estimasiKirim:"22 Mar 2026", etaRVDC:"19 Mar 2026" },{ rangka:"MHFAB1CJ2N9999999", tujuan:"Cabang Surabaya", model:"Fortuner", warna:"Silver", status:5, sedangKeRVDC:false, drCreated:"10 Mar 2026", estimasiKirim:"13 Mar 2026", inTransit:"13 Mar 2026", delivered:"15 Mar 2026" }]; }
+        function populateDatalists() { const s=new Set(daftarUnit.map(u=>u.tujuan).filter(Boolean)); document.getElementById("cabangList").innerHTML=Array.from(s).sort().map(v=>`<option value="${v}">`).join(""); }
+        function populateMultiSelects() { const s=new Set(daftarUnit.map(u=>u.model).filter(Boolean)); document.getElementById("filterModel").innerHTML=Array.from(s).sort().map(v=>`<option value="${v}">${v}</option>`).join(""); }
+        function getProgressDisplay(u) { const s=[{label:"DR Created",icon:"📝",statusNum:1},{label:"On Preparation",icon:"🔄",statusNum:2},{label:"In Transit",icon:"🚛",statusNum:4},{label:"Delivered",icon:"✅",statusNum:5}]; if(u.status>=3&&(u.qrSelesai||u.status===3)) s.splice(2,0,{label:"Quality Reconditioning",icon:"✨",statusNum:3,isQR:true}); return s; }
+        function gantiTab(t) { document.querySelectorAll(".tab-btn,.tab-content").forEach(e=>e.classList.remove("active")); if(t==="lacak") { document.getElementById("btnTabLacak").classList.add("active"); document.getElementById("tabLacak").classList.add("active"); } else { document.getElementById("btnTabDashboard").classList.add("active"); document.getElementById("tabDashboard").classList.add("active"); } }
+        function toggleAdmin() { adminMode?logoutAdmin():tampilkanPopupLogin(); }
+        function tampilkanPopupLogin() { document.getElementById("overlayLogin").classList.add("show"); document.getElementById("inputPIN").value=""; document.getElementById("loginError").classList.remove("show"); setTimeout(()=>document.getElementById("inputPIN").focus(),300); }
         function batalLogin() { document.getElementById("overlayLogin").classList.remove("show"); }
-        function verifikasiPIN() {
-            if (document.getElementById("inputPIN").value.trim() === ADMIN_PASSWORD) {
-                document.getElementById("overlayLogin").classList.remove("show");
-                adminMode = true;
-                localStorage.setItem("trackora_admin_sesi", Date.now());
-                updateUIAdmin();
-                tampilkanNotif("🔓 Admin Mode aktif.");
-            } else {
-                document.getElementById("loginError").classList.add("show");
-                document.getElementById("inputPIN").value = "";
-                document.getElementById("inputPIN").focus();
-                const popup = document.querySelector(".popup-login");
-                popup.style.animation = "none"; popup.offsetHeight;
-                popup.style.animation = "shake 0.4s ease-out";
-            }
-        }
-        function logoutAdmin() {
-            adminMode = false;
-            localStorage.removeItem("trackora_admin_sesi");
-            updateUIAdmin();
-            resetFilter();
-            tampilkanNotif("🔒 Admin Mode dinonaktifkan.");
-        }
-        function updateUIAdmin() {
-            const btn = document.getElementById("btnAdminToggle");
-            const adminSection = document.getElementById("adminSection");
-            const btnTabDashboard = document.getElementById("btnTabDashboard");
-            const tabLacak = document.getElementById("tabLacak");
-            const btnTabLacak = document.getElementById("btnTabLacak");
-            const tabDashboard = document.getElementById("tabDashboard");
-            
-            if (adminMode) {
-                btn.classList.add("active");
-                btn.innerHTML = '<span class="admin-lock">🔓</span> Admin Mode';
-                adminSection.classList.add("show");
-                if (btnTabDashboard) btnTabDashboard.style.display = "block";
-                if (tabLacak) tabLacak.classList.remove("active");
-                if (btnTabLacak) {
-                    btnTabLacak.classList.remove("active");
-                    btnTabLacak.style.display = "none";
-                }
-                if (btnTabDashboard) btnTabDashboard.classList.add("active");
-                if (tabDashboard) tabDashboard.classList.add("active");
-                document.getElementById("dashboardTableContainer").style.display = "none";
-                document.getElementById("emptyState").style.display = "none";
-                document.getElementById("adminDetailWrapper").style.display = "none";
-                document.getElementById("btnBackDaftar").style.display = "none";
-                document.getElementById("filterBar").style.display = "flex";
-            } else {
-                btn.classList.remove("active");
-                btn.innerHTML = '<span class="admin-lock">🔒</span> Admin Mode';
-                adminSection.classList.remove("show");
-                if (btnTabDashboard) btnTabDashboard.style.display = "none";
-                if (btnTabDashboard) btnTabDashboard.classList.remove("active");
-                if (tabDashboard) tabDashboard.classList.remove("active");
-                document.getElementById("dashboardTableContainer").style.display = "none";
-                document.getElementById("emptyState").style.display = "none";
-                document.getElementById("adminDetailWrapper").style.display = "none";
-                document.getElementById("btnBackDaftar").style.display = "none";
-                if (btnTabLacak) btnTabLacak.style.display = "block";
-                if (tabLacak) tabLacak.classList.add("active");
-                if (btnTabLacak) btnTabLacak.classList.add("active");
-            }
-        }
-
-        // =============================================
-        // CLEAR INDIVIDUAL FILTER FIELD
-        // =============================================
-        function clearFilterField(fieldId, type) {
-            const field = document.getElementById(fieldId);
-            if (!field) return;
-            if (type === 'text') {
-                field.value = '';
-            } else if (type === 'select') {
-                field.selectedIndex = -1;
-                field.dispatchEvent(new Event('change'));
-            }
-            const btn = field.parentElement.querySelector('.btn-clear-field');
-            if (btn) btn.classList.remove('visible');
-            applyFilter();
-        }
-
-        function toggleClearButton(element) {
-            const wrapper = element.parentElement;
-            const btn = wrapper.querySelector('.btn-clear-field');
-            if (!btn) return;
-            if (element.tagName === 'SELECT') {
-                const hasValue = Array.from(element.selectedOptions).length > 0;
-                btn.style.display = hasValue ? 'inline-block' : 'none';
-            } else {
-                const hasValue = element.value.trim().length > 0;
-                btn.style.display = hasValue ? 'inline-block' : 'none';
-            }
-        }
-
-        // =============================================
-        // FILTER & RENDER DAFTAR UNIT
-        // =============================================
-        function applyFilter() {
-            if (!adminMode) return;
-            const filterNoRangka = document.getElementById("filterRangka").value.trim().toLowerCase();
-            const filterCabang = document.getElementById("filterCabang").value.trim().toLowerCase();
-            const filterModelSelect = document.getElementById("filterModel");
-            const filterModelSelected = Array.from(filterModelSelect.selectedOptions).map(o => o.value);
-            const filterStatusSelect = document.getElementById("filterStatus");
-            const filterStatusSelected = Array.from(filterStatusSelect.selectedOptions).map(o => o.value);
-            
-            document.querySelectorAll('.filter-group input[type="text"], .filter-group select').forEach(el => {
-                toggleClearButton(el);
-            });
-            
-            const adaFilter = filterNoRangka || filterCabang || filterModelSelected.length > 0 || filterStatusSelected.length > 0;
-            
-            if (!adaFilter) {
-                document.getElementById("dashboardTableContainer").style.display = "none";
-                document.getElementById("emptyState").style.display = "none";
-                document.getElementById("dashboardBody").innerHTML = "";
-                document.getElementById("adminDetailWrapper").style.display = "none";
-                document.getElementById("btnBackDaftar").style.display = "none";
-                document.getElementById("filterBar").style.display = "flex";
-                hasilFilterTerakhir = [];
-                return;
-            }
-            
-            let hasil = daftarUnit.filter(u => u.status >= 1);
-            if (filterNoRangka) hasil = hasil.filter(u => u.rangka.toLowerCase().includes(filterNoRangka));
-            if (filterCabang) hasil = hasil.filter(u => u.tujuan.toLowerCase().includes(filterCabang));
-            if (filterModelSelected.length > 0) hasil = hasil.filter(u => filterModelSelected.includes(u.model || ""));
-            if (filterStatusSelected.length > 0) hasil = hasil.filter(u => filterStatusSelected.includes(String(u.status)));
-            
-            hasilFilterTerakhir = hasil;
-            tampilkanTabelAdmin();
-        }
-
-        function resetFilter() {
-            document.getElementById("filterRangka").value = "";
-            document.getElementById("filterCabang").value = "";
-            document.getElementById("filterModel").selectedIndex = -1;
-            document.getElementById("filterStatus").selectedIndex = -1;
-            document.querySelectorAll('.btn-clear-field').forEach(b => b.style.display = 'none');
-            document.getElementById("dashboardTableContainer").style.display = "none";
-            document.getElementById("emptyState").style.display = "none";
-            document.getElementById("dashboardBody").innerHTML = "";
-            document.getElementById("adminDetailWrapper").style.display = "none";
-            document.getElementById("btnBackDaftar").style.display = "none";
-            document.getElementById("filterBar").style.display = "flex";
-            hasilFilterTerakhir = [];
-        }
-
-        function tampilkanTabelAdmin() {
-            const tbody = document.getElementById("dashboardBody");
-            const empty = document.getElementById("emptyState");
-            const tableContainer = document.getElementById("dashboardTableContainer");
-            const adminDetail = document.getElementById("adminDetailWrapper");
-            const btnBackDaftar = document.getElementById("btnBackDaftar");
-            const filterBar = document.getElementById("filterBar");
-
-            adminDetail.style.display = "none";
-            btnBackDaftar.style.display = "none";
-            filterBar.style.display = "flex";
-
-            if (hasilFilterTerakhir.length === 0) {
-                tbody.innerHTML = "";
-                tableContainer.style.display = "none";
-                empty.style.display = "block";
-                empty.textContent = "📭 Tidak ada unit yang cocok dengan filter.";
-                return;
-            }
-            empty.style.display = "none";
-            tableContainer.style.display = "block";
-
-            let html = "";
-            for (let unit of hasilFilterTerakhir) {
-                const st = statusList[unit.status];
-                const steps = getProgressDisplay(unit);
-                let dots = "";
-                for (let i = 0; i < steps.length; i++) {
-                    if (i > 0) dots += `<div class="line-mini ${unit.status >= steps[i].statusNum ? 'selesai' : ''}"></div>`;
-                    let dotClass = "";
-                    if (unit.status > steps[i].statusNum) dotClass = "selesai";
-                    else if (unit.status === steps[i].statusNum) dotClass = "aktif";
-                    dots += `<div class="dot-mini ${dotClass}"></div>`;
-                }
-                let infoTanggal = unit.estimasiKirim || unit.drCreated || "-";
-                if (unit.status === 4) infoTanggal = "In Transit: " + (unit.inTransit || "-");
-                if (unit.status === 5) infoTanggal = "Delivered: " + (unit.delivered || "-");
-                if (unit.status === 3) infoTanggal = "QR selesai: " + (unit.qrSelesai || "-");
-                if (unit.sedangKeRVDC && unit.etaRVDC) infoTanggal = "RVDC: " + unit.etaRVDC;
-
-                html += `
-                    <tr onclick="lihatDetailDariAdmin('${unit.rangka}')">
-                        <td class="td-rangka">${unit.rangka}</td>
-                        <td>${unit.tujuan}</td>
-                        <td>${unit.model || "-"}</td>
-                        <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td>
-                        <td><div class="progress-mini">${dots}</div></td>
-                        <td style="font-size:12px;color:#757575;">${infoTanggal}</td>
-                    </tr>
-                `;
-            }
-            tbody.innerHTML = html;
-        }
-
-        function lihatDetailDariAdmin(rangka) {
-            const unit = daftarUnit.find(u => u.rangka.toLowerCase() === rangka.toLowerCase());
-            if (!unit) return;
-            
-            document.getElementById("filterBar").style.display = "none";
-            document.getElementById("dashboardTableContainer").style.display = "none";
-            document.getElementById("emptyState").style.display = "none";
-            
-            const wrapper = document.getElementById("adminDetailWrapper");
-            const noDrBanner = document.getElementById("adminNoDrBanner");
-            
-            wrapper.style.display = "block";
-            document.getElementById("btnBackDaftar").style.display = "inline-block";
-            
-            noDrBanner.classList.remove("show");
-            if (unit.status === 0) {
-                noDrBanner.classList.add("show");
-            }
-            
-            tampilkanDetailUnitDiContainer(unit, "adminDetailUnit");
-            tampilkanProgressDiContainer(unit, "adminProgressContainer");
-        }
-
-        function kembaliKeDaftarAdmin() {
-            tampilkanTabelAdmin();
-        }
-
-        // =============================================
-        // PROSES INPUT (TUNGGAL / MULTI)
-        // =============================================
-        function prosesInput() {
-            const raw = document.getElementById("multiInput").value.trim();
-            if (!raw) {
-                tampilkanNotif("⚠️ Masukkan setidaknya satu No. Rangka.");
-                return;
-            }
-            const nomorList = raw.split("\n").map(s => s.trim()).filter(s => s !== "");
-            
-            if (nomorList.length === 1) {
-                daftarMultiTerakhir = [];
-                sembunyikanMultiResult();
-                tampilkanSingleDetail(nomorList[0]);
-            } else {
-                daftarMultiTerakhir = nomorList;
-                sembunyikanSingleDetail();
-                tampilkanMultiResult(nomorList);
-            }
-        }
-
-        function tampilkanSingleDetail(noka) {
-            const unit = daftarUnit.find(u => u.rangka.toLowerCase() === noka.toLowerCase());
-            document.getElementById("errorMsg").classList.remove("show");
-            document.getElementById("noDrBanner").classList.remove("show");
-            
-            const wrapper = document.getElementById("singleDetailWrapper");
-            const infoUnit = document.getElementById("infoUnit");
-            const inputArea = document.getElementById("inputAreaLacak");
-            
-            if (!unit) {
-                document.getElementById("errorMsg").textContent = "⚠️ No. Rangka tidak ditemukan.";
-                document.getElementById("errorMsg").classList.add("show");
-                unitAktif = null;
-                wrapper.style.display = "none";
-                inputArea.style.display = "block";
-                return;
-            }
-            
-            unitAktif = unit;
-            
-            inputArea.style.display = "none";
-            wrapper.style.display = "block";
-            
-            if (unit.status === 0) {
-                document.getElementById("noDrBanner").classList.add("show");
-            }
-            
-            tampilkanDetailUnitDiContainer(unit, "detailUnit");
-            tampilkanProgressDiContainer(unit, "progressContainer");
-            infoUnit.classList.add("show");
-            
-            const btnBack = wrapper.querySelector(".btn-back");
-            btnBack.style.display = "inline-block";
-            if (daftarMultiTerakhir.length === 0) {
-                btnBack.textContent = "← Kembali ke Pencarian";
-                btnBack.onclick = function() {
-                    document.getElementById("inputAreaLacak").style.display = "block";
-                    document.getElementById("singleDetailWrapper").style.display = "none";
-                    document.getElementById("infoUnit").classList.remove("show");
-                    document.getElementById("noDrBanner").classList.remove("show");
-                    document.getElementById("errorMsg").classList.remove("show");
-                    document.getElementById("multiInput").value = "";
-                    unitAktif = null;
-                };
-            } else {
-                btnBack.textContent = "← Kembali ke Daftar";
-                btnBack.onclick = kembaliKeDaftar;
-            }
-        }
-
-        function tampilkanMultiResult(nomorList) {
-            const tbody = document.getElementById("multiResultBody");
-            const section = document.getElementById("multiResultSection");
-            const inputArea = document.getElementById("inputAreaLacak");
-            let html = "";
-            let ditemukan = 0;
-            
-            daftarMultiTerakhir = nomorList;
-            inputArea.style.display = "block";
-            
-            for (let noka of nomorList) {
-                const unit = daftarUnit.find(u => u.rangka.toLowerCase() === noka.toLowerCase());
-                if (unit) {
-                    ditemukan++;
-                    const st = statusList[unit.status];
-                    const steps = getProgressDisplay(unit);
-                    let dots = "";
-                    for (let i = 0; i < steps.length; i++) {
-                        if (i > 0) dots += `<div class="line-mini ${unit.status >= steps[i].statusNum ? 'selesai' : ''}"></div>`;
-                        let dotClass = "";
-                        if (unit.status > steps[i].statusNum) dotClass = "selesai";
-                        else if (unit.status === steps[i].statusNum) dotClass = "aktif";
-                        dots += `<div class="dot-mini ${dotClass}"></div>`;
-                    }
-                    html += `
-                        <tr onclick="klikBarisMulti('${unit.rangka}')">
-                            <td class="td-rangka">${unit.rangka}</td>
-                            <td>${unit.tujuan}</td>
-                            <td>${unit.trueDestination || "-"}</td>
-                            <td>${unit.model || "-"}</td>
-                            <td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td>
-                            <td><div class="progress-mini">${dots}</div></td>
-                        </tr>
-                    `;
-                } else {
-                    html += `
-                        <tr>
-                            <td class="td-rangka" style="color:#c62828;">❌ ${noka}</td>
-                            <td colspan="5" style="color:#9e9e9e;">Tidak ditemukan</td>
-                        </tr>
-                    `;
-                }
-            }
-            
-            tbody.innerHTML = html;
-            section.classList.add("show");
-            document.getElementById("singleDetailWrapper").style.display = "none";
-            tampilkanNotif(`🔍 ${ditemukan} dari ${nomorList.length} unit ditemukan.`);
-        }
-
-        function klikBarisMulti(rangka) {
-            sembunyikanMultiResult();
-            tampilkanSingleDetail(rangka);
-            document.querySelector("#singleDetailWrapper .btn-back").style.display = "inline-block";
-        }
-
-        function kembaliKeDaftar() {
-            const inputArea = document.getElementById("inputAreaLacak");
-            inputArea.style.display = "block";
-            sembunyikanSingleDetail();
-            tampilkanMultiResult(daftarMultiTerakhir);
-        }
-
-        function sembunyikanMultiResult() {
-            document.getElementById("multiResultSection").classList.remove("show");
-        }
-
-        function sembunyikanSingleDetail() {
-            document.getElementById("singleDetailWrapper").style.display = "none";
-            document.getElementById("infoUnit").classList.remove("show");
-            document.getElementById("noDrBanner").classList.remove("show");
-            document.getElementById("errorMsg").classList.remove("show");
-        }
-
-        // =============================================
-        // CLEAR ALL
-        // =============================================
-        function clearAll() {
-            document.getElementById("multiInput").value = "";
-            sembunyikanMultiResult();
-            sembunyikanSingleDetail();
-            document.getElementById("errorMsg").classList.remove("show");
-            document.getElementById("noDrBanner").classList.remove("show");
-            unitAktif = null;
-            daftarMultiTerakhir = [];
-            document.getElementById("multiResultBody").innerHTML = "";
-            document.getElementById("inputAreaLacak").style.display = "block";
-            const btnBack = document.querySelector("#singleDetailWrapper .btn-back");
-            if (btnBack) {
-                btnBack.textContent = "← Kembali ke Daftar";
-                btnBack.onclick = kembaliKeDaftar;
-            }
-            tampilkanNotif("🔄 Tampilan di-reset.");
-        }
-
-        // =============================================
-        // DETAIL UNIT & PROGRESS (REUSABLE)
-        // =============================================
-        function tampilkanDetailUnitDiContainer(unit, containerId) {
-            let html = `
-                <p><span class="label">No. Rangka</span> <span class="nilai-rangka">${unit.rangka}</span></p>
-                <p><span class="label">Cabang Pemilik</span> <span class="nilai">${unit.tujuan || "-"}</span></p>
-                <p><span class="label">Tujuan Kirim</span> <span class="nilai">${unit.trueDestination || "-"}</span></p>
-                <p><span class="label">Model</span> <span class="nilai">${unit.model || "-"}</span></p>
-                <p><span class="label">Warna</span> <span class="nilai">${unit.warna || "-"}</span></p>
-            `;
-            
-            // Banner oranye: Status 1 + ETARVDC_Stat = FALSE (Belum Summary DR)
-            if (unit.status === 1 && !unit.sedangKeRVDC) {
-                html += `
-                    <div class="rvdc-info-box" style="background-color:#fff8e1;border-left-color:#ff9800;">
-                        <p style="color:#e65100;font-weight:600;">Menunggu Tanggal Estimasi Kirim</p>
-                    </div>
-                `;
-            }
-            
-            // Banner biru: ETARVDC_Stat = TRUE (dalam perjalanan ke RVDC)
-            if (unit.sedangKeRVDC) {
-                html += `
-                    <div class="rvdc-info-box">
-                        <p style="color:#0d47a1;font-weight:600;">🚛 Unit sedang dalam perjalanan ke RVDC Ngoro</p>
-                        ${unit.etaRVDC ? `<p style="color:#1565c0;font-size:14px;margin-top:4px;">📅 Estimasi tiba: <strong>${formatTanggalFlex(unit.etaRVDC)}</strong></p>` : ''}
-                    </div>
-                `;
-            }
-            
-            if (unit.status >= 2) {
-                html += `<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(unit.estimasiKirim) || "Belum tersedia"}</span></p>`;
-            }
-            document.getElementById(containerId).innerHTML = html;
-        }
-
-        function tampilkanProgressDiContainer(unit, containerId) {
-            if (unit.status === 0) {
-                document.getElementById(containerId).innerHTML = "";
-                return;
-            }
-            const steps = getProgressDisplay(unit);
-            let html = "";
-            for (let i = 0; i < steps.length; i++) {
-                const step = steps[i];
-                let kelasStep = "", kelasIndikator = "", isiIndikator = "", kelasTeks = "";
-                if (unit.status > step.statusNum) {
-                    kelasStep = "selesai"; kelasIndikator = "indikator-selesai"; isiIndikator = "✓"; kelasTeks = "teks-selesai";
-                } else if (unit.status === step.statusNum) {
-                    kelasStep = "aktif"; kelasIndikator = "indikator-aktif"; isiIndikator = "●"; kelasTeks = "teks-aktif";
-                } else {
-                    kelasIndikator = "indikator-menunggu"; isiIndikator = "○"; kelasTeks = "teks-menunggu";
-                }
-                let detailTeks = dapatkanDetailStatus(unit, step);
-                html += `
-                    <div class="step ${kelasStep}">
-                        <div class="indikator ${kelasIndikator}">${isiIndikator}</div>
-                        <div class="teks-status ${kelasTeks}">
-                            <p class="nama-status">${step.icon} ${step.label}</p>
-                            <p class="detail-status">${detailTeks}</p>
-                        </div>
-                    </div>
-                `;
-            }
-            document.getElementById(containerId).innerHTML = html;
-        }
-
-        function dapatkanDetailStatus(unit, step) {
-            if (unit.status !== step.statusNum) return "";
-            switch(step.statusNum) {
-                case 1: return `DR dibuat — ${formatTanggalFlex(unit.drCreated)}`;
-                case 2: return "Unit sedang dalam proses persiapan";
-                case 3: return unit.qrSelesai ? `Estimasi selesai — ${formatTanggalFlex(unit.qrSelesai)}` : "Sedang proses rekondisi";
-                case 4: return `Unit sedang dalam perjalanan ke tujuan — ${formatTanggalFlex(unit.inTransit)}`;
-                case 5: return `Unit tiba di tujuan — ${formatTanggalFlex(unit.delivered)}`;
-                default: return "";
-            }
-        }
-
-        function formatTanggalFlex(tglStr) { return tglStr || "-"; }
-
-        function tampilkanNotif(pesan) {
-            const notif = document.getElementById("notifSukses");
-            notif.textContent = pesan;
-            notif.classList.add("show");
-            setTimeout(() => notif.classList.remove("show"), 3000);
-        }
-
-        // =============================================
-        // EVENT LISTENERS
-        // =============================================
-        document.getElementById("inputPIN").addEventListener("keypress", e => { if (e.key === "Enter") verifikasiPIN(); });
-        document.getElementById("overlayLogin").addEventListener("click", function(e) { if (e.target === this) batalLogin(); });
-        document.addEventListener("keydown", e => { if (e.key === "Escape") batalLogin(); });
-
-        document.getElementById("multiInput").addEventListener("keydown", e => {
-            if (e.key === "Enter" && e.ctrlKey) {
-                e.preventDefault();
-                prosesInput();
-            }
-        });
-
+        function verifikasiPIN() { if(document.getElementById("inputPIN").value.trim()===ADMIN_PASSWORD) { document.getElementById("overlayLogin").classList.remove("show"); adminMode=true; localStorage.setItem("trackora_admin_sesi",Date.now()); updateUIAdmin(); tampilkanNotif("Admin Mode aktif."); } else { document.getElementById("loginError").classList.add("show"); document.getElementById("inputPIN").value=""; document.getElementById("inputPIN").focus(); const p=document.querySelector(".popup-login"); p.style.animation="none"; p.offsetHeight; p.style.animation="shake 0.4s ease-out"; } }
+        function logoutAdmin() { adminMode=false; localStorage.removeItem("trackora_admin_sesi"); updateUIAdmin(); resetFilter(); tampilkanNotif("Admin Mode nonaktif."); }
+        function updateUIAdmin() { const b=document.getElementById("btnAdminToggle"), s=document.getElementById("adminSection"), bd=document.getElementById("btnTabDashboard"), tl=document.getElementById("tabLacak"), bl=document.getElementById("btnTabLacak"), td=document.getElementById("tabDashboard"); if(adminMode) { b.classList.add("active"); b.innerHTML='🔓 Admin Mode'; s.classList.add("show"); if(bd) bd.style.display="block"; if(tl) tl.classList.remove("active"); if(bl) { bl.classList.remove("active"); bl.style.display="none"; } if(bd) bd.classList.add("active"); if(td) td.classList.add("active"); document.getElementById("dashboardTableContainer").style.display="none"; document.getElementById("emptyState").style.display="none"; document.getElementById("adminDetailWrapper").style.display="none"; document.getElementById("btnBackDaftar").style.display="none"; document.getElementById("filterBar").style.display="flex"; } else { b.classList.remove("active"); b.innerHTML='🔒 Admin Mode'; s.classList.remove("show"); if(bd) bd.style.display="none"; if(bd) bd.classList.remove("active"); if(td) td.classList.remove("active"); document.getElementById("dashboardTableContainer").style.display="none"; document.getElementById("emptyState").style.display="none"; document.getElementById("adminDetailWrapper").style.display="none"; document.getElementById("btnBackDaftar").style.display="none"; if(bl) bl.style.display="block"; if(tl) tl.classList.add("active"); if(bl) bl.classList.add("active"); } }
+        function clearFilterField(id,t) { const f=document.getElementById(id); if(!f) return; if(t==='text') f.value=''; else if(t==='select') { f.selectedIndex=-1; f.dispatchEvent(new Event('change')); } const b=f.parentElement.querySelector('.btn-clear-field'); if(b) b.classList.remove('visible'); applyFilter(); }
+        function toggleClearButton(el) { const w=el.parentElement, b=w.querySelector('.btn-clear-field'); if(!b) return; if(el.tagName==='SELECT') b.style.display=Array.from(el.selectedOptions).length>0?'inline-block':'none'; else b.style.display=el.value.trim().length>0?'inline-block':'none'; }
+        function applyFilter() { if(!adminMode) return; const fr=document.getElementById("filterRangka").value.trim().toLowerCase(), fc=document.getElementById("filterCabang").value.trim().toLowerCase(), fm=Array.from(document.getElementById("filterModel").selectedOptions).map(o=>o.value), fs=Array.from(document.getElementById("filterStatus").selectedOptions).map(o=>o.value); document.querySelectorAll('.filter-group input[type="text"],.filter-group select').forEach(e=>toggleClearButton(e)); const ada=fr||fc||fm.length>0||fs.length>0; if(!ada) { document.getElementById("dashboardTableContainer").style.display="none"; document.getElementById("emptyState").style.display="none"; document.getElementById("dashboardBody").innerHTML=""; document.getElementById("adminDetailWrapper").style.display="none"; document.getElementById("btnBackDaftar").style.display="none"; document.getElementById("filterBar").style.display="flex"; hasilFilterTerakhir=[]; return; } let h=daftarUnit.filter(u=>u.status>=1); if(fr) h=h.filter(u=>u.rangka.toLowerCase().includes(fr)); if(fc) h=h.filter(u=>u.tujuan.toLowerCase().includes(fc)); if(fm.length>0) h=h.filter(u=>fm.includes(u.model||"")); if(fs.length>0) h=h.filter(u=>fs.includes(String(u.status))); hasilFilterTerakhir=h; tampilkanTabelAdmin(); }
+        function resetFilter() { document.getElementById("filterRangka").value=""; document.getElementById("filterCabang").value=""; document.getElementById("filterModel").selectedIndex=-1; document.getElementById("filterStatus").selectedIndex=-1; document.querySelectorAll('.btn-clear-field').forEach(b=>b.style.display='none'); document.getElementById("dashboardTableContainer").style.display="none"; document.getElementById("emptyState").style.display="none"; document.getElementById("dashboardBody").innerHTML=""; document.getElementById("adminDetailWrapper").style.display="none"; document.getElementById("btnBackDaftar").style.display="none"; document.getElementById("filterBar").style.display="flex"; hasilFilterTerakhir=[]; }
+        function tampilkanTabelAdmin() { const tb=document.getElementById("dashboardBody"), em=document.getElementById("emptyState"), tc=document.getElementById("dashboardTableContainer"), ad=document.getElementById("adminDetailWrapper"), bbd=document.getElementById("btnBackDaftar"), fb=document.getElementById("filterBar"); ad.style.display="none"; bbd.style.display="none"; fb.style.display="flex"; if(hasilFilterTerakhir.length===0) { tb.innerHTML=""; tc.style.display="none"; em.style.display="block"; em.textContent="Tidak ada unit yang cocok."; return; } em.style.display="none"; tc.style.display="block"; let h=""; for(let u of hasilFilterTerakhir) { const st=statusList[u.status], steps=getProgressDisplay(u); let d=""; for(let i=0;i<steps.length;i++) { if(i>0) d+=`<div class="line-mini ${u.status>=steps[i].statusNum?'selesai':''}"></div>`; let dc=""; if(u.status>steps[i].statusNum) dc="selesai"; else if(u.status===steps[i].statusNum) dc="aktif"; d+=`<div class="dot-mini ${dc}"></div>`; } let it=u.estimasiKirim||u.drCreated||"-"; if(u.status===4) it="In Transit: "+(u.inTransit||"-"); if(u.status===5) it="Delivered: "+(u.delivered||"-"); if(u.status===3) it="QR selesai: "+(u.qrSelesai||"-"); if(u.sedangKeRVDC&&u.etaRVDC) it="RVDC: "+u.etaRVDC; h+=`<tr onclick="lihatDetailDariAdmin('${u.rangka}')"><td class="td-rangka">${u.rangka}</td><td>${u.tujuan}</td><td>${u.model||"-"}</td><td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td><td><div class="progress-mini">${d}</div></td><td style="font-size:12px;color:#64748B;">${it}</td></tr>`; } tb.innerHTML=h; }
+        function lihatDetailDariAdmin(r) { const u=daftarUnit.find(x=>x.rangka.toLowerCase()===r.toLowerCase()); if(!u) return; document.getElementById("filterBar").style.display="none"; document.getElementById("dashboardTableContainer").style.display="none"; document.getElementById("emptyState").style.display="none"; const w=document.getElementById("adminDetailWrapper"), nb=document.getElementById("adminNoDrBanner"); w.style.display="block"; document.getElementById("btnBackDaftar").style.display="inline-block"; nb.classList.remove("show"); if(u.status===0) nb.classList.add("show"); tampilkanDetailUnitDiContainer(u,"adminDetailUnit"); tampilkanProgressDiContainer(u,"adminProgressContainer"); }
+        function kembaliKeDaftarAdmin() { tampilkanTabelAdmin(); }
+        function prosesInput() { const r=document.getElementById("multiInput").value.trim(); if(!r) { tampilkanNotif("Masukkan No. Rangka."); return; } const n=r.split("\n").map(s=>s.trim()).filter(s=>s); if(n.length===1) { daftarMultiTerakhir=[]; sembunyikanMultiResult(); tampilkanSingleDetail(n[0]); } else { daftarMultiTerakhir=n; sembunyikanSingleDetail(); tampilkanMultiResult(n); } }
+        function tampilkanSingleDetail(n) { const u=daftarUnit.find(x=>x.rangka.toLowerCase()===n.toLowerCase()); document.getElementById("errorMsg").classList.remove("show"); document.getElementById("noDrBanner").classList.remove("show"); const w=document.getElementById("singleDetailWrapper"), iu=document.getElementById("infoUnit"), ia=document.getElementById("inputAreaLacak"); if(!u) { document.getElementById("errorMsg").textContent="No. Rangka tidak ditemukan."; document.getElementById("errorMsg").classList.add("show"); unitAktif=null; w.style.display="none"; ia.style.display="block"; return; } unitAktif=u; ia.style.display="none"; w.style.display="block"; if(u.status===0) document.getElementById("noDrBanner").classList.add("show"); tampilkanDetailUnitDiContainer(u,"detailUnit"); tampilkanProgressDiContainer(u,"progressContainer"); iu.classList.add("show"); const bb=w.querySelector(".btn-back"); bb.style.display="inline-block"; if(daftarMultiTerakhir.length===0) { bb.textContent="← Kembali ke Pencarian"; bb.onclick=function(){ ia.style.display="block"; w.style.display="none"; iu.classList.remove("show"); document.getElementById("noDrBanner").classList.remove("show"); document.getElementById("errorMsg").classList.remove("show"); document.getElementById("multiInput").value=""; unitAktif=null; }; } else { bb.textContent="← Kembali ke Daftar"; bb.onclick=kembaliKeDaftar; } }
+        function tampilkanMultiResult(n) { const tb=document.getElementById("multiResultBody"), s=document.getElementById("multiResultSection"), ia=document.getElementById("inputAreaLacak"); let h="", f=0; daftarMultiTerakhir=n; ia.style.display="block"; for(let r of n) { const u=daftarUnit.find(x=>x.rangka.toLowerCase()===r.toLowerCase()); if(u) { f++; const st=statusList[u.status], steps=getProgressDisplay(u); let d=""; for(let i=0;i<steps.length;i++) { if(i>0) d+=`<div class="line-mini ${u.status>=steps[i].statusNum?'selesai':''}"></div>`; let dc=""; if(u.status>steps[i].statusNum) dc="selesai"; else if(u.status===steps[i].statusNum) dc="aktif"; d+=`<div class="dot-mini ${dc}"></div>`; } h+=`<tr onclick="klikBarisMulti('${u.rangka}')"><td class="td-rangka">${u.rangka}</td><td>${u.tujuan}</td><td>${u.trueDestination||"-"}</td><td>${u.model||"-"}</td><td><span class="badge-cell ${st.badgeClass}">${st.ikon} ${st.nama}</span></td><td><div class="progress-mini">${d}</div></td></tr>`; } else { h+=`<tr><td class="td-rangka" style="color:#DC2626;">❌ ${r}</td><td colspan="5" style="color:#94A3B8;">Tidak ditemukan</td></tr>`; } } tb.innerHTML=h; s.classList.add("show"); document.getElementById("singleDetailWrapper").style.display="none"; tampilkanNotif(`${f} dari ${n.length} unit ditemukan.`); }
+        function klikBarisMulti(r) { sembunyikanMultiResult(); tampilkanSingleDetail(r); document.querySelector("#singleDetailWrapper .btn-back").style.display="inline-block"; }
+        function kembaliKeDaftar() { document.getElementById("inputAreaLacak").style.display="block"; sembunyikanSingleDetail(); tampilkanMultiResult(daftarMultiTerakhir); }
+        function sembunyikanMultiResult() { document.getElementById("multiResultSection").classList.remove("show"); }
+        function sembunyikanSingleDetail() { document.getElementById("singleDetailWrapper").style.display="none"; document.getElementById("infoUnit").classList.remove("show"); document.getElementById("noDrBanner").classList.remove("show"); document.getElementById("errorMsg").classList.remove("show"); }
+        function clearAll() { document.getElementById("multiInput").value=""; sembunyikanMultiResult(); sembunyikanSingleDetail(); document.getElementById("errorMsg").classList.remove("show"); document.getElementById("noDrBanner").classList.remove("show"); unitAktif=null; daftarMultiTerakhir=[]; document.getElementById("multiResultBody").innerHTML=""; document.getElementById("inputAreaLacak").style.display="block"; tampilkanNotif("Tampilan di-reset."); }
+        function tampilkanDetailUnitDiContainer(u,cid) { let h=`<p><span class="label">No. Rangka</span> <span class="nilai-rangka">${u.rangka}</span></p><p><span class="label">Cabang Pemilik</span> <span class="nilai">${u.tujuan||"-"}</span></p><p><span class="label">Tujuan Kirim</span> <span class="nilai">${u.trueDestination||"-"}</span></p><p><span class="label">Model</span> <span class="nilai">${u.model||"-"}</span></p><p><span class="label">Warna</span> <span class="nilai">${u.warna||"-"}</span></p>`; if(u.status===1&&!u.sedangKeRVDC) h+=`<div class="rvdc-info-box" style="background:#FFFBEB;color:#D97706;">📍 Unit belum masuk RVDC Ngoro</div>`; if(u.sedangKeRVDC) h+=`<div class="rvdc-info-box" style="background:#EFF6FF;color:#2563EB;">🚛 Unit dalam perjalanan ke RVDC Ngoro${u.etaRVDC?`<br>📅 Estimasi tiba: <strong>${formatTanggalFlex(u.etaRVDC)}</strong>`:''}</div>`; if(u.status>=2) h+=`<p><span class="label">Estimasi Kirim</span> <span class="estimasi-besar">📅 ${formatTanggalFlex(u.estimasiKirim)||"Belum tersedia"}</span></p>`; document.getElementById(cid).innerHTML=h; }
+        function tampilkanProgressDiContainer(u,cid) { if(u.status===0) { document.getElementById(cid).innerHTML=""; return; } const steps=getProgressDisplay(u); let h=""; for(let i=0;i<steps.length;i++) { const s=steps[i]; let ks="",ki="",ii="",kt=""; if(u.status>s.statusNum) { ks="selesai"; ki="indikator-selesai"; ii="✓"; kt="teks-selesai"; } else if(u.status===s.statusNum) { ks="aktif"; ki="indikator-aktif"; ii="●"; kt="teks-aktif"; } else { ki="indikator-menunggu"; ii="○"; kt="teks-menunggu"; } const dt=dapatkanDetailStatus(u,s); h+=`<div class="step ${ks}"><div class="indikator ${ki}">${ii}</div><div class="teks-status ${kt}"><p class="nama-status">${s.icon} ${s.label}</p><p class="detail-status">${dt}</p></div></div>`; } document.getElementById(cid).innerHTML=h; }
+        function dapatkanDetailStatus(u,s) { if(u.status!==s.statusNum) return ""; switch(s.statusNum) { case 1: return `DR dibuat — ${formatTanggalFlex(u.drCreated)}`; case 2: return "Unit sedang dalam proses persiapan"; case 3: return u.qrSelesai?`Estimasi selesai — ${formatTanggalFlex(u.qrSelesai)}`:"Sedang proses rekondisi"; case 4: return `Unit dalam perjalanan ke tujuan — ${formatTanggalFlex(u.inTransit)}`; case 5: return `Unit tiba di tujuan — ${formatTanggalFlex(u.delivered)}`; default: return ""; } }
+        function formatTanggalFlex(t) { return t||"-"; }
+        function tampilkanNotif(p) { const n=document.getElementById("notifSukses"); n.textContent=p; n.classList.add("show"); setTimeout(()=>n.classList.remove("show"),3000); }
+        document.getElementById("inputPIN").addEventListener("keypress",e=>{ if(e.key==="Enter") verifikasiPIN(); });
+        document.getElementById("overlayLogin").addEventListener("click",function(e){ if(e.target===this) batalLogin(); });
+        document.addEventListener("keydown",e=>{ if(e.key==="Escape") batalLogin(); });
+        document.getElementById("multiInput").addEventListener("keydown",e=>{ if(e.key==="Enter"&&e.ctrlKey) { e.preventDefault(); prosesInput(); } });
         init();
     </script>
 </body>
