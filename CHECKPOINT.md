@@ -1,59 +1,63 @@
-📦 CHECKPOINT #8 — Branch fitur-multi-dan-admin
-Tanggal: 22 Juni 2026
-Status Project: Branch fitur-multi-dan-admin dengan fitur lengkap: multi input, navigasi detail↔daftar, admin mode dengan filter per kolom + tombol clear individual, UI responsif (laptop horizontal wrap center, mobile label di atas field full width). Siap untuk evaluasi sebelum merge ke main.
+📦 CHECKPOINT #9 — TrackORA Web
+Tanggal: 23 Juni 2026
+Status Project: Branch main stabil dengan fitur lengkap. Branch ui-ux-iteration dengan tampilan corporate modern. Branch fitur-login siap dibuat.
 
-🎯 Tujuan Branch
-Menggabungkan multi No. Rangka dan daftar unit admin-only. Admin mode hanya untuk melihat daftar unit dengan filter yang bisa di-reset per field. User biasa tetap bisa lacak 1 atau banyak No. Rangka.
+🎯 Tujuan Project
+Webapp TrackORA untuk melacak pengiriman unit mobil baru dari pusat distribusi → RVDC Ngoro → cabang. Digunakan oleh orang cabang (lacak unit) dan admin cabang (login + daftar unit + filter).
 
+🌿 Branch Saat Ini
+Branch	Status	Deskripsi
+main	✅ Production	Fitur lengkap: multi No. Rangka, daftar unit, filter, banner RVDC, Prime Finishing
+ui-ux-iteration	🎨 Aktif	Tampilan corporate modern (navbar, font Inter, palet monokromatik, stepper minimalis)
+fitur-login	🔜 Segera dibuat	Login admin cabang (email + password), akses terbatas per cabang
 🧰 Tools & URL
 Repo: https://github.com/maulinanda/trackora-web
 
-Branch: fitur-multi-dan-admin
-
 Live (main): https://maulinanda.github.io/trackora-web/
 
-Preview branch: https://htmlpreview.github.io/?https://github.com/maulinanda/trackora-web/blob/fitur-multi-dan-admin/index.html
+Google Sheets CSV: https://docs.google.com/spreadsheets/d/e/2PACX-1vRKAaGXzzufPDknUNGa1u3sEEt_Py0lUS8PJKslvYt7b5Y5IgzklmLg10BkIz3uStTbR83hjinxZc7V/pub?gid=0&single=true&output=csv
 
 🚗 6 Status Final
 Angka	Status	Ikon
 0	Belum DR	⚪
 1	DR Created	📝
-2	On Preparation	🔧
-3	Quality Reconditioning	✨
+2	On Preparation	🔄
+3	Prime Finishing	✨
 4	In Transit	🚛
 5	Delivered	✅
-📊 Google Sheets — 15 Kolom
-A: FrameNumber, B: BranchName, C: Model, D: Warna, E: AreaProcess, F: PermintaanSampaiCabang, G: TransactionDate, H: ETARVDC, I: ESTIMASI_SELESAI_REPAIR, J: TRUEDESTINATION, K: ESTIMASI_KIRIM_ADJUSTABLE, L: ETARVDC_Stat, M: InTransit, N: Delivered, O: Status
-
-📋 Fitur Branch fitur-multi-dan-admin
+📋 Fitur di Branch main
 Fitur	Status
-🔍 1 textarea untuk single/multi No. Rangka	✅
-📋 Multi result tabel, klik → detail	✅
-↩️ Navigasi detail ↔ daftar	✅
-✕ Tombol Clear all	✅
+🔍 Lacak unit (single & multi No. Rangka)	✅
+📊 Daftar unit admin-only	✅
 🔐 Admin Mode password Toyota2026	✅
-📊 Daftar unit admin-only (min status 1)	✅
-🔍 Filter No. Rangka (text)	✅
-🏢 Filter Cabang Pemilik (text + datalist)	✅
-🚗 Filter Model (multi-select dropdown, sorted A-Z)	✅
-📝 Filter Status (multi-select dropdown)	✅
-✕ Reset semua filter	✅
-🔘 Tombol clear individual di tiap field filter	✅
-🙈 Data tersembunyi sebelum aksi	✅
-🔒 Tab Lacak sembunyi saat Admin Mode	✅
-📱 Responsive: laptop horizontal wrap center, mobile field full width	✅
-🎨 Tampilan Filter
-Laptop: label di atas field, field berukuran minimum 150px, wrap horizontal, align center, tombol reset di akhir baris.
+🔍 Filter per kolom (No. Rangka, Cabang, Model, Status)	✅
+🔘 Clear individual per field filter	✅
+🚛 Banner RVDC (oranye & biru)	✅
+✨ Prime Finishing (sebelumnya Quality Reconditioning)	✅
+📱 Responsive mobile	✅
+↩️ Navigasi detail ↔ daftar	✅
+🔄 Sinkronisasi via Google Sheets CSV	✅
+🎨 Tampilan di Branch ui-ux-iteration
+Komponen	Perubahan
+Warna	Monokromatik: navy #0F172A, abu #F1F5F9, biru #2563EB
+Font	Inter / system-ui
+Kartu	Border tipis, shadow minimal
+Progress bar	Stepper 28px, animasi pulse-ring
+Badge status	Outline style, lebih subtle
+Tabel	Garis tipis, hover halus
+Filter	Border 1px, focus ring
+Popup login	Shadow dalam, backdrop blur
+Banner	Background solid, tanpa border kiri tebal
+🔜 Rencana Branch fitur-login
+Fitur	Detail
+Login	Email + password unik per admin cabang
+Database user	Hardcode di JavaScript (sederhana)
+Akses	Admin hanya lihat unit di cabangnya sendiri
+User biasa	Tetap bisa lacak unit tanpa login
+Sesi	localStorage 30 menit
+💡 Cara Melanjutkan
+Buat branch fitur-login dari ui-ux-iteration
 
-Mobile: label di atas field, field full width, tombol reset rata kanan/stretch.
+Kirimkan database email & password admin
 
-Setiap field input/select memiliki tombol ✕ kecil di samping kanan untuk clear isi field tersebut saja.
-
-🔜 Rencana Selanjutnya
-Power Automate — sinkronisasi Excel (OneDrive) → Google Sheets.
-
-Formula InTransit & Delivered di Google Sheets.
-
-Evaluasi — apakah fitur di branch ini layak digabung ke main.
-
-Merge ke main — setelah puas dengan uji coba.
+Mulai coding fitur login
