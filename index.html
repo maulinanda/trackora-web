@@ -636,8 +636,8 @@
             const lines = t.trim().split("\n"); if (lines.length < 2) return [];
             const result = [];
             for (let i = 1; i < lines.length; i++) {
-                const v = parseCSVLine(lines[i]); if (v.length < 15) continue;
-                result.push({ rangka: v[0]?.trim()||"", tujuan: v[1]?.trim()||"", model: v[2]?.trim()||"", warna: v[3]?.trim()||"", areaProcess: v[4]?.trim()||"", permintaanSampaiCabang: v[5]?.trim()||"", drCreated: v[6]?.trim()||"", etaRVDC: v[7]?.trim()||"", qrSelesai: v[8]?.trim()||"", trueDestination: v[9]?.trim()||"", estimasiKirim: v[10]?.trim()||"", sedangKeRVDC: v[11]?.trim()?.toUpperCase()==="TRUE", inTransit: v[12]?.trim()||"", delivered: v[13]?.trim()||"", status: parseInt(v[14]?.trim())||0 });
+                const v = parseCSVLine(lines[i]); if (v.length < 16) continue;
+                result.push({ rangka: v[0]?.trim()||"", tujuan: v[1]?.trim()||"", model: v[2]?.trim()||"", warna: v[3]?.trim()||"", areaProcess: v[4]?.trim()||"", permintaanSampaiCabang: v[5]?.trim()||"", drCreated: v[6]?.trim()||"", etaRVDC: v[7]?.trim()||"", qrSelesai: v[8]?.trim()||"", trueDestination: v[9]?.trim()||"", estimasiKirim: v[10]?.trim()||"", sedangKeRVDC: v[11]?.trim()?.toUpperCase()==="TRUE", inTransit: v[12]?.trim()||"", delivered: v[13]?.trim()||"", status: parseInt(v[15]?.trim())||0 });
             }
             return result;
         }
