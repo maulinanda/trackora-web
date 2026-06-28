@@ -74,6 +74,16 @@
             border-color: #2563EB;
         }
 
+        .version-badge {
+            font-size: 10px;
+            color: #64748B;
+            background: #0F172A;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
         .tab-nav {
             display: flex;
             gap: 4px;
@@ -502,9 +512,12 @@
                     <span>Track Every Request, Deliver with Confidence</span>
                 </div>
             </div>
-            <button class="btn-admin-toggle" id="btnAdminToggle" onclick="toggleAdmin()">
-                🔒 Admin Mode
-            </button>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span class="version-badge">v10</span>
+                <button class="btn-admin-toggle" id="btnAdminToggle" onclick="toggleAdmin()">
+                    🔒 Admin Mode
+                </button>
+            </div>
         </div>
 
         <div class="tab-nav">
